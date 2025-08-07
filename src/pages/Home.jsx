@@ -1,19 +1,53 @@
-import React from 'react'
+import React from "react";
+import TextType from "../components/TextType";
+import ShinyText from "../components/ShinyText";
+import GradientText from "../components/GradientText";
 import Navbar from "../components/Navbar";
-import Footer from '../components/Footer';
+import Footer from "../components/Footer";
 
 const Home = () => {
   return (
     <React.Fragment>
-      <Navbar />
+      {/* <div className="bg-indigo-50 min-h-screen"> bg-pink-50 */}
       <div>
-        <section className='mt-40 ml-20 flex flex-col gap-4'>
-            <h1 className='text-4xl text-start font-medium text-'>Welcome to Developers Blog.</h1>
-            <p className=''>A place to read, write and understand topics.</p>
-            <button className=''>Start Reading</button>
+        <section className="mt-30 mb-20 ml-20 flex flex-col gap-4">
+          <div className="w-146 h-35">
+            <h1 className="text-7xl text-start font-medium text-purple-800 ml-5">
+              <TextType
+                text={[
+                  "Welcome to Developers blog.",
+                  "Level up your dev skills,",
+                  "Created by Devs for Devs!",
+                ]}
+                typingSpeed={105}
+                pauseDuration={1500}
+                showCursor={true}
+                cursorCharacter="|"
+              />
+            </h1>
+          </div>
+          <GradientText
+            colors={["#8A2BE2", "#FF1493", "#FF00FF", "#9c40ff", "#00FF00"]}
+            animationSpeed={8}
+            showBorder={false}
+            className="text-start ml-5 text-2xl mt-3 py-1 px-1 "
+          >
+            A place to read, write and understand topics.
+          </GradientText>
+          <div>
+            {/* need to change style */}
+            <button className="items-center justify-center  ml-8 mt-4 px-10 py-2 text-2xl rounded-xl text-gray-100 border-none bg-fuchsia-700 text-whitetransition cursor-pointer hover:bg-fuchsia-600 transform hover:scale-102 hover:shadow-lg hover:text-white">
+              <ShinyText
+                text="Start Reading"
+                disabled={false}
+                speed={3}
+                className="text-white font-semibold"
+              />
+            </button>
+          </div>
         </section>
       </div>
-      <Footer />
+      {/* </div> */}
     </React.Fragment>
   );
 };
