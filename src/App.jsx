@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
-
+import "./index.css";
 import MainLayout from "./layouts/MainLayout";
-import CategoryLayout from "./layouts/CategoriesLayout"
+import CategoryLayout from "./layouts/CategoriesLayout";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -11,7 +11,10 @@ import SignUp from "./pages/SignUp";
 
 import FullStack from "./pages/CategoryPages/FullStack";
 import Backend from "./pages/CategoryPages/Backend";
+import Mobile from "./pages/CategoryPages/Mobile";
+import AIandML from "./pages/CategoryPages/AI&ML";
 import QA from "./pages/CategoryPages/QA";
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -26,7 +29,9 @@ const App = () => {
         <Route path="/categories" element={<CategoryLayout />}>
           <Route path="fullstack" element={<FullStack />} />
           <Route path="backend" element={<Backend />} />
-          <Route path="categories"></Route>
+          <Route path="mobile" element={<Mobile />} />
+          <Route path="ai&ml" element={<AIandML />} />
+          <Route path="qa" element={<QA />} />
         </Route>
       </Routes>
     </BrowserRouter>
