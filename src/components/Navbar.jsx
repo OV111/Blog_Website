@@ -1,23 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { FaSun, FaMoon } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Link } from "react-router-dom";
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
-  const [theme, setTheme] = useState(false);
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") === "dark" ? true : false;
+  });
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme);
+    localStorage.setItem("theme", theme ? "dark" : "light");
+    console.log(localStorage);
+  }, [theme]);
+  const toggleTheme = () => {
+    setTheme(!theme);
+  };
 
   return (
     <React.Fragment>
-      <nav className="bg-blue-500 dark:bg-purple-800 px-5 py-4 shadow flex items-start justify-between">
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-white my-1 cursor-pointer">
+      <nav className="bg-purple-800 px-5 py-4 shadow flex items-start justify-between">
+        <h2 className="text-2xl font-bold   my-1 cursor-pointer text-white">
           Devs Blog
         </h2>
 
-        <ul className="flex items-center space-x-7 text-gray-800 dark:text-gray-100 my-1">
-          <li className="font-medium hover:text-purple-900 dark:hover:text-purple-300 transition ">
+        <ul className="flex items-center space-x-7 text-gray-100 my-1">
+          <li className="font-medium hover:text-purple-300 dark:hover:text-purple-300 transition">
             <Link to="/">Home</Link>
           </li>
-          {/* use Link instead of a  */}
-          <li className="relative font-medium hover:text-purple-900 dark:hover:text-purple-300 transition">
+          <li className="relative font-medium hover:text-purple-300 transition">
             <button
               onClick={() => setShowDropdown(!showDropdown)}
               className="flex justify-center items-center gap-1 cursor-pointer"
@@ -28,49 +38,51 @@ const Navbar = () => {
             {showDropdown && (
               <ul className="absolute top-full mt-2 left-0 bg-white dark:bg-gray-800 shadow-md rounded w-40 py-2 z-10">
                 <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                  <Link to="categories/fullstack">Full Stack</Link>
+                  <Link to="/categories/fullstack">Full Stack</Link>
                 </li>
                 <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                  <a href="#backend">Backend</a>
+                  <Link to="/categories/backend">Backend</Link>
                 </li>
                 <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                  <a href="#qa">Mobile</a>
+                  <Link to="/categories/mobile">Mobile</Link>
                 </li>
                 <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                  <a href="#qa">AI & ML</a>
+                  <Link to="/categories/ai&ml">AI & ML</Link>
                 </li>
                 <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                  <a href="#qa">Quality Assurance</a>
+                  <Link to="/categories/qa">Quality Assurance</Link>
                 </li>
-
-                {/*
-              <li className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
-                <a href="#ml">Machine Learning</a>
-              </li>
-              <li className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
-              <a href="#mobile">Mobile</a>
-              </li> */}
               </ul>
             )}
           </li>
 
           <li className="font-medium hover:text-purple-900 dark:hover:text-purple-300 transition">
-            <a href="#about">About</a>
+            <Link to="about">About</Link>
           </li>
           <li className="font-medium hover:text-purple-900 dark:hover:text-purple-300 transition">
-            <a href="#sign-in">Sign In</a>
+            <Link to="sign-in">Sign In</Link>
           </li>
           <li className="font-medium hover:text-purple-900 dark:hover:text-purple-300 transition">
-            <a href="#get-started">Get Started</a>
+            <Link to="#get-started">Get Started</Link>
           </li>
-          <li>
-            <button
-              onClick={() => setTheme(!theme)}
-              className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700"
-            >
-              {theme ? "Dark" : "Light"}
-            </button>
-          </li>
+          <button
+            onClick={() => toggleTheme()}
+            className={`relative inline-flex items-center ml-0 px-1 rounded-full w-15 h-8 transition-colors ${
+              theme ? "bg-gray-700" : "bg-gray-200"
+            }`}
+          >
+            <span className="text-white items-center text-m ml-1">
+              <FaMoon></FaMoon>
+            </span>
+            <span className="text-yellow-400 items-center text-m ml-3">
+              <FaSun></FaSun>
+            </span>
+            <span
+              className={`absolute w-6 h-6 transform rounded-full bg-white shadow-md transition-transform duration-300 ${
+                theme ? "translate-x-6" : "translate-x-1"
+              }`}
+            />
+          </button>
         </ul>
       </nav>
     </React.Fragment>
