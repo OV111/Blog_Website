@@ -1,21 +1,27 @@
 import React from "react";
-import {} from "react-icons";
-import { FaGithub, FaTwitter, FaMailBulk } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { FaGithub, FaTwitter, FaMailBulk } from "react-icons/fa";
+import {Send} from "lucide-react"
 const Footer = () => {
   return (
     <React.Fragment>
-      <footer className="text-gray-700 pt-32 px-5 ">
-        <div className="flex justify-start items-start gap-40 mb-2">
-          <div className="grid gap-1">
-
-            <Link to="/" className="flex items-center gap-2 mb-4 ">
+      <footer className="bg-gradient-to-r from-purple-800 to-purple-950  text-white pt-10 ">
+        <div className="flex justify-start items-start gap-30 mb-0 pl-20">
+          <div className="lg:col-span-2 flex flex-col items-start">
+            <Link to="/" className="flex items-center gap-2 mb-4">
               <img src="" alt="Logo" />
-              <h1 className="text-2xl font-bold ">Devs Blog</h1>
+              <h1 className="text-3xl font-extrabold  tracking-wide">
+                Devs Blog
+              </h1>
             </Link>
+            <p className="text-purple-400 max-w-sm mb-6">
+              A blog dedicated to modern web development, AI trends, and quality
+              assurance — insights, tutorials, and real-world guides for
+              developers and tech enthusiasts.
+            </p>
 
             {/* Social Links */}
-            <div className="flex items-center justify-center space-x-5 mt-0  mb-12 text-2xl">
+            <div className="flex items-center justify-center space-x-5 mt-0  mb-12 text-3xl ">
               <Link to="">
                 <FaGithub></FaGithub>
               </Link>
@@ -27,33 +33,81 @@ const Footer = () => {
               </Link>
             </div>
           </div>
-        
 
           <div className="grid gap-1">
-            <h3 className="text-xl font-semibold mb-2 w-30">Quick Links</h3>
-            <Link to="/" className="text-lg hover:text-purple-500 transition">Home</Link>
-            <Link to="/About" className="text-lg  hover:text-purple-500 transition">About</Link>
-            <Link to="/Contact" className="text-lg  hover:text-purple-500 transition">Contact</Link>
+            <h3 className="text-xl font-bold mb-2 w-30 text-purple-400">
+              Quick Links
+            </h3>
+            <Link to="/" className="text-lg hover:text-purple-500 transition">
+              Home
+            </Link>
+            <Link
+              to="/About"
+              className="text-lg  hover:text-purple-500 transition"
+            >
+              About
+            </Link>
+            <Link
+              to="/Contact"
+              className="text-lg  hover:text-purple-500 transition"
+            >
+              Contact
+            </Link>
+            <Link
+              to="/Contact"
+              className="text-lg  hover:text-purple-500 transition"
+            >
+              Privacy
+            </Link>
           </div>
 
           <div className="grid gap-1">
-            <h3 className="text-xl font-semibold mb-2 w-30">Categories</h3>
-            <Link to="" className="text-lg hover:text-purple-500 transition">Mobile</Link>
-            <Link to="" className="text-lg hover:text-purple-500 transition">Full Stack</Link>
-            <Link to="" className="text-lg hover:text-purple-500 transition">AI & ML</Link>
-            <Link to="" className="text-lg hover:text-purple-500 transition">Backend</Link>
-            <Link to="" className="text-lg hover:text-purple-500 transition">Quality Assurance</Link>
+            <h3 className="text-xl font-bold mb-2 w-30 text-purple-400">
+              Categories
+            </h3>
+            <Link to="" className="text-lg hover:text-purple-500 transition">
+              Mobile
+            </Link>
+            <Link to="" className="text-lg hover:text-purple-500 transition">
+              Full Stack
+            </Link>
+            <Link to="" className="text-lg hover:text-purple-500 transition">
+              AI & ML
+            </Link>
+            <Link to="" className="text-lg hover:text-purple-500 transition">
+              Backend
+            </Link>
+            <Link to="" className="text-lg hover:text-purple-500 transition">
+              Quality Assurance
+            </Link>
+          </div>
+          
+          <div className="grid gap-1">
+            <h3 className="text-2xl font-bold mb-2 w-50 text-purple-400">Stay Updated!</h3>
+            <p className="text-purple-200 mb-4 w-60"> Subscribe to our newsletter for the latest articles and updates.</p>
+            <form className="flex gap-2">
+              <input type="email" placeholder="Enter Your Email." className="flex-grow rounded-md pl-2 outline bg-purple-700 border-purple-600 text-white placeholder-purple-300 focus:ring-purple-500 focus:border-purple-500" />
+              <button type="submit" className="bg-purple-600 hover:bg-purple-700 text-white py-2 px-2  rounded-md shadow-sm transition-colors duration-200" ><Send className="w-5 h-5"></Send></button>
+            </form>
           </div>
 
-          <div className="grid gap-1">
-            <h3 className="text-xl font-semibold mb-2 w-30">Legal</h3>
-            <Link to="" className="text-lg hover:text-purple-500 transition">Privacy Policy</Link>
-            <Link to="" className="text-lg hover:text-purple-500 transition">Terms of Service</Link>
-            <Link to="" className="text-lg hover:text-purple-500 transition">Cookie Policy</Link>
-          </div>
+          {/* <div className="grid gap-1">
+            <h3 className="text-xl font-bold mb-2 w-30 text-purple-400">Legal</h3>
+            <Link to="" className="text-lg hover:text-purple-500 transition">
+              Privacy Policy
+            </Link>
+            <Link to="" className="text-lg hover:text-purple-500 transition">
+              Terms of Service
+            </Link>
+            <Link to="" className="text-lg hover:text-purple-500 transition">
+              Cookie Policy
+            </Link>
+          </div> */}
         </div>
-        <hr />
-        <div>© {new Date().getFullYear()} Devs Blog. All rights reserved</div>
+        <hr className="border-purple-700 my-6" />
+        <div className="text-center  pb-6 text-m text-purple-300">
+          © {new Date().getFullYear()} Devs Blog. All rights reserved
+        </div>
       </footer>
     </React.Fragment>
   );
