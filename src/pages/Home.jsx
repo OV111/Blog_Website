@@ -2,8 +2,6 @@ import React from "react";
 import TextType from "../components/TextType";
 import ShinyText from "../components/ShinyText";
 import GradientText from "../components/GradientText";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 
 const Home = () => {
   return (
