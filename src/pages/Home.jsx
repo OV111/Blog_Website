@@ -5,7 +5,6 @@ import GradientText from "../components/GradientText";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-
 const Home = () => {
   return (
     <React.Fragment>
