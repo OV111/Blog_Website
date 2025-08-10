@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import "./index.css";
 import MainLayout from "./layouts/MainLayout";
@@ -19,6 +19,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+        
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />}></Route>
           <Route path="/about" element={<About />}></Route>
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="ai&ml" element={<AIandML />} />
           <Route path="qa" element={<QA />} />
         </Route>
+
       </Routes>
     </BrowserRouter>
   );
