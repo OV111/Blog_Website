@@ -4,13 +4,13 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 const MainLayout = () => {
   return (
-    <React.Fragment>
+    <div className="dark:bg-gray-900 min-h-screen">
       <Navbar />
-      <div >
+      <main className="flex-grow">
         <Outlet />
-      </div>
+      </main>
       <Footer />
-    </React.Fragment>
+    </div>
   );
 };
 export default MainLayout;
