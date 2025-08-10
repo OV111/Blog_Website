@@ -20,7 +20,7 @@ const Navbar = () => {
   return (
     <React.Fragment>
       <div>
-        <nav className="bg-gradient-to-r from-purple-800 to-purple-950 px-5 py-4 shadow flex items-start justify-between dark:bg-gray-900">
+        <nav className="bg-gradient-to-r from-purple-800 to-purple-950 px-5 py-4 shadow flex items-start justify-between dark:from-purple-900 dark:to-purple-950">
           <h2 className="text-2xl font-bold my-1 cursor-pointer text-white">
             <Link to="/">Devs Blog</Link>
           </h2>
@@ -58,13 +58,13 @@ const Navbar = () => {
               )}
             </li>
 
-            <li className="font-medium hover:text-purple-900 dark:hover:text-purple-300 transition">
+            <li className="font-medium hover:text-purple-300 dark:hover:text-purple-300 transition">
               <Link to="about">About</Link>
             </li>
-            <li className="font-medium hover:text-purple-900 dark:hover:text-purple-300 transition">
+            <li className="font-medium hover:text-purple-300 dark:hover:text-purple-300 transition">
               <Link to="sign-in">Sign In</Link>
             </li>
-            <li className="font-medium hover:text-purple-900 dark:hover:text-purple-300 transition">
+            <li className="font-medium hover:text-purple-300 dark:hover:text-purple-300 transition">
               <Link to="#get-started">Get Started</Link>
             </li>
             <button
