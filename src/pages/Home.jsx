@@ -6,11 +6,10 @@ import GradientText from "../components/GradientText";
 const Home = () => {
   return (
     <React.Fragment>
-      {/* <div className="bg-indigo-50 min-h-screen"> bg-pink-50 */}
       <div>
-        <section className="mt-33 mb-50 ml-20 flex flex-col gap-4">
+        <section className="mt-33 mb-50 ml-20 flex flex-col gap-4 ">
           <div className="w-146 h-35">
-            <h1 className="text-7xl text-start font-medium text-purple-800 ml-5">
+            {/* <h1 className="text-7xl text-start font-medium text-purple-800 ml-5">
               <TextType
                 text={[
                   "Welcome to Developers blog.",
@@ -22,7 +21,7 @@ const Home = () => {
                 showCursor={true}
                 cursorCharacter="|"
               />
-            </h1>
+            </h1> */}
           </div>
           <GradientText
             colors={["#8A2BE2", "#FF1493", "#FF00FF", "#9c40ff", "#00FF00"]}
@@ -34,7 +33,7 @@ const Home = () => {
           </GradientText>
           <div>
             {/* need to change style */}
-            <button className="items-center justify-center  ml-6 mt-4 px-10 py-2 text-2xl rounded-xl text-gray-100 border-none bg-fuchsia-700 text-whitetransition cursor-pointer hover:bg-fuchsia-600 transform hover:scale-102 hover:shadow-lg hover:text-white">
+            <button className="items-center justify-center  ml-6 mt-4 px-10 py-2 text-2xl rounded-xl text-gray-100 border-none bg-fuchsia-700 text-whitetransition cursor-pointer hover:bg-fuchsia-600 transform hover:scale-102 hover:shadow-lg hover:text-white dark:bg-fuchsia-550">
               <ShinyText
                 text="Start Reading"
                 disabled={false}
@@ -45,7 +44,6 @@ const Home = () => {
           </div>
         </section>
       </div>
-      {/* </div> */}
     </React.Fragment>
   );
 };
