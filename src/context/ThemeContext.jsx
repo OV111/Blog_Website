@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createContext } from "react";
 
-const ContextTheme = createContext()
+export const ContextTheme = createContext();
 
-const ThemeContext = ({parents}) => {
-const [theme,setTheme] = useState("light")
+const ThemeContext = ({ parents }) => {
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") === "dark" ? true : false;
+  });
 
-    return (
-        <ContextTheme.Provider value={theme,setTheme}>
-            {parents}
-        </ContextTheme.Provider>
-    )
-}
+  
+  return (
+    <ContextTheme.Provider value={(theme, setTheme)}>
+      {parents}
+    </ContextTheme.Provider>
+  );
+};
+
+export default ThemeContext;
