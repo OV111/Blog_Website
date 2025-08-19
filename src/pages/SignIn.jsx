@@ -1,17 +1,41 @@
-import React, { useContext, useState } from 'react'
-import { AuthContext } from '../context/AuthContext'
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 const SignIn = () => {
-    const {isAuthenticated} = useContext(AuthContext)
+  const { isAuthenticated, login } = useContext(AuthContext);
+  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
 
-    return (
-        <React.Fragment>
-            <form className=''>
-                <input type="text" placeholder='Enter Your UserName' />
-                <input type="password" placeholder='Enter Your Password' />
-                {/* <input type="text" /> */}
-            </form>
-        </React.Fragment>
-    )
-
-}
-export default SignIn
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    login(username, password);
+    console.log("yesss")
+    if (username && password) {
+      console.log("avhe");
+    }
+  };
+  return (
+    <React.Fragment>
+      <form onSubmit={handleSubmit} className="grid  px-100 py-10">
+        <input
+          type="text"
+          className="my-6"
+          placeholder="Enter Your UserName"
+          onClick={(e) => {
+            setUsername(e.target.value);
+          }}
+        />
+        <input
+          type="password"
+          className="my-6"
+          placeholder="Enter Your Password"
+          onClick={(e) => setPassword(e.target.value)}
+        />
+        {/* <input type="text" /> */}
+        <button type="submit" className="cursor-pointer">
+          Log In
+        </button>
+      </form>
+    </React.Fragment>
+  );
+};
+export default SignIn;
