@@ -3,20 +3,19 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
 import CategoryLayout from "./layouts/CategoriesLayout";
-
-import Home from "./pages/Home";
-import About from "./pages/About";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-
-import FullStack from "./pages/CategoryPages/FullStack";
-import Backend from "./pages/CategoryPages/Backend";
-import Mobile from "./pages/CategoryPages/Mobile";
-import AIandML from "./pages/CategoryPages/AI&ML";
-import QA from "./pages/CategoryPages/QA";
-
 import NotFound from "./components/NotFound";
-import AiandML from "./pages/CategoryPages/AI&ML";
+
+const Home = lazy(() => import("./pages/Home"));
+const About = lazy(() => import("./pages/About"));
+const SignIn = lazy(() => import("./pages/SignIn"));
+const SignUp = lazy(() => import("./pages/SignUp"));
+
+const FullStack = lazy(() => import("./pages/CategoryPages/FullStack"));
+const Backend = lazy(() => import("./pages/CategoryPages/Backend"));
+const Mobile = lazy(() => import("./pages/CategoryPages/Mobile"));
+const AIandML = lazy(() => import("./pages/CategoryPages/AI&ML"));
+const QA = lazy(() => import("./pages/CategoryPages/QA"));
+
 
 const router = createBrowserRouter([
   {
@@ -37,7 +36,7 @@ const router = createBrowserRouter([
       { path: "fullstack", element: <FullStack /> },
       { path: "backend", element: <Backend /> },
       { path: "mobile", element: <Mobile /> },
-      { path: "ai&ml", element: <AiandML /> },
+      { path: "ai&ml", element: <AIandML /> },
       { path: "qa", element: <QA /> },
     ],
   },
