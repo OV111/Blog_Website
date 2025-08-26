@@ -1,22 +1,37 @@
+// API integration ready → inside onSubmit, instead of console.log, prepare fetch or axios call to your backend.
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-
+import { Toaster, toast } from "react-hot-toast";
+import { Eye, EyeOff } from "lucide-react";
 const GetStarted = () => {
   const [isSignedUp, setIsSignedUp] = useState(true);
-
-  const {register,handleSubmit,getValues,formState: { errors },} = useForm();
+  const [showPassword, setShowPassword] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const onSubmit = (data) => {
-    isSignedUp
-      ? console.log("Forms Data:", data)
-      : console.log("Login Data:", data);
+    if (isSignedUp) {
+      console.log("Forms Data:", data);
+      toast.success("Account created Successfully.", { duration: 2500 });
+    } else {
+      console.log("Login Data:", data);
+      toast.success("Successfully Logged In.", { duration: 2500 });
+    }
+    reset();
   };
   const ToggleLink = () => {
     setIsSignedUp(!isSignedUp);
+    reset();
   };
 
   return (
     <React.Fragment>
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="max-w-xl mx-auto mt-8 p-8 bg-white rounded-2xl shadow-sm mb-8 ">
         <h2 className="text-4xl font-bold text-center mb-8 text-purple-700">
           {isSignedUp ? "Sign Up" : "Log In"}
@@ -80,48 +95,72 @@ const GetStarted = () => {
           )}
 
           {/* Password */}
-          <label className="block mb-1 font-medium">Enter Password</label>
-          <input
-            type="password"
-            placeholder="Enter Your Password"
-            {...register("password", {
-              required: "Password is required!",
-              minLength: {
-                value: 6,
-                message: "Password must contain at least 6 chars!",
-              },
-            })}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
-              errors.password ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {errors.password && (
-            <p className="text-red-500 text-sm">{errors.password.message}</p>
-          )}
+          <div className="relative">
+            <label className="block mb-1 font-medium">Enter Password</label>
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter Your Password"
+              {...register("password", {
+                required: "Password is required!",
+                minLength: {
+                  value: 6,
+                  message: "Password must contain at least 6 chars!",
+                },
+              })}
+              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
+                errors.password ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            <button
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute top-10 right-5 text-gray-400 cursor-pointer"
+            >
+              {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+            </button>
+            {errors.password && (
+              <p className="text-red-500 text-sm">{errors.password.message}</p>
+            )}
+          </div>
 
           {isSignedUp && (
             <React.Fragment>
               {/* Confirm Password */}
-              <label className="block mb-1 font-medium">Confirm Password</label>
-              <input
-                type="password"
-                placeholder="Confirm Password"
-                {...register("confirmPassword", {
-                  required: "Please confirm your password!",
-                  message: "Passwords must match!",
-                  validate: (value) => {
-                    return value === getValues("password") || "Password don't match!";
-                  },
-                })}
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
-                  errors.confirmPassword ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.confirmPassword && (
-                <p className="text-red-500 text-sm">
-                  {errors.confirmPassword.message}
-                </p>
-              )}
+              <div className="relative">
+                <label className="block mb-1 font-medium">
+                  Confirm Password
+                </label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Confirm Password"
+                  {...register("confirmPassword", {
+                    required: "Please confirm your password!",
+                    validate: (value) => {
+                      return (
+                        value === getValues("password") ||
+                        "Password don't match!"
+                      );
+                    },
+                  })}
+                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
+                    errors.confirmPassword
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  }`}
+                />
+                <button
+                  onClick={() => {
+                    setShowPassword(!showPassword);
+                  }}
+                  className="absolute top-10 right-5 text-gray-400 cursor-pointer"
+                >
+                  {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+                </button>
+                {errors.confirmPassword && (
+                  <p className="text-red-500 text-sm">
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
+              </div>
             </React.Fragment>
           )}
           <button
