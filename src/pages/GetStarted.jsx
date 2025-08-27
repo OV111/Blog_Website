@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Toaster, toast } from "react-hot-toast";
 import { Eye, EyeOff } from "lucide-react";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const GetStarted = () => {
   const [isSignedUp, setIsSignedUp] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -14,7 +16,20 @@ const GetStarted = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    const url = `${API_BASE_URL}/get-started`;
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json();
+      console.log(result);
+    } catch (err) {
+      console.error(err);
+    }
     if (isSignedUp) {
       console.log("Forms Data:", data);
       toast.success("Account created Successfully.", { duration: 2500 });
