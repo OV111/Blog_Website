@@ -11,10 +11,10 @@ const LoadingSuspense = () => {
         </div>
         <div className="text-center">
           <h3 className="text-lg font-semibold text-gray-700 mb-1">
-            Loading your journey...
+            Loading your Blogs...
           </h3>
           <p className="text-sm text-gray-500">
-            Preparing your travel experience
+            Preparing your Blog reading
           </p>
         </div>
       </div>
