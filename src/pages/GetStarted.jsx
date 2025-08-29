@@ -3,10 +3,12 @@ import { useForm } from "react-hook-form";
 import { Toaster, toast } from "react-hot-toast";
 import { Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "../context/useAuthStore";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const GetStarted = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { login, logout } = useAuthStore();
   const [isSignedUp, setIsSignedUp] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -31,15 +33,23 @@ const GetStarted = () => {
       });
       const result = await response.json();
 
-      if(response.ok) {
+      if (response.ok) {
         toast.success(`${result.message}`, { duration: 2250 });
         setTimeout(() => {
-          navigate("/")
-        },2400)
-      } else if(response.status === 404) {
-        toast.error(`${result.message}`)
-      } else if(response.status === 401) {
-        toast.error(`${result.message}`)
+          navigate("/");
+          login();
+        }, 2350);
+        // toast.success(result.message, {
+        //   duration: 2250,
+        //   onClose: () => {
+        //     navigate("/");
+        //     login();
+        //   },
+        // });
+      } else if (response.status === 404) {
+        toast.error(`${result.message}`);
+      } else if (response.status === 401) {
+        toast.error(`${result.message}`);
       }
     } catch (err) {
       console.error(err);
