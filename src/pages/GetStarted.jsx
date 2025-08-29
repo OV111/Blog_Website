@@ -27,16 +27,17 @@ const GetStarted = () => {
       });
       const result = await response.json();
       console.log(result);
+      toast.success("Account created Successfully.", { duration: 2250 });
     } catch (err) {
       console.error(err);
     }
-    if (isSignedUp) {
-      console.log("Forms Data:", data);
-      toast.success("Account created Successfully.", { duration: 2500 });
-    } else {
-      console.log("Login Data:", data);
-      toast.success("Successfully Logged In.", { duration: 2500 });
-    }
+    // if (isSignedUp) {
+    //   console.log("Forms Data:", data);
+    //   toast.success("Account created Successfully.", { duration: 2500 });
+    // } else {
+    //   console.log("Login Data:", data);
+    //   toast.success("Successfully Logged In.", { duration: 2500 });
+    // }
     reset();
   };
   const ToggleLink = () => {
