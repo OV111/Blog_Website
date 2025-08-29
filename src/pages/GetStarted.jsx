@@ -1,13 +1,15 @@
-// API integration ready → inside onSubmit, instead of console.log, prepare fetch or axios call to your backend.
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Toaster, toast } from "react-hot-toast";
 import { Eye, EyeOff } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const GetStarted = () => {
+  const navigate = useNavigate()
   const [isSignedUp, setIsSignedUp] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -17,7 +19,9 @@ const GetStarted = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const url = `${API_BASE_URL}/get-started`;
+    const url = isSignedUp
+      ? `${API_BASE_URL}/get-started`
+      : `${API_BASE_URL}/login`;
 
     try {
       const response = await fetch(url, {
@@ -26,20 +30,26 @@ const GetStarted = () => {
         body: JSON.stringify(data),
       });
       const result = await response.json();
-      console.log(result);
-      toast.success("Account created Successfully.", { duration: 2250 });
+
+      if(response.ok) {
+        toast.success(`${result.message}`, { duration: 2250 });
+        setTimeout(() => {
+          navigate("/")
+        },2400)
+      } else if(response.status === 404) {
+        toast.error(`${result.message}`)
+      } else if(response.status === 401) {
+        toast.error(`${result.message}`)
+      }
     } catch (err) {
       console.error(err);
+      toast.error("Server is unavailable. Please try again later!", {
+        duration: 2500,
+      });
     }
-    // if (isSignedUp) {
-    //   console.log("Forms Data:", data);
-    //   toast.success("Account created Successfully.", { duration: 2500 });
-    // } else {
-    //   console.log("Login Data:", data);
-    //   toast.success("Successfully Logged In.", { duration: 2500 });
-    // }
     reset();
   };
+
   const ToggleLink = () => {
     setIsSignedUp(!isSignedUp);
     reset();
@@ -48,6 +58,7 @@ const GetStarted = () => {
   return (
     <React.Fragment>
       <Toaster position="top-center" reverseOrder={false} />
+
       <div className="max-w-xl mx-auto mt-8 p-8 bg-white rounded-2xl shadow-sm mb-8 ">
         <h2 className="text-4xl font-bold text-center mb-8 text-purple-700">
           {isSignedUp ? "Sign Up" : "Log In"}
@@ -128,6 +139,7 @@ const GetStarted = () => {
               }`}
             />
             <button
+              type="button"
               onClick={() => setShowPassword(!showPassword)}
               className="absolute top-10 right-5 text-gray-400 cursor-pointer"
             >
@@ -146,7 +158,7 @@ const GetStarted = () => {
                   Confirm Password
                 </label>
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirm Password"
                   {...register("confirmPassword", {
                     required: "Please confirm your password!",
@@ -164,8 +176,9 @@ const GetStarted = () => {
                   }`}
                 />
                 <button
+                  type="button"
                   onClick={() => {
-                    setShowPassword(!showPassword);
+                    setShowConfirmPassword(!showConfirmPassword);
                   }}
                   className="absolute top-10 right-5 text-gray-400 cursor-pointer"
                 >
