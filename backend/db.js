@@ -21,4 +21,5 @@ const connectDB = async () => {
     throw err;
   }
 };
+// connectDB()
 export default connectDB;
