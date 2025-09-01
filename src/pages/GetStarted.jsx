@@ -192,7 +192,7 @@ const GetStarted = () => {
                   }}
                   className="absolute top-10 right-5 text-gray-400 cursor-pointer"
                 >
-                  {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+                  {showConfirmPassword ? <Eye size={20} /> : <EyeOff size={20} />}
                 </button>
                 {errors.confirmPassword && (
                   <p className="text-red-500 text-sm">
