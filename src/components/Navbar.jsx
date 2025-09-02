@@ -2,28 +2,48 @@ import React, { useState, useEffect, useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { FaSun, FaMoon } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuthStore from "../context/useAuthStore";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
-  const {auth,login,logout} = useAuthStore()
+  const { auth, login, logout } = useAuthStore();
   const { theme, setTheme } = useContext(ThemeContext);
-  // console.log(theme, setTheme);
+  const navigate = useNavigate();
+
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme);
     localStorage.setItem("theme", theme ? "dark" : "light");
-    // console.log(localStorage);
   }, [theme]);
 
   const toggleTheme = () => {
     setTheme(!theme);
   };
 
+  const handleLogOut = async () => {
+    try {
+      const request = await fetch(`${API_BASE_URL}/log-out`, {
+        method: "DELETE",
+        credentials: "include", // sending cookie 
+      });
+      let response = await request.json();
+      if (response.ok) {
+        logout();
+        navigate("/get-started");
+      } else {
+        // Toast error
+        console.error("Log Out failed!");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <React.Fragment>
       <div>
-        <nav className="bg-gradient-to-r from-purple-800 to-purple-950 px-5 py-4 shadow flex items-start justify-between dark:from-purple-700 dark:to-purple-800">
+        <nav className="bg-gradient-to-r from-purple-800 to-purple-900 px-5 py-4 shadow flex items-start justify-between dark:from-purple-700 dark:to-purple-800">
           <h2 className="text-2xl font-bold my-1 cursor-pointer text-white">
             <NavLink to="/">Devs Blog</NavLink>
           </h2>
@@ -73,16 +93,25 @@ const Navbar = () => {
             <li className="font-medium text-lg  hover:text-purple-300 dark:hover:text-purple-300 transition">
               <NavLink to="about">About</NavLink>
             </li>
-            
-            {auth ? (
 
-              <li className="font-medium text-lg  hover:text-purple-300 dark:hover:text-purple-300 transition">
-              <NavLink to="log-out">Log Out</NavLink>
-            </li>
+            {auth ? (
+              <React.Fragment>
+                <li className="font-medium text-lg  hover:text-purple-300 dark:hover:text-purple-300 transition">
+                  <NavLink to="my-profile">My Profile</NavLink>
+                </li>
+                <li
+                  className="font-medium text-lg  hover:text-purple-300 dark:hover:text-purple-300 transition cursor-pointer"
+                  onClick={handleLogOut}
+                >
+                  Log Out
+                </li>
+              </React.Fragment>
             ) : (
-              <li className="font-medium text-lg  hover:text-purple-300 dark:hover:text-purple-300 transition">
-              <NavLink to="get-started">Get Started</NavLink>
-            </li>
+              <React.Fragment>
+                <li className="font-medium text-lg  hover:text-purple-300 dark:hover:text-purple-300 transition">
+                  <NavLink to="get-started">Get Started</NavLink>
+                </li>
+              </React.Fragment>
             )}
             <button
               onClick={() => toggleTheme()}
