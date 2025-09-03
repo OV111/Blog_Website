@@ -1,9 +1,9 @@
 import { create } from "zustand";
 
 const useAuthStore = create((set) => ({
-    auth: false,
-    login: () => set({auth:true}),
-    logout: () => set({auth:false}),
-}))
+  auth: false,
+  login: () => set({ auth: true }),
+  logout: () => set({ auth: false }),
+}));
 
-export default useAuthStore;
+export  default useAuthStore;
