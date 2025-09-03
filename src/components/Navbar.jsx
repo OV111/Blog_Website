@@ -1,25 +1,22 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { FaSun, FaMoon } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuthStore from "../context/useAuthStore";
+import useThemeStore from "../context/useThemeStore";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const { auth, login, logout } = useAuthStore();
-  const { theme, setTheme } = useContext(ThemeContext);
+  const {theme,setTheme} = useThemeStore()
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme);
-    localStorage.setItem("theme", theme ? "dark" : "light");
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(!theme);
-  };
+    document.documentElement.classList.toggle("dark",theme === "dark");
+  },[theme])
+  
 
   const handleLogOut = async () => {
     try {
@@ -114,9 +111,9 @@ const Navbar = () => {
               </React.Fragment>
             )}
             <button
-              onClick={() => toggleTheme()}
+              onClick={setTheme}
               className={`relative inline-flex items-center ml-0 px-1 rounded-full w-15 h-8 transition-colors ${
-                theme ? "bg-gray-700" : "bg-gray-200"
+                theme ==="dark" ? "bg-gray-700" : "bg-gray-200"
               }`}
             >
               <span className="text-white items-center text-m ml-1">
@@ -127,7 +124,7 @@ const Navbar = () => {
               </span>
               <span
                 className={`absolute w-6 h-6 transform rounded-full bg-white shadow-md transition-transform duration-300 ${
-                  theme ? "translate-x-6" : "translate-x-1"
+                  theme === "dark" ? "translate-x-6" : "translate-x-1"
                 }`}
               />
             </button>
