@@ -46,8 +46,8 @@ const GetStarted = () => {
         //     login();
         //   },
         // });
-      } else if(response.status === 409 ) {
-        toast.error(`${result.message}`)
+      } else if (response.status === 409) {
+        toast.error(`${result.message}`);
       } else if (response.status === 404) {
         toast.error(`${result.message}`);
       } else if (response.status === 401) {
@@ -194,7 +194,11 @@ const GetStarted = () => {
                   }}
                   className="absolute top-10 right-5 text-gray-400 cursor-pointer"
                 >
-                  {showConfirmPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+                  {showConfirmPassword ? (
+                    <Eye size={20} />
+                  ) : (
+                    <EyeOff size={20} />
+                  )}
                 </button>
                 {errors.confirmPassword && (
                   <p className="text-red-500 text-sm">
