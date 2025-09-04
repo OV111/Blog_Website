@@ -39,19 +39,12 @@ const GetStarted = () => {
           navigate("/");
           login();
         }, 1850);
-        // toast.success(result.message, {
-        //   duration: 2250,
-        //   onClose: () => {
-        //     navigate("/");
-        //     login();
-        //   },
-        // });
       } else if (response.status === 409) {
-        toast.error(`${result.message}`);
+        toast.error(result.message);
       } else if (response.status === 404) {
-        toast.error(`${result.message}`);
+        toast.error(result.message);
       } else if (response.status === 401) {
-        toast.error(`${result.message}`);
+        toast.error(result.message);
       }
     } catch (err) {
       console.error(err);
@@ -70,7 +63,6 @@ const GetStarted = () => {
   return (
     <React.Fragment>
       <Toaster position="top-center" reverseOrder={false} />
-
       <div className="max-w-xl mx-auto mt-8 p-8 bg-white rounded-2xl shadow-sm mb-8 ">
         <h2 className="text-4xl font-bold text-center mb-8 text-purple-700">
           {isSignedUp ? "Sign Up" : "Log In"}
