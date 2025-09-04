@@ -8,7 +8,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const GetStarted = () => {
   const navigate = useNavigate();
-  const { login, logout } = useAuthStore();
+  const { login } = useAuthStore();
   const [isSignedUp, setIsSignedUp] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -34,11 +34,11 @@ const GetStarted = () => {
       const result = await response.json();
 
       if (response.ok) {
-        toast.success(`${result.message}`, { duration: 2250 });
+        toast.success(`${result.message}`, { duration: 1750 });
         setTimeout(() => {
           navigate("/");
           login();
-        }, 2350);
+        }, 1850);
         // toast.success(result.message, {
         //   duration: 2250,
         //   onClose: () => {
@@ -46,6 +46,8 @@ const GetStarted = () => {
         //     login();
         //   },
         // });
+      } else if(response.status === 409 ) {
+        toast.error(`${result.message}`)
       } else if (response.status === 404) {
         toast.error(`${result.message}`);
       } else if (response.status === 401) {
