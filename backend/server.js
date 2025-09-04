@@ -5,7 +5,6 @@ import process from "process";
 import cookie from "cookie";
 // import {bcrypt} from "bcrypt"
 import { signUp, login, deleteAccount } from "./controllers/authController.js";
-import { json } from "stream/consumers";
 
 dotenv.config();
 
