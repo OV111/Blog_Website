@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { ThemeContext } from "../context/ThemeContext";
 import { FaSun, FaMoon } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Link, NavLink, useNavigate } from "react-router-dom";
@@ -10,7 +9,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
-  const { auth, login, logout } = useAuthStore();
+  const { auth, logout } = useAuthStore();
   const { theme, setTheme } = useThemeStore();
   const navigate = useNavigate();
 
