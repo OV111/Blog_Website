@@ -7,11 +7,11 @@ const signUp = async (data) => {
     let db = await connectDB();
     const { firstName, lastName, email, password, confirmPassword } = data;
 
-    const users = db.collection("users"); //initial Line's
+    const users = db.collection("users"); //initial Line
 
     const existedUser = await users.findOne({ email });
     if (existedUser) {
-      return { code: 409, message: "User with that Email already registered" };
+      return { status: 409, message: "User with that Email already registered" };
     }
     const result = await users.insertOne({
       firstName,
@@ -49,7 +49,7 @@ const login = async (data) => {
       message: "Password is incorrect",
     };
   }
-  localStorage.setItem("user", user);
+  // localStorage.setItem("user", user);
   return {
     status: 200,
     message: "Login Successful",
