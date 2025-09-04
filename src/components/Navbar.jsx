@@ -5,32 +5,36 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuthStore from "../context/useAuthStore";
 import useThemeStore from "../context/useThemeStore";
+import toast from "react-hot-toast";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const { auth, login, logout } = useAuthStore();
-  const {theme,setTheme} = useThemeStore()
+  const { theme, setTheme } = useThemeStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark",theme === "dark");
-  },[theme])
-  
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  }, [theme]);
 
   const handleLogOut = async () => {
+    console.log("aveh")
     try {
       const request = await fetch(`${API_BASE_URL}/log-out`, {
         method: "DELETE",
-        credentials: "include", // sending cookie 
+        headers: {"content-type" : "application/json"},
+        credentials: "include", // sending cookie
       });
       let response = await request.json();
-      if (response.ok) {
+      if (request.ok) {
+        toast.success(response.message,{duration:1500})
         logout();
         navigate("/get-started");
+        // console.log(response)
       } else {
-        // Toast error
-        console.error("Log Out failed!");
+        toast.error("Log Out Failed!")
+        // console.error("Log Out failed!");
       }
     } catch (err) {
       console.log(err);
@@ -96,11 +100,8 @@ const Navbar = () => {
                 <li className="font-medium text-lg  hover:text-purple-300 dark:hover:text-purple-300 transition">
                   <NavLink to="my-profile">My Profile</NavLink>
                 </li>
-                <li
-                  className="font-medium text-lg  hover:text-purple-300 dark:hover:text-purple-300 transition cursor-pointer"
-                  onClick={handleLogOut}
-                >
-                  Log Out
+                <li className="font-medium text-lg  hover:text-purple-300 dark:hover:text-purple-300 transition cursor-pointer">
+                  <button className="cursor-pointer" onClick={() => {handleLogOut()}}>Log Out</button>
                 </li>
               </React.Fragment>
             ) : (
@@ -113,7 +114,7 @@ const Navbar = () => {
             <button
               onClick={setTheme}
               className={`relative inline-flex items-center ml-0 px-1 rounded-full w-15 h-8 transition-colors ${
-                theme ==="dark" ? "bg-gray-700" : "bg-gray-200"
+                theme === "dark" ? "bg-gray-700" : "bg-gray-200"
               }`}
             >
               <span className="text-white items-center text-m ml-1">
