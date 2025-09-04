@@ -1,23 +1,34 @@
 // import bcrypt from "bcrypt"
-import connectDB from "../db.js";
+import connectDB from "../config/db.js";
 
 // Sign Up
 const signUp = async (data) => {
-  let db = await connectDB();
-  const { firstName, lastName, email, password, confirmPassword } = data;
-  const users = db.collection("users"); //initial Line's
-  const result = await users.insertOne({
-    firstName,
-    lastName,
-    email,
-    password,
-    confirmPassword,
-  });
-  return {
-    status: 201,
-    message: "Account created Successfully!",
-    userId: result.insertedId,
-  };
+  try {
+    let db = await connectDB();
+    const { firstName, lastName, email, password, confirmPassword } = data;
+
+    const users = db.collection("users"); //initial Line's
+
+    const existedUser = await users.findOne({ email });
+    if (existedUser) {
+      return { code: 409, message: "User with that Email already registered" };
+    }
+    const result = await users.insertOne({
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+    });
+    return {
+      status: 201,
+      message: "Account created Successfully",
+      userId: result.insertedId,
+    };
+  } catch (err) {
+    console.error(err);
+    return { code: 500, message: "Sign Up failed", error: err.message };
+  }
 };
 
 // Login
@@ -35,14 +46,17 @@ const login = async (data) => {
   if (user.password !== password) {
     return {
       status: 401,
-      message: "Password is incorrect.",
+      message: "Password is incorrect",
     };
   }
+  localStorage.setItem("user", user);
   return {
     status: 200,
-    message: "Login Succesful.",
+    message: "Login Successful",
     userId: user._id,
   };
 };
 
-export { signUp, login };
+const deleteAccount = async () => {};
+
+export { signUp, login, deleteAccount };
