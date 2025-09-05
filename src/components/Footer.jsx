@@ -1,12 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaGithub, FaTwitter, FaMailBulk } from "react-icons/fa";
-import {Send} from "lucide-react"
+import X_logo from "../assets/X_logo.png";
+import { FaGithub, FaTwitter, FaMailBulk, FaEnvelope } from "react-icons/fa";
+import { Send } from "lucide-react";
+import { useState } from "react";
 const Footer = () => {
+  const [hoverTwitter, setHoverTwitter] = useState(false);
   return (
     <React.Fragment>
-      <footer className="bg-gradient-to-r from-purple-800 to-purple-950  text-white pt-10 ">
-        <div className="flex justify-start items-start gap-30 mb-0 pl-20">
+      <footer className="bg-gradient-to-r from-purple-800 to-purple-950  text-white pt-10 dark:from-purple-700 dark:to-purple-800">
+        <div className="flex justify-start items-start gap-30 mb-0 pl-20 dark:bg-from-violet-700 dark:bg-to-violet-950">
           <div className="lg:col-span-2 flex flex-col items-start">
             <Link to="/" className="flex items-center gap-2 mb-4">
               <img src="" alt="Logo" />
@@ -21,15 +24,25 @@ const Footer = () => {
             </p>
 
             {/* Social Links */}
-            <div className="flex items-center justify-center space-x-5 mt-0  mb-12 text-3xl ">
-              <Link to="">
+            <div className="flex items-center justify-center space-x-5 mt-0  mb-12 text-3xl">
+              <Link to="" className="text-black hover:text-white  ">
                 <FaGithub></FaGithub>
               </Link>
-              <Link to="">
-                <FaTwitter></FaTwitter>
+              <Link
+                to=""
+                className="text-blue-600 hover:"
+                onMouseEnter={() => setHoverTwitter(true)}
+                onMouseLeave={() => setHoverTwitter(false)}
+              >
+                {hoverTwitter ? (
+                  <img src={X_logo}></img>
+                ) : (
+                  <FaTwitter></FaTwitter>
+                )}
+                {/* change x logo when hovered  */}
               </Link>
-              <Link to="">
-                <FaMailBulk></FaMailBulk>
+              <Link to="" className="text-white">
+                <FaEnvelope></FaEnvelope>
               </Link>
             </div>
           </div>
@@ -81,13 +94,27 @@ const Footer = () => {
               Quality Assurance
             </Link>
           </div>
-          
+
           <div className="grid gap-1">
-            <h3 className="text-2xl font-bold mb-2 w-50 text-purple-400">Stay Updated!</h3>
-            <p className="text-purple-200 mb-4 w-60"> Subscribe to our newsletter for the latest articles and updates.</p>
+            <h3 className="text-2xl font-bold mb-2 w-50 text-purple-400">
+              Stay Updated!
+            </h3>
+            <p className="text-purple-200 mb-4 w-60">
+              {" "}
+              Subscribe to our newsletter for the latest articles and updates.
+            </p>
             <form className="flex gap-2">
-              <input type="email" placeholder="Enter Your Email." className="flex-grow rounded-md pl-2 outline bg-purple-700 border-purple-600 text-white placeholder-purple-300 focus:ring-purple-500 focus:border-purple-500" />
-              <button type="submit" className="bg-purple-600 hover:bg-purple-700 text-white py-2 px-2  rounded-md shadow-sm transition-colors duration-200" ><Send className="w-5 h-5"></Send></button>
+              <input
+                type="email"
+                placeholder="Enter Your Email."
+                className="flex-grow rounded-md pl-2 outline bg-purple-700 border-purple-600 text-white placeholder-purple-300 focus:ring-purple-500 focus:border-purple-500"
+              />
+              <button
+                type="submit"
+                className="bg-purple-600 hover:bg-purple-700 text-white py-2 px-2  rounded-md shadow-sm transition-colors duration-200"
+              >
+                <Send className="w-5 h-5"></Send>
+              </button>
             </form>
           </div>
 
@@ -104,7 +131,7 @@ const Footer = () => {
             </Link>
           </div> */}
         </div>
-        <hr className="border-purple-700 my-6" />
+        <hr className="border-purple-800 my-6" />
         <div className="text-center  pb-6 text-m text-purple-300">
           © {new Date().getFullYear()} Devs Blog. All rights reserved
         </div>
