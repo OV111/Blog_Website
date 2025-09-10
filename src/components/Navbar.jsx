@@ -44,7 +44,7 @@ const Navbar = () => {
     <React.Fragment>
       <div>
         <nav className="bg-gradient-to-r from-purple-800 to-purple-900 px-5 py-4 shadow flex items-start justify-between dark:from-purple-700 dark:to-purple-800">
-          <h2 className="text-2xl font-bold my-1 cursor-pointer text-white">
+          <h2 className="text-base font-bold my-1 cursor-pointer text-white sm:text-xl md:text-xl lg:text-2xl">
             <NavLink to="/">Devs Blog</NavLink>
           </h2>
 
