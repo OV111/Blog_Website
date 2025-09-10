@@ -68,12 +68,12 @@ const Home = () => {
           reverseOrder={false}
           className="wide-toast-container"
         ></Toaster>
-        <Suspense fallback={<LoadingSuspense></LoadingSuspense>}>
+        <Suspense fallback={<LoadingSuspense/>}>
           {/* <SplashCursor/> */}
         </Suspense>
         <section className="mt-[100px] mb-[350px] ml-8 flex flex-col gap-2 sm:gap-8 lg:gap-10 max-w-4xl sm:ml-[40px] md:ml-[60px] lg:ml-[80px] ">
           <div className="w-94 h-20 lg:w-146 lg:h-35 ">
-            <h1 className="text-5xl  font-medium ml-2 text-purple-800  sm:text-5xl md:text-6xl  lg:text-7xl lg:pl-4 lg:ml-0">
+            <h1 className="text-5xl  font-medium ml-2 text-purple-800  sm:text-5xl md:text-6xl  lg:text-7xl lg:pl-4 lg:ml-0 dark:text-purple-600">
               <TextType
                 text={[
                   "Welcome to Developers blog.",
