@@ -12,6 +12,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showDropdownMobile,setShowDropdownMobile] = useState(false)
   const [isOpen, setIsOpen] = useState(false);
   const { auth, logout } = useAuthStore();
   const { theme, setTheme } = useThemeStore();
@@ -47,13 +48,13 @@ const Navbar = () => {
   return (
     <React.Fragment>
       <div>
-        <nav className="bg-gradient-to-r from-purple-800 to-purple-900 px-5 gap-10 py-4 shadow flex items-start justify-between dark:from-purple-700 dark:to-purple-800 lg:gap-0">
-          <h2 className="text-base font-bold my-1 w-[30px] cursor-pointer text-white sm:text-xl md:text-xl lg:text-2xl lg:w-auto">
+        <nav className="bg-gradient-to-r from-purple-800 to-purple-900 px-5 gap-10 py-2 shadow flex items-start justify-between dark:from-purple-700 dark:to-purple-800 lg:gap-0 lg:py-4">
+          <h2 className="text-base font-bold ml-0 my-2 lg:my-1 w-[30px] cursor-pointer text-white sm:text-xl md:text-xl lg:text-2xl lg:w-auto lg:ml-3">
             <NavLink to="/">Devs Blog</NavLink>
           </h2>
 
-          <ul className="flex items-center space-x-4 text-gray-100 my-1">
-            <li className="font-medium text-base mx-1 hover:text-purple-300 dark:hover:text-purple-300 transition lg:text-lg lg:mx-4">
+          <ul className="flex items-center space-x-4 text-gray-100 my-3.5 lg:my-1">
+            <li className="font-medium text-base mx-2 hover:text-purple-300 dark:hover:text-purple-300 transition lg:text-lg lg:mx-4">
               <NavLink
                 to="/"
                 // className={({ isActive }) =>
@@ -94,7 +95,7 @@ const Navbar = () => {
               )}
             </li>
 
-            <li className="hidden sm:block font-medium text-lg  hover:text-purple-300 dark:hover:text-purple-300 transition">
+            <li className="hidden md:block font-medium text-lg  hover:text-purple-300 dark:hover:text-purple-300 transition">
               <NavLink to="about">About</NavLink>
             </li>
 
@@ -147,17 +148,18 @@ const Navbar = () => {
             >
               {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
             </button>
+
             {isOpen && (
               <ul className="absolute top-16 left-0 w-full bg-purple-700 flex flex-col gap-4 p-6 md:hidden">
                 <li className="relative text-base  font-medium hover:text-purple-300 transition mr-3 lg:text-lg">
                   <button
-                    onClick={() => setShowDropdown(!showDropdown)}
+                    onClick={() => setShowDropdownMobile(!showDropdownMobile)}
                     className="flex justify-center items-center cursor-pointer"
                   >
                     Categories <IoMdArrowDropdown />
                   </button>
 
-                  {showDropdown && (
+                  {showDropdownMobile && (
                     <ul className="absolute top-full mt-2 left-0 text-black bg-gray-200 dark:bg-gray-600 dark:text-white shadow-md rounded w-40 py-2 z-10">
                       <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
                         <NavLink to="/categories/fullstack">Full Stack</NavLink>
@@ -177,8 +179,11 @@ const Navbar = () => {
                     </ul>
                   )}
                 </li>
-                <li className="font-medium text-lg  hover:text-purple-300 dark:hover:text-purple-300 transition">
+                <li className="font-medium text-base  hover:text-purple-300 dark:hover:text-purple-300 transition">
                   <NavLink to="about">About</NavLink>
+                </li>
+                <li className="font-medium text-base  hover:text-purple-300 dark:hover:text-purple-300 transition">
+                  <NavLink to="privacy">Privacy</NavLink>
                 </li>
                 {auth && (
                   <li className="font-medium text-base  hover:text-purple-300 dark:hover:text-purple-300 transition cursor-pointer lg:text-lg">
