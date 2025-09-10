@@ -9,7 +9,7 @@ const Footer = () => {
   return (
     <React.Fragment>
       <footer className="bg-gradient-to-r from-purple-800 to-purple-950  text-white pt-10 dark:from-purple-700 dark:to-purple-800">
-        <div className="flex justify-start items-start gap-30 mb-0 pl-20 dark:bg-from-violet-700 dark:bg-to-violet-950">
+        <div className="grid lg:flex justify-start items-start gap-4 lg:gap-30 mb-0 pl-8 lg:pl-30 dark:bg-from-violet-700 dark:bg-to-violet-950">
           <div className="lg:col-span-2 flex flex-col items-start">
             <Link to="/" className="flex items-center gap-2 mb-4">
               <img src="" alt="Logo" />
@@ -47,54 +47,55 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="grid gap-1">
-            <h3 className="text-xl font-bold mb-2 w-30 text-purple-400">
-              Quick Links
-            </h3>
-            <Link to="/" className="text-lg hover:text-purple-500 transition">
-              Home
-            </Link>
-            <Link
-              to="/About"
-              className="text-lg  hover:text-purple-500 transition"
-            >
-              About
-            </Link>
-            <Link
-              to="/Contact"
-              className="text-lg  hover:text-purple-500 transition"
-            >
-              Contact
-            </Link>
-            <Link
-              to="/Contact"
-              className="text-lg  hover:text-purple-500 transition"
-            >
-              Privacy
-            </Link>
-          </div>
+          <div className="flex lg:grid">
+            <div className="grid gap-1">
+              <h3 className="text-xl font-bold mb-2 w-30 text-purple-400">
+                Quick Links
+              </h3>
+              <Link to="/" className="text-lg hover:text-purple-500 transition">
+                Home
+              </Link>
+              <Link
+                to="/About"
+                className="text-lg  hover:text-purple-500 transition"
+              >
+                About
+              </Link>
+              <Link
+                to="/Contact"
+                className="text-lg  hover:text-purple-500 transition"
+              >
+                Contact
+              </Link>
+              <Link
+                to="/Contact"
+                className="text-lg  hover:text-purple-500 transition"
+              >
+                Privacy
+              </Link>
+            </div>
 
-          <div className="grid gap-1">
-            <h3 className="text-xl font-bold mb-2 w-30 text-purple-400">
-              Categories
-            </h3>
-            <Link to="" className="text-lg hover:text-purple-500 transition">
-              Mobile
-            </Link>
-            <Link to="" className="text-lg hover:text-purple-500 transition">
-              Full Stack
-            </Link>
-            <Link to="" className="text-lg hover:text-purple-500 transition">
-              AI & ML
-            </Link>
-            <Link to="" className="text-lg hover:text-purple-500 transition">
-              Backend
-            </Link>
-            <Link to="" className="text-lg hover:text-purple-500 transition">
-              Quality Assurance
-            </Link>
+            <div className="grid gap-1">
+              <h3 className="text-xl font-bold mb-2 w-30 text-purple-400">
+                Categories
+              </h3>
+              <Link to="" className="text-lg hover:text-purple-500 transition">
+                Mobile
+              </Link>
+              <Link to="" className="text-lg hover:text-purple-500 transition">
+                Full Stack
+              </Link>
+              <Link to="" className="text-lg hover:text-purple-500 transition">
+                AI & ML
+              </Link>
+              <Link to="" className="text-lg hover:text-purple-500 transition">
+                Backend
+              </Link>
+              <Link to="" className="text-lg hover:text-purple-500 transition">
+                Quality Assurance
+              </Link>
+            </div>
           </div>
-
           <div className="grid gap-1">
             <h3 className="text-2xl font-bold mb-2 w-50 text-purple-400">
               Stay Updated!
