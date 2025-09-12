@@ -35,13 +35,13 @@ const categoryDescriptions = {
     "Using device features like camera and location in apps.",
     "Publishing your mobile app to Google Play and App Store.",
   ],
-  "AI/ML": [
+  "ai&ml": [
     "Introduction to supervised and unsupervised learning algorithms.",
     "Building your first machine learning model with Python.",
     "Data preprocessing and feature engineering techniques.",
     "Understanding neural networks and deep learning basics.",
     "Evaluating model performance and metrics.",
-    "Applying AI/ML in real-world projects and applications.",
+    "Applying categories/ai&ml in real-world projects and applications.",
     "Implementing regression and classification models.",
     "Working with datasets and cleaning data for ML.",
     "Automating ML workflows using Python libraries.",
@@ -69,6 +69,7 @@ const categoryDescriptions = {
     "Security and reliability in DevOps pipelines.",
   ],
 };
+
 const categoriesTitle = {
   fullstack: [
     "Learn MERN Stack Basics",
@@ -103,7 +104,8 @@ const categoriesTitle = {
     "Using Device Features",
     "Publishing Mobile Apps",
   ],
-  "AI/ML": [
+
+  "ai&ml": [
     "Intro to Supervised & Unsupervised Learning",
     "First ML Model with Python",
     "Data Preprocessing Techniques",
@@ -137,7 +139,8 @@ const categoriesTitle = {
     "Security in DevOps Pipelines",
   ],
 };
-const categories = ["fullstack", "backend", "mobile", "AI/ML", "qa", "devops"];
+
+const categories = ["fullstack", "backend", "mobile", "ai&ml", "qa", "devops"];
 
 const defaultPosts = [];
 
