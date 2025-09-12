@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import process from "process";
 import cookie from "cookie";
+
+import { postsHandling } from "./routes/postHandling.js";
 // import {bcrypt} from "bcrypt"
 import { signUp, login, deleteAccount } from "./controllers/authController.js";
 
@@ -99,6 +101,25 @@ const server = http.createServer(async (req, res) => {
         );
       }
     });
+
+    // ! Initial Lines
+  } else if (req.method === "GET" && req.url.startsWith("/categories/")) {
+    try {
+      const categoryName = req.url.split("/")[2];
+      const result = await postsHandling(categoryName);
+
+      res.writeHead(result.status, { "content-type": "application/json" });
+      return res.end(JSON.stringify(result.data));
+    } catch (err) {
+      console.log(err);
+      res.writeHead(500, { "content-typ e": "application/json" });
+      return res.end(
+        JSON.stringify({
+          message: "Server Error!",
+          code: 500,
+        })
+      );
+    }
   } else if (req.method === "DELETE" && req.url === "/log-out") {
     try {
       const serialized = cookie.serialize("session", "", {
