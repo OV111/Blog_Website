@@ -12,7 +12,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
-  const [showDropdownMobile,setShowDropdownMobile] = useState(false)
+  const [showDropdownMobile, setShowDropdownMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const { auth, logout } = useAuthStore();
   const { theme, setTheme } = useThemeStore();
@@ -91,12 +91,11 @@ const Navbar = () => {
                   <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
                     <NavLink to="/categories/qa">Quality Assurance</NavLink>
                   </li>
+                  <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <NavLink to="/categories/devops">DevOps</NavLink>
+                  </li>
                 </ul>
               )}
-            </li>
-
-            <li className="hidden md:block font-medium text-lg  hover:text-purple-300 dark:hover:text-purple-300 transition">
-              <NavLink to="about">About</NavLink>
             </li>
 
             {auth ? (
@@ -117,6 +116,9 @@ const Navbar = () => {
               </React.Fragment>
             ) : (
               <React.Fragment>
+                <li className="hidden md:block font-medium text-lg  hover:text-purple-300 dark:hover:text-purple-300 transition">
+                  <NavLink to="about">About</NavLink>
+                </li>
                 <li className="font-medium text-base  hover:text-purple-300 dark:hover:text-purple-300 transition lg:text-lg">
                   <NavLink to="get-started">Get Started</NavLink>
                 </li>

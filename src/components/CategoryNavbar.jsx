@@ -1,20 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { IoMdArrowDropdown } from "react-icons/io";
 import {FaMoon,FaSun} from "react-icons/fa"
+import useThemeStore from "../context/useThemeStore"
 const CategoryNavbar = () => {
   const location = useLocation();
-  const [theme, setTheme] = useState(false);
-
+  const theme  = useThemeStore().theme
+  const setTheme = useThemeStore().setTheme;
 
   const pathName = location.pathname;
-  const toggleTheme = () => {
-    setTheme(!theme);
-  };
+  
+  useEffect(() =>{
+    document.documentElement.classList.toggle("dark",theme === "dark")
+  },[theme])
+
   return (
     <React.Fragment>
       <nav className="bg-purple-800 px-5 py-4 shadow flex items-start justify-between">
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-white my-1 cursor-pointer">
+        <h2 className="text-2xl font-bold text-white dark:text-white my-1 cursor-pointer">
           Devs Blog
         </h2>
 
@@ -60,13 +63,13 @@ const CategoryNavbar = () => {
             <Link to="/categories/qa">Quality Assurance</Link>
           </li>
           <li className="font-medium hover:text-purple-900 dark:hover:text-purple-300 transition">
-            <Link to="/about">About </Link>
+            <Link to="/categories/devops">DevOps </Link>
           </li>
           <li>
             <button
-              onClick={() => toggleTheme()}
+              onClick={setTheme}
               className={`relative inline-flex items-center ml-0 px-1 rounded-full w-15 h-8 transition-colors ${
-                theme ? "bg-gray-700" : "bg-gray-200"
+                theme === "dark" ? "bg-gray-700" : "bg-gray-200"
               }`}
             >
               <span className="text-white items-center text-m ml-1">
@@ -77,7 +80,7 @@ const CategoryNavbar = () => {
               </span>
               <span
                 className={`absolute w-6 h-6 transform rounded-full bg-white shadow-md transition-transform duration-300 ${
-                  theme ? "translate-x-6" : "translate-x-1"
+                  theme === "light" ? "translate-x-1" : "translate-x-6"
                 }`}
               />
             </button>
