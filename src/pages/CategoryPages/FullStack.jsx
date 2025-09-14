@@ -30,7 +30,7 @@ const FullStack = () => {
 
         const response = await request.json();
         setData(response);
-        setLoading(!loading);
+        setLoading(false);
       } catch (err) {
         console.log(err);
       }
