@@ -25,7 +25,7 @@ const Backend = () => {
 
       const response = await request.json();
       setData(response);
-      setLoading(!loading);
+      setLoading(false);
     };
     fetchingPosts();
   }, []);
