@@ -3,19 +3,29 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
 import CategoryLayout from "./layouts/CategoriesLayout";
-import NotFound from "./components/NotFound";
+import ProtectedRoutes from "./routes/ProtectedRoutes";
+
+// My Profile
+import Followers from "./pages/My-Profile/Followers";
+import Favourites from "./pages/My-Profile/Favorites";
+import Notifications from "./pages/My-Profile/Notifications";
+import Settings from "./pages/My-Profile/Settings"
+
+const NotFound = lazy(() => import("./components/NotFound"));
 
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
-const MyProfile = lazy(()=> import("./pages/MyProfile"))
+const Contact = lazy(() => import("./pages/Contact"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const MyProfile = lazy(() => import("./pages/MyProfile"));
 const GetStarted = lazy(() => import("./pages/GetStarted"));
-const LogOut = lazy(() => import('./pages/LogOut'))
 
 const FullStack = lazy(() => import("./pages/CategoryPages/FullStack"));
 const Backend = lazy(() => import("./pages/CategoryPages/Backend"));
 const Mobile = lazy(() => import("./pages/CategoryPages/Mobile"));
 const AIandML = lazy(() => import("./pages/CategoryPages/AI&ML"));
 const QA = lazy(() => import("./pages/CategoryPages/QA"));
+const DevOps = lazy(() => import("./pages/CategoryPages/DevOps"));
 
 const router = createBrowserRouter([
   {
@@ -23,10 +33,24 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { path: "/", element: <Home /> },
-      { path: "my-profile", element: <MyProfile /> },
       { path: "about", element: <About /> },
+      { path: "contact", element: <Contact /> },
+      { path: "privacy", element: <Privacy /> },
       { path: "get-started", element: <GetStarted /> },
-      { path: "log-out", element: <LogOut /> },
+      {
+        path: "my-profile",
+        element: (
+          <ProtectedRoutes>
+            <MyProfile />
+          </ProtectedRoutes>
+        ),
+        children : [
+          {path: "/my-profile/followers", element: <Followers />},
+          {path: "/my-profile/notifications", element: <Notifications/>},
+          {path: "/my-profile/favourites" ,element: <Favourites/>},
+          {path: "/my-profile/settings" ,element: <Settings />},
+        ]
+      },
     ],
   },
   {
@@ -39,8 +63,9 @@ const router = createBrowserRouter([
       { path: "mobile", element: <Mobile /> },
       { path: "ai&ml", element: <AIandML /> },
       { path: "qa", element: <QA /> },
+      { path: "devops", element: <DevOps /> },
     ],
   },
-  {path:"*",element:<NotFound/>},
+  { path: "*", element: <NotFound /> },
 ]);
 export default router;
