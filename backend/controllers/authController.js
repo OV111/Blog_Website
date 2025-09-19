@@ -1,17 +1,20 @@
 // import bcrypt from "bcrypt"
 import connectDB from "../config/db.js";
-import {createToken ,verifyToken } from "../utils/jwtToken.js"
+import { createToken } from "../utils/jwtToken.js";
 // Sign Up
 const signUp = async (data) => {
   try {
     let db = await connectDB();
-    const { firstName, lastName, email, password, confirmPassword } = data;
+    const { firstName, lastName, email, password } = data;
 
     const users = db.collection("users"); //initial Line
 
     const existedUser = await users.findOne({ email });
     if (existedUser) {
-      return { status: 409, message: "User with that Email already registered" };
+      return {
+        status: 409,
+        message: "User with that Email already registered",
+      };
     }
     const result = await users.insertOne({
       firstName,
@@ -20,14 +23,13 @@ const signUp = async (data) => {
       password,
       // confirmPassword,
     });
-    const token = createToken({id: result.insertedId })
+    const token = createToken({ id: result.insertedId });
 
     return {
       status: 201,
       message: "Account created Successfully",
       token,
     };
-
   } catch (err) {
     console.error(err);
     return { code: 500, message: "Sign Up failed", error: err.message };
@@ -42,7 +44,7 @@ const login = async (data) => {
   const user = await users.findOne({ email });
 
   // const decoded = verifyToken(localStorage.getItem("JWT"))
-  // if !decoded return 403 forbidden 
+  // if !decoded return 403 forbidden
 
   if (!user) {
     return {
@@ -57,7 +59,7 @@ const login = async (data) => {
     };
   }
   // localStorage.setItem("user", user);
-  const token = createToken({id: user._id})
+  const token = createToken({ id: user._id });
   return {
     status: 200,
     message: "Login Successful",
