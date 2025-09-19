@@ -7,149 +7,198 @@ import cookie from "cookie";
 import { postsHandling } from "./routes/postHandling.js";
 // import {bcrypt} from "bcrypt"
 import { signUp, login, deleteAccount } from "./controllers/authController.js";
+import { verifyToken } from "./utils/jwtToken.js";
+import { ObjectId } from "mongodb";
 
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 
 let db;
-(async () => {
+// (async () => {
+//   try {
+//     db = await connectDB();
+//   } catch (err) {
+//     console.log("failed to connect", err);
+//     process.exit(1);
+//   }
+// })();
+
+const StartServer = async () => {
   try {
     db = await connectDB();
-  } catch (err) {
-    console.log("failed to connect", err);
-    process.exit(1);
-  }
-})();
+    const server = http.createServer(async (req, res) => {
+      const maintenance = false;
+      if (maintenance) {
+        res.writeHead(503, { "content-type": "application/json" });
+        return res.end("Server is under Maintenance");
+      }
 
-const server = http.createServer(async (req, res) => {
-  // CORS Headers
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
+      // CORS Headers
+      res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+      res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, OPTIONS, DELETE"
+      );
+      res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Content-Type, Authorization"
+      );
+      res.setHeader("Access-Control-Allow-Credentials", "true");
 
-  if (req.method === "OPTIONS") {
-    res.writeHead(204);
-    return res.end();
-  }
+      if (req.method === "OPTIONS") {
+        res.writeHead(204);
+        return res.end();
+      }
 
-  // const cookies = cookie.parse(req.headers.cookie || "");
-  // console.log("Incoming cookies ", cookies);
+      // const cookies = cookie.parse(req.headers.cookie || "");
+      // console.log("Incoming cookies ", cookies);
 
-  if (req.method === "POST") {
-    let body = "";
-    req.on("data", (chunk) => {
-      body += chunk;
-    });
-    req.on("end", async () => {
-      try {
-        const data = JSON.parse(body);
-        if (req.url === "/accept-cookies") {
-          if (data.accepted) {
-            const serialized = cookie.serialize("cookiesAccepted", "true", {
-              httpOnly: false,
-              maxAge: 60 * 60 * 24 * 365,
-              path: "/",
-            });
-            res.setHeader("Set-Cookie", serialized);
-            res.writeHead(200, { "content-type": "application/json" });
+      if (req.method === "POST") {
+        let body = "";
+        req.on("data", (chunk) => {
+          body += chunk;
+        });
+        req.on("end", async () => {
+          try {
+            const data = JSON.parse(body);
+            if (req.url === "/accept-cookies") {
+              if (data.accepted) {
+                const serialized = cookie.serialize("cookiesAccepted", "true", {
+                  httpOnly: false,
+                  maxAge: 60 * 60 * 24 * 365,
+                  path: "/",
+                });
+                res.setHeader("Set-Cookie", serialized);
+                res.writeHead(200, { "content-type": "application/json" });
+                return res.end(
+                  JSON.stringify({ message: "Cookies Accepted", code: 200 })
+                );
+              }
+            } else if (req.url === "/get-started") {
+              const result = await signUp(data);
+
+              // !console.log(result)
+              if (result.status === 409) {
+                res.writeHead(result.status, {
+                  "content-type": "application/json",
+                });
+                return res.end(JSON.stringify(result));
+              }
+
+              res.writeHead(result.status, {
+                "content-type": "application/json",
+              });
+              return res.end(JSON.stringify(result));
+            } else if (req.url === "/login") {
+              const result = await login(data);
+              // console.log(result);
+              if (result.status === 200) {
+                const serialized = cookie.serialize("session", result.userId, {
+                  httpOnly: true,
+                  secure: false,
+                  sameSite: "strict",
+                  maxAge: 60 * 60,
+                  path: "/",
+                });
+                res.setHeader("Set-Cookie", serialized);
+              }
+
+              res.writeHead(result.status, {
+                "content-type": "application/json",
+              });
+              return res.end(JSON.stringify(result));
+            } else {
+              res.writeHead(404, { "content-type": "application/json" });
+              return res.end(JSON.stringify({ message: "Not Found!" }));
+            }
+          } catch (err) {
+            res.writeHead(500, { "content-type": "application/json" });
             return res.end(
-              JSON.stringify({ message: "Cookies Accepted", code: 200 })
+              JSON.stringify({
+                message: "Server Error.",
+                code: 500,
+                error: err.message,
+              })
             );
           }
-        } else if (req.url === "/get-started") {
-          const result = await signUp(data);
+        });
 
-          if (result.status === 409) {
-            res.writeHead(result.status, {
-              "content-type": "application/json",
-            });
-            return res.end(JSON.stringify(result));
-          }
+        // ! Initial Lines
+      } else if (req.method === "GET" && req.url.startsWith("/categories/")) {
+        try {
+          const categoryName = req.url.split("/")[2];
+          const result = await postsHandling(categoryName);
 
           res.writeHead(result.status, { "content-type": "application/json" });
-          return res.end(JSON.stringify(result));
-        } else if (req.url === "/login") {
-          const result = await login(data);
-          // console.log(result);
-          if (result.status === 200) {
-            const serialized = cookie.serialize("session", result.userId, {
-              httpOnly: true,
-              secure: false,
-              sameSite: "strict",
-              maxAge: 60 * 60,
-              path: "/",
-            });
-            res.setHeader("Set-Cookie", serialized);
-          }
-
-          res.writeHead(result.status, { "content-type": "application/json" });
-          return res.end(JSON.stringify(result));
-        } else {
-          res.writeHead(404, { "content-type": "application/json" });
-          return res.end(JSON.stringify({ message: "Not Found!" }));
+          return res.end(JSON.stringify(result.data));
+        } catch (err) {
+          console.log(err);
+          res.writeHead(500, { "content-type": "application/json" });
+          return res.end(
+            JSON.stringify({
+              message: "Server Error!",
+              code: 500,
+            })
+          );
         }
-      } catch (err) {
-        res.writeHead(500, { "content-type": "application/json" });
-        return res.end(
-          JSON.stringify({
-            message: "Server Error.",
-            code: 500,
-            error: err.message,
-          })
-        );
+      } else if (req.method === "DELETE" && req.url === "/log-out") {
+        try {
+          const serialized = cookie.serialize("session", "", {
+            httpOnly: true,
+            secure: false,
+            sameSite: "strict",
+            expires: new Date(0),
+            path: "/",
+          });
+          res.setHeader("Set-Cookie", serialized);
+          res.writeHead(200, { "content-type": "application/json" });
+          return res.end(
+            JSON.stringify({ message: "Logged out succesfully", code: 200 })
+          );
+        } catch (err) {
+          res.writeHead(500, { "content-type": "application/json" });
+          return res.end(
+            JSON.stringify({
+              message: "Logout Error",
+              code: 500,
+              error: err.message,
+            })
+          );
+        }
+      } else if (req.url === "/my-profile" && req.method === "GET") {
+        const token = req.headers.authorization?.replace("Bearer ", "");
+        if (!token) {
+          res.writeHead(403, { "content-type": "application/json" });
+          return res.end(
+            JSON.stringify({ message: "Forbidden: Invalid Token" })
+          );
+        }
+
+        const decoded = verifyToken(token);
+        const users = db.collection("users");
+        const user = await users.findOne({ _id: new ObjectId(decoded.id) });
+
+        if (!user) {
+          res.writeHead(404, { "content-type": "application/json" });
+          return res.end(JSON.stringify({ message: "User Not Found!" }));
+        }
+        const { password, ...userWithoutPassword } = user;
+        console.log(userWithoutPassword);
+        res.writeHead(200, { "content-type": "application/json" });
+        return res.end(JSON.stringify(userWithoutPassword));
+      } else {
+        res.writeHead(404, { "content-type": "application/json" });
+        return res.end(JSON.stringify({ message: "Not Found", code: 404 }));
       }
     });
-
-    // ! Initial Lines
-  } else if (req.method === "GET" && req.url.startsWith("/categories/")) {
-    try {
-      const categoryName = req.url.split("/")[2];
-      const result = await postsHandling(categoryName);
-
-      res.writeHead(result.status, { "content-type": "application/json" });
-      return res.end(JSON.stringify(result.data));
-    } catch (err) {
-      console.log(err);
-      res.writeHead(500, { "content-typ e": "application/json" });
-      return res.end(
-        JSON.stringify({
-          message: "Server Error!",
-          code: 500,
-        })
-      );
-    }
-  } else if (req.method === "DELETE" && req.url === "/log-out") {
-    try {
-      const serialized = cookie.serialize("session", "", {
-        httpOnly: true,
-        secure: false,
-        sameSite: "strict",
-        expires: new Date(0),
-        path: "/",
-      });
-      res.setHeader("Set-Cookie", serialized);
-      res.writeHead(200, { "content-type": "application/json" });
-      return res.end(
-        JSON.stringify({ message: "Logged out succesfully", code: 200 })
-      );
-    } catch (err) {
-      res.writeHead(500, { "content-type": "application/json" });
-      return res.end(
-        JSON.stringify({
-          message: "Logout Error",
-          code: 500,
-          error: err.message,
-        })
-      );
-    }
-  } else {
-    res.writeHead(404, { "content-type": "application/json" });
-    return res.end(JSON.stringify({ message: "Not Found", code: 404 }));
+    server.listen(PORT, () => {
+      console.log(`Server is Running at http://localhost:${PORT}`);
+    });
+  } catch (err) {
+    console.log("Failed to Connect!", err);
+    process.exit(1);
   }
-});
+};
 
-server.listen(PORT, () => {
-  console.log(`Server is Running at http://localhost:${PORT}`);
-});
+StartServer();
