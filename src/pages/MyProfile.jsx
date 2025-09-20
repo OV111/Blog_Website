@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DeleteAccount from "../pages/DeleteAccount";
 import { Link, useNavigate } from "react-router-dom";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaTwitter, FaEdit,FaLocationArrow } from "react-icons/fa";
 import LoadingSuspense from "../components/LoadingSuspense";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 // implememnt getting from localstorage the jwt token  for auth
@@ -88,38 +88,44 @@ const MyProfile = () => {
                 <h1 className="text-2xl font-bold">
                   {user?.firstName} {user?.lastName}
                 </h1>
-                <p className="text-gray-600">
-                  {user?.email}Short bio or description
-                </p>
+                <p className="text-gray-600">{user?.email}</p>
+                <p className="">User hasn't added a bio yet.</p>
+                <button className="">Edit (matiti icon)</button>
               </div>
 
-              {/* <div className="flex gap-10 mt-20 pl-20 text-2xl">
-                <Link>
-                  <FaGithub />
-                </Link>
-                <Link>
-                <FaLinkedin />
-                </Link>
-                <Link>
-                  <FaGithub />
-                </Link>
-              </div> */}
+              <div className="grid">
 
-              <div className="flex gap-10 mt-20 pr-10">
-                <div className="text-center">
-                  <p className="text-xl font-bold">120</p>
-                  <p className="text-gray-600">Followers</p>
+                <div className="flex gap-10 mt-18 pr-10">
+                  <div className="text-center">
+                    <p className="text-xl font-bold">120</p>
+                    <p className="text-gray-600">Followers</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xl font-bold">85</p>
+                    <p className="text-gray-600">Following</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xl font-bold">45</p>
+                    <p className="text-gray-600">Posts</p>
+                  </div>
                 </div>
-                <div className="text-center">
-                  <p className="text-xl font-bold">85</p>
-                  <p className="text-gray-600">Following</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-xl font-bold">45</p>
-                  <p className="text-gray-600">Posts</p>
+
+                {/* Social Links */}
+                <div className="flex gap-10 mt-10 pl-20 text-2xl">
+                  <Link>
+                    <FaGithub />
+                  </Link>
+                  <Link>
+                    <FaLinkedin />
+                  </Link>
+                  <Link>
+                    <FaTwitter />
+                  </Link>
+                  <Link><FaLocationArrow/></Link>
                 </div>
               </div>
             </div>
+
           </div>
 
           <div className="grid mt-10 mx-23 space-y-10">
