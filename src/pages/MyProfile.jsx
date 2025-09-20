@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DeleteAccount from "../pages/DeleteAccount";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { FaGithub, FaLinkedin, FaTwitter, FaEdit,FaLocationArrow } from "react-icons/fa";
 import LoadingSuspense from "../components/LoadingSuspense";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -56,7 +56,7 @@ const MyProfile = () => {
     <React.Fragment>
       <div className="min-h-screen flex bg-zinc-100">
         {/* User Navs */}
-        <aside className="w-70 bg-purple-500">
+        <aside className="min-w-65 max-w-65 bg-purple-500">
           <nav className="grid">
             <Link to="/my-profile">Profile</Link>
             <Link to="/my-profile/followers">Followers</Link>
@@ -67,7 +67,7 @@ const MyProfile = () => {
           </nav>
         </aside>
         {/* User Info */}
-        <main className="flex-1 ">
+        <main className="flex-1">
           <img
             src="src\assets\user_profile\User_profile_Banner.jpg"
             alt="Banner image"
@@ -84,56 +84,65 @@ const MyProfile = () => {
             />
 
             <div className="flex items-center gap-130">
-              <div className="pt-20 pl-15 space-y-2 max-w-200">
-                <h1 className="text-2xl font-bold">
+              <div className="pt-20 pl-15 space-y-2 px-2 max-w-100">
+                <h1 className="text-2xl font-bold text-gray-900">
                   {user?.firstName} {user?.lastName}
                 </h1>
                 <p className="text-gray-600">{user?.email}</p>
-                <p className="">User hasn't added a bio yet.</p>
-                <button className="">Edit (matiti icon)</button>
+                {/* <p className="max-w-[300px] min-h-[50px] mb-1">User hasn't added a bio yet.</p> */}
+                {/* <button className=" flex justify-start items-center mt-0 gap-10 p-2 border-1 rounded-xl text-gray-500 hover:text-gray-700 transition-colors">
+                  <FaEdit className="w-5 h-5" />
+                </button> */}
+
+                <div className="max-w-2xl">
+                <p className="text-gray-700 leading-relaxed">
+                  {user?.bio || "User hasn't added a bio yet. Go to Settings for the edit!"}
+                </p>
+              </div>
               </div>
 
-              <div className="grid">
-
-                <div className="flex gap-10 mt-18 pr-10">
-                  <div className="text-center">
-                    <p className="text-xl font-bold">120</p>
-                    <p className="text-gray-600">Followers</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-xl font-bold">85</p>
-                    <p className="text-gray-600">Following</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-xl font-bold">45</p>
-                    <p className="text-gray-600">Posts</p>
-                  </div>
+              <div className="flex flex-col items-center lg:items-end space-y-12 mt-15  mr-30">
+              {/* Stats */}
+              <div className="flex gap-8">
+                <div className="text-center">
+                  <p className="text-[1.4rem] font-bold text-gray-900">120</p>
+                  <p className="text-md text-gray-600">Followers</p>
                 </div>
-
-                {/* Social Links */}
-                <div className="flex gap-10 mt-10 pl-20 text-2xl">
-                  <Link>
-                    <FaGithub />
-                  </Link>
-                  <Link>
-                    <FaLinkedin />
-                  </Link>
-                  <Link>
-                    <FaTwitter />
-                  </Link>
-                  <Link><FaLocationArrow/></Link>
+                <div className="text-center">
+                  <p className="text-[1.4rem] font-bold text-gray-900">85</p>
+                  <p className="text-md text-gray-600">Following</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-[1.4rem] font-bold text-gray-900">45</p>
+                  <p className="text-md text-gray-600">Posts</p>
                 </div>
               </div>
+
+              {/* Social Links */}
+              <div className="flex gap-16 text-2xl text-gray-600">
+                <Link href="#" className="hover:text-gray-900 transition-colors">
+                  <FaGithub />
+                </Link>
+                <Link href="#" className="hover:text-blue-600 transition-colors">
+                  <FaLinkedin />
+                </Link>
+                <Link href="#" className="hover:text-blue-400 transition-colors">
+                  <FaTwitter />
+                </Link>
+                
+              </div>
+            </div>
+            
             </div>
 
           </div>
 
-          <div className="grid mt-10 mx-23 space-y-10">
+          <div className="grid items-center justify-center mt-10 px-auto space-y-10">
             {/* Posts */}
-            <input type="text" className="rounded-xl w-240 h-90 bg-gray-400" />
-            <input type="text" className="rounded-xl w-240 h-90 bg-gray-400" />
-            <input type="text" className="rounded-xl w-240 h-90 bg-gray-400" />
-            <input type="text" className="rounded-xl w-240 h-90 bg-gray-400" />
+            <input type="text" className="rounded-xl w-245 h-90 bg-gray-400" />
+            <input type="text" className="rounded-xl w-245 h-90 bg-gray-400" />
+            <input type="text" className="rounded-xl w-245 h-90 bg-gray-400" />
+            <input type="text" className="rounded-xl w-245 h-90 bg-gray-400" />
           </div>
         </main>
         {/* <p>My Profile dashboard</p>
@@ -141,6 +150,9 @@ const MyProfile = () => {
 
         {/* <DeleteAccount></DeleteAccount> */}
       </div>
+      {/* <div className="mt-10">
+            <Outlet />
+          </div> */}
     </React.Fragment>
   );
 };
