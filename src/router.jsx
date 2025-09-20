@@ -40,16 +40,47 @@ const router = createBrowserRouter([
       { path: "get-started", element: <GetStarted /> },
       {
         path: "my-profile",
-        element: (
-          <ProtectedMyProfile>
-            <MyProfile />
-          </ProtectedMyProfile>
-        ),
         children: [
-          { path: "my-profile/followers", element: <ProtectedMyProfile><Followers /></ProtectedMyProfile> },
-          { path: "my-profile/notifications", element: <Notifications /> },
-          { path: "my-profile/favourites", element: <Favourites /> },
-          { path: "settings", element: <ProtectedMyProfile><Settings /></ProtectedMyProfile> },
+          {
+            index: true,
+            element: (
+              <ProtectedMyProfile>
+                <MyProfile />
+              </ProtectedMyProfile>
+            ),
+          },
+          {
+            path: "settings",
+            element: (
+              <ProtectedMyProfile>
+                <Settings />
+              </ProtectedMyProfile>
+            ),
+          },
+          {
+            path: "followers",
+            element: (
+              <ProtectedMyProfile>
+                <Followers />
+              </ProtectedMyProfile>
+            ),
+          },
+          {
+            path: "notifications",
+            element: (
+              <ProtectedMyProfile>
+                <Notifications />
+              </ProtectedMyProfile>
+            ),
+          },
+          {
+            path: "favourites",
+            element: (
+              <ProtectedMyProfile>
+                <Favourites />
+              </ProtectedMyProfile>
+            ),
+          },
         ],
       },
     ],
