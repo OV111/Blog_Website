@@ -9,7 +9,8 @@ import ProtectedRoutes from "./routes/ProtectedRoutes";
 import Followers from "./pages/My-Profile/Followers";
 import Favourites from "./pages/My-Profile/Favorites";
 import Notifications from "./pages/My-Profile/Notifications";
-import Settings from "./pages/My-Profile/Settings"
+import Settings from "./pages/My-Profile/Settings";
+import ProtectedMyProfile from "./routes/ProtectedMyProfile";
 
 const NotFound = lazy(() => import("./components/NotFound"));
 
@@ -40,19 +41,20 @@ const router = createBrowserRouter([
       {
         path: "my-profile",
         element: (
-          <ProtectedRoutes>
+          <ProtectedMyProfile>
             <MyProfile />
-          </ProtectedRoutes>
+          </ProtectedMyProfile>
         ),
-        children : [
-          {path: "/my-profile/followers", element: <Followers />},
-          {path: "/my-profile/notifications", element: <Notifications/>},
-          {path: "/my-profile/favourites" ,element: <Favourites/>},
-          {path: "/my-profile/settings" ,element: <Settings />},
-        ]
+        children: [
+          { path: "my-profile/followers", element: <ProtectedMyProfile><Followers /></ProtectedMyProfile> },
+          { path: "my-profile/notifications", element: <Notifications /> },
+          { path: "my-profile/favourites", element: <Favourites /> },
+          { path: "settings", element: <ProtectedMyProfile><Settings /></ProtectedMyProfile> },
+        ],
       },
     ],
   },
+
   {
     path: "categories",
     element: <CategoryLayout />,
