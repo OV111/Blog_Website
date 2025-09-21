@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
 import DeleteAccount from "../pages/DeleteAccount";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { FaGithub, FaLinkedin, FaTwitter, FaEdit,FaLocationArrow } from "react-icons/fa";
+import {
+  FaUserCircle,
+  FaFollowers,
+  FaGithub,
+  FaLinkedin,
+  FaTwitter,
+  FaEdit,
+  FaLocationArrow,
+} from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import LoadingSuspense from "../components/LoadingSuspense";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 // implememnt getting from localstorage the jwt token  for auth
@@ -54,15 +63,43 @@ const MyProfile = () => {
 
   return (
     <React.Fragment>
-      <div className="min-h-screen flex bg-zinc-100">
+      <div className="min-h-screen  flex">
         {/* User Navs */}
-        <aside className="min-w-65 max-w-65 bg-purple-500">
-          <nav className="grid">
-            <Link to="/my-profile">Profile</Link>
-            <Link to="/my-profile/followers">Followers</Link>
-            <Link to="/my-profile/notifications">Notifications</Link>
-            <Link to="/my-profile/favourites">Favourites</Link>
-            <Link to="/my-profile/settings">Settings</Link>
+        <aside className="min-w-65 max-w-65  border-r-[#4d4d4d]">
+          <nav className="grid ">
+            <Link
+              to="/my-profile"
+              className="flex justify-start items-center font-medium text-start pl-8 text-xl rounded-sm py-3 gap-2  hover:bg-gray-300 transition-colors"
+            >
+          
+              <FaUserCircle/>
+              Profile
+            </Link>
+            <Link
+              to="/my-profile/followers"
+              className="justify-center items-center font-medium   text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
+            >
+              <FaFollowers/>
+              Followers
+            </Link>
+            <Link
+              to="/my-profile/notifications"
+              className="justify-center items-center font-medium  text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
+            >
+              Notifications
+            </Link>
+            <Link
+              to="/my-profile/favourites"
+              className="justify-center items-center font-medium  text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
+            >
+              Favourites
+            </Link>
+            <Link
+              to="/my-profile/settings"
+              className="justify-center items-center font-medium  text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
+            >
+              Settings
+            </Link>
             {/* <Link to="/my-profile/likes">Likes</Link> */}
           </nav>
         </aside>
@@ -95,46 +132,53 @@ const MyProfile = () => {
                 </button> */}
 
                 <div className="max-w-2xl">
-                <p className="text-gray-700 leading-relaxed">
-                  {user?.bio || "User hasn't added a bio yet. Go to Settings for the edit!"}
-                </p>
-              </div>
+                  <p className="text-gray-700 leading-relaxed">
+                    {user?.bio ||
+                      "User hasn't added a bio yet. Go to Settings for the edit!"}
+                  </p>
+                </div>
               </div>
 
               <div className="flex flex-col items-center lg:items-end space-y-12 mt-15  mr-30">
-              {/* Stats */}
-              <div className="flex gap-8">
-                <div className="text-center">
-                  <p className="text-[1.4rem] font-bold text-gray-900">120</p>
-                  <p className="text-md text-gray-600">Followers</p>
+                {/* Stats */}
+                <div className="flex gap-8">
+                  <div className="text-center">
+                    <p className="text-[1.4rem] font-bold text-gray-900">120</p>
+                    <p className="text-md text-gray-600">Followers</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-[1.4rem] font-bold text-gray-900">85</p>
+                    <p className="text-md text-gray-600">Following</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-[1.4rem] font-bold text-gray-900">45</p>
+                    <p className="text-md text-gray-600">Posts</p>
+                  </div>
                 </div>
-                <div className="text-center">
-                  <p className="text-[1.4rem] font-bold text-gray-900">85</p>
-                  <p className="text-md text-gray-600">Following</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-[1.4rem] font-bold text-gray-900">45</p>
-                  <p className="text-md text-gray-600">Posts</p>
+
+                {/* Social Links */}
+                <div className="flex gap-16 text-2xl text-gray-600">
+                  <Link
+                    href="#"
+                    className="hover:text-gray-900 transition-colors"
+                  >
+                    <FaGithub />
+                  </Link>
+                  <Link
+                    href="#"
+                    className="hover:text-blue-600 transition-colors"
+                  >
+                    <FaLinkedin />
+                  </Link>
+                  <Link
+                    href="#"
+                    className="hover:text-blue-400 transition-colors"
+                  >
+                    <FaTwitter />
+                  </Link>
                 </div>
               </div>
-
-              {/* Social Links */}
-              <div className="flex gap-16 text-2xl text-gray-600">
-                <Link href="#" className="hover:text-gray-900 transition-colors">
-                  <FaGithub />
-                </Link>
-                <Link href="#" className="hover:text-blue-600 transition-colors">
-                  <FaLinkedin />
-                </Link>
-                <Link href="#" className="hover:text-blue-400 transition-colors">
-                  <FaTwitter />
-                </Link>
-                
-              </div>
             </div>
-            
-            </div>
-
           </div>
 
           <div className="grid items-center justify-center mt-10 px-auto space-y-10">
@@ -150,9 +194,6 @@ const MyProfile = () => {
 
         {/* <DeleteAccount></DeleteAccount> */}
       </div>
-      {/* <div className="mt-10">
-            <Outlet />
-          </div> */}
     </React.Fragment>
   );
 };
