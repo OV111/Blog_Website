@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
 import DeleteAccount from "../pages/DeleteAccount";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaUserCircle,
-  FaFollowers,
+  FaBell,
+  FaRegHeart,
   FaGithub,
   FaLinkedin,
   FaTwitter,
   FaEdit,
   FaLocationArrow,
 } from "react-icons/fa";
-import { FaUser } from "react-icons/fa";
+// import { FaGear } from "react-icons/fa6";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import SettingsIcon from '@mui/icons-material/Settings';
 import LoadingSuspense from "../components/LoadingSuspense";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 // implememnt getting from localstorage the jwt token  for auth
@@ -71,33 +76,35 @@ const MyProfile = () => {
               to="/my-profile"
               className="flex justify-start items-center font-medium text-start pl-8 text-xl rounded-sm py-3 gap-2  hover:bg-gray-300 transition-colors"
             >
-          
-              <FaUserCircle/>
+              < AccountCircleIcon/>
               Profile
             </Link>
             <Link
               to="/my-profile/followers"
-              className="justify-center items-center font-medium   text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center font-medium gap-2 text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
             >
-              <FaFollowers/>
+              <PeopleOutlineIcon/>
               Followers
             </Link>
             <Link
               to="/my-profile/notifications"
-              className="justify-center items-center font-medium  text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center font-medium gap-2 text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
             >
+              <NotificationsNoneIcon/>
               Notifications
             </Link>
             <Link
               to="/my-profile/favourites"
-              className="justify-center items-center font-medium  text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center font-medium  gap-2 text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
             >
+            <FaRegHeart/>
               Favourites
             </Link>
             <Link
               to="/my-profile/settings"
-              className="justify-center items-center font-medium  text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center font-medium gap-2  text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
             >
+              <SettingsIcon/>
               Settings
             </Link>
             {/* <Link to="/my-profile/likes">Likes</Link> */}
@@ -125,6 +132,7 @@ const MyProfile = () => {
                 <h1 className="text-2xl font-bold text-gray-900">
                   {user?.firstName} {user?.lastName}
                 </h1>
+
                 <p className="text-gray-600">{user?.email}</p>
                 {/* <p className="max-w-[300px] min-h-[50px] mb-1">User hasn't added a bio yet.</p> */}
                 {/* <button className=" flex justify-start items-center mt-0 gap-10 p-2 border-1 rounded-xl text-gray-500 hover:text-gray-700 transition-colors">
