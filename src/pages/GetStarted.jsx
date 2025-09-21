@@ -34,11 +34,14 @@ const GetStarted = () => {
       const result = await response.json();
 
       if (response.ok) {
-        toast.success(`${result.message}`, { duration: 1750 });
+        if(result.token) {
+          localStorage.setItem("JWT",result.token);
+        }
+        toast.success(`${result.message}`, { duration: 1150 });
         setTimeout(() => {
           navigate("/");
           login();
-        }, 1850);
+        }, 1200);
       } else if (response.status === 409) {
         toast.error(result.message);
       } else if (response.status === 404) {
