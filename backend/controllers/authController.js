@@ -23,6 +23,7 @@ const signUp = async (data) => {
       password,
       // confirmPassword,
     });
+    // here also insert userStats (with default starting values )
     const token = createToken({ id: result.insertedId });
 
     return {
