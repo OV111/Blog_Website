@@ -8,6 +8,7 @@ const signUp = async (data) => {
     const { firstName, lastName, email, password } = data;
 
     const users = db.collection("users"); //initial Line
+    const usersStats = db.collection("usersStats");
 
     const existedUser = await users.findOne({ email });
     if (existedUser) {
@@ -24,6 +25,22 @@ const signUp = async (data) => {
       // confirmPassword,
     });
     // here also insert userStats (with default starting values )
+    await usersStats.insertOne({
+      userId: result.insertedId,
+      followersCount: 0,
+      followingsCount: 0,
+      postsCount: 0,
+      bio: "",
+      githubLink: "",
+      linkedinLink: "",
+      twitterLink: "",
+      lastActive: new Date(),
+      // likesReceived: 0,
+      // commentsCount: 0,
+      // badges: [],
+      // devs-coins: null || 0,
+    });
+    
     const token = createToken({ id: result.insertedId });
 
     return {
