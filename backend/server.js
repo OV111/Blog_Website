@@ -8,7 +8,7 @@ import { postsHandling } from "./routes/postHandling.js";
 // import {bcrypt} from "bcrypt"
 import { signUp, login, deleteAccount } from "./controllers/authController.js";
 import { verifyToken } from "./utils/jwtToken.js";
-import { ObjectId } from "mongodb";
+import { ObjectId, ReturnDocument } from "mongodb";
 
 dotenv.config();
 
@@ -27,6 +27,7 @@ let db;
 const StartServer = async () => {
   try {
     db = await connectDB();
+
     const server = http.createServer(async (req, res) => {
       const maintenance = false;
       if (maintenance) {
@@ -174,19 +175,77 @@ const StartServer = async () => {
             JSON.stringify({ message: "Forbidden: Invalid Token" })
           );
         }
+        const verified = verifyToken(token);
 
-        const decoded = verifyToken(token);
         const users = db.collection("users");
-        const user = await users.findOne({ _id: new ObjectId(decoded.id) });
+        const usersStats = db.collection("usersStats");
+        const user = await users.findOne({ _id: new ObjectId(verified.id) });
+        const stats = await usersStats.findOne({userId: new ObjectId(verified.id)});
+
+        console.log(stats)
 
         if (!user) {
           res.writeHead(404, { "content-type": "application/json" });
           return res.end(JSON.stringify({ message: "User Not Found!" }));
         }
         const { password, ...userWithoutPassword } = user;
-        console.log(userWithoutPassword);
+        // console.log(userWithoutPassword);
         res.writeHead(200, { "content-type": "application/json" });
-        return res.end(JSON.stringify(userWithoutPassword));
+        return res.end(JSON.stringify({userWithoutPassword,stats,}));
+      } else if (req.url === "/my-profile/settings" && req.method === "PUT") {
+        const token = req.headers.authorization?.replace("Bearer ", "");
+        if (!token) {
+          res.writeHead(401, { "Content-Type": "application/json" });
+          return res.end(JSON.stringify("Unauthorized: Invalid Token!"));
+        }
+
+        let body = "";
+        req.on("data", (chunk) => {
+          body += chunk;
+        });
+        req.on("end", async () => {
+          const verified = verifyToken(token);
+          if (!verified) {
+            res.writeHead(403, { "Content-Type": "application/json" });
+            return res.end(JSON.stringify("Forbidden: Invalid Token"));
+          }
+
+          const data = JSON.parse(body);
+          // console.log(data)
+          const users = db.collection("users");
+          const usersStats = db.collection("usersStats");
+
+          const updatedUser = await users.findOneAndUpdate(
+            { _id: new ObjectId(verified.id) },
+            { $set: { firstName: data.fname, lastName: data.lname } },
+            { returnDocument: "after" }
+          );
+
+          const updatedStats = await usersStats.findOneAndUpdate(
+            { userId: new ObjectId(verified.id) },
+            {
+              $set: {
+                bio: data.bio || "",
+                postsCount: data.postsCount || 0,
+                githubLink: data.githubLink || "",
+                linkedinLink: data.linkedinLink || "",
+                twitterLink: data.twitterLink || "",
+                lastActive: new Date(),
+              },
+            },
+            { returnDocument: "after" }
+          );
+          
+          console.log("success")
+          res.writeHead(200, { "Content-Type": "application/json" });
+          return res.end(
+            JSON.stringify({
+              message: "Account Updated Successfully!",
+              user: updatedUser,
+              stats: updatedStats,
+            })
+          );
+        });
       } else {
         res.writeHead(404, { "content-type": "application/json" });
         return res.end(JSON.stringify({ message: "Not Found", code: 404 }));
