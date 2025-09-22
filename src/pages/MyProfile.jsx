@@ -23,6 +23,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const MyProfile = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [stats,setStats] = useState(null)
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchingUserProfile = async () => {
@@ -53,7 +54,9 @@ const MyProfile = () => {
         }
 
         const response = await request.json();
-        setUser(response);
+        console.log(response)
+        setUser(response.userWithoutPassword);
+        setStats(response.stats)
       } catch (err) {
         console.log(err);
         // setLoading(false);
@@ -141,7 +144,7 @@ const MyProfile = () => {
 
                 <div className="max-w-2xl">
                   <p className="text-gray-700 leading-relaxed">
-                    {user?.bio ||
+                    {stats?.bio ||
                       "User hasn't added a bio yet. Go to Settings for the edit!"}
                   </p>
                 </div>
