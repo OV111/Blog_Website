@@ -3,16 +3,15 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
 import CategoryLayout from "./layouts/CategoriesLayout";
-import ProtectedRoutes from "./routes/ProtectedRoutes";
+import ProtectedMyProfile from "./routes/ProtectedMyProfile";
+// import ProtectedRoutes from "./routes/ProtectedRoutes";
 
 // My Profile
-import Followers from "./pages/My-Profile/Followers";
-import Favourites from "./pages/My-Profile/Favorites";
-import Notifications from "./pages/My-Profile/Notifications";
-import Settings from "./pages/My-Profile/Settings";
-import ProtectedMyProfile from "./routes/ProtectedMyProfile";
-
-const NotFound = lazy(() => import("./components/NotFound"));
+const Followers = lazy(() => import("./pages/My-Profile/Followers"));
+const Favorites = lazy(() => import("./pages/My-Profile/Favorites"));
+const Notifications = lazy(() => import("./pages/My-Profile/Notifications"));
+const Settings = lazy(() => import("./pages/My-Profile/Settings"));
+const AddBlog = lazy(() => import("./pages/My-Profile/AddBlog"))
 
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
@@ -27,6 +26,8 @@ const Mobile = lazy(() => import("./pages/CategoryPages/Mobile"));
 const AIandML = lazy(() => import("./pages/CategoryPages/AI&ML"));
 const QA = lazy(() => import("./pages/CategoryPages/QA"));
 const DevOps = lazy(() => import("./pages/CategoryPages/DevOps"));
+
+const NotFound = lazy(() => import("./components/NotFound"));
 
 const router = createBrowserRouter([
   {
@@ -66,6 +67,14 @@ const router = createBrowserRouter([
             ),
           },
           {
+            path: "add-blog",
+            element: (
+              <ProtectedMyProfile>
+                <AddBlog />
+              </ProtectedMyProfile>
+            ),
+          },
+          {
             path: "notifications",
             element: (
               <ProtectedMyProfile>
@@ -77,7 +86,7 @@ const router = createBrowserRouter([
             path: "favourites",
             element: (
               <ProtectedMyProfile>
-                <Favourites />
+                <Favorites />
               </ProtectedMyProfile>
             ),
           },
