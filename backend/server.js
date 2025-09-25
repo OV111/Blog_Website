@@ -143,7 +143,31 @@ const StartServer = async () => {
             })
           );
         }
-      } else if (req.method === "DELETE" && req.url === "/log-out") {
+      }
+
+      if (req.method === "POST" && req.url === "/blogs") {
+        let body = "";
+        req.on("data", (chunk) => {
+          body += chunk;
+        });
+        req.on("end", async () => {
+          const data = JSON.parse(body);
+          const blogs = db.collection("blogs");
+
+          const newBlog = {
+            title: data.title,
+            text: data.text,
+            category: data.category,
+            file: data.file,
+          };
+          const result = await blogs.insertOne(newBlog);
+console.log(result)
+          res.writeHead(201, { "content-type": "application/json" });
+          return res.end(
+            JSON.stringify({ code: 201, message: "Created Blog" })
+          );
+        });
+      } else if (req.url === "/log-out" && req.method === "DELETE") {
         try {
           const serialized = cookie.serialize("session", "", {
             httpOnly: true,
@@ -180,18 +204,17 @@ const StartServer = async () => {
         const users = db.collection("users");
         const usersStats = db.collection("usersStats");
         const user = await users.findOne({ _id: new ObjectId(verified.id) });
-        const stats = await usersStats.findOne({userId: new ObjectId(verified.id)});
-
-        console.log(stats)
+        const stats = await usersStats.findOne({
+          userId: new ObjectId(verified.id),
+        });
 
         if (!user) {
           res.writeHead(404, { "content-type": "application/json" });
           return res.end(JSON.stringify({ message: "User Not Found!" }));
         }
         const { password, ...userWithoutPassword } = user;
-        // console.log(userWithoutPassword);
         res.writeHead(200, { "content-type": "application/json" });
-        return res.end(JSON.stringify({userWithoutPassword,stats,}));
+        return res.end(JSON.stringify({ userWithoutPassword, stats }));
       } else if (req.url === "/my-profile/settings" && req.method === "PUT") {
         const token = req.headers.authorization?.replace("Bearer ", "");
         if (!token) {
@@ -211,7 +234,6 @@ const StartServer = async () => {
           }
 
           const data = JSON.parse(body);
-          // console.log(data)
           const users = db.collection("users");
           const usersStats = db.collection("usersStats");
 
@@ -235,8 +257,7 @@ const StartServer = async () => {
             },
             { returnDocument: "after" }
           );
-          
-          console.log("success")
+
           res.writeHead(200, { "Content-Type": "application/json" });
           return res.end(
             JSON.stringify({
