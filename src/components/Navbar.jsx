@@ -32,13 +32,15 @@ const Navbar = () => {
       });
       let response = await request.json();
       if (request.ok) {
+        localStorage.removeItem("JWT")
         toast.success(response.message, { duration: 1500 });
         logout();
         navigate("/get-started");
         // console.log(response)
       } else {
         toast.error("Log Out Failed!");
-        // console.error("Log Out failed!");
+        console.error("Log Out failed!");
+        // toast(response.message, {duration:1500});
       }
     } catch (err) {
       console.log(err);
