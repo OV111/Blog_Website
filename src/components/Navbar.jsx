@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaSun, FaMoon } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Link, NavLink, useNavigate } from "react-router-dom";
@@ -11,6 +11,7 @@ import { FaBars, FaTimes } from "react-icons/fa";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Navbar = () => {
+  const dropdownRef = useRef(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showDropdownMobile, setShowDropdownMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -22,8 +23,20 @@ const Navbar = () => {
     document.documentElement.classList.toggle("dark", theme === "dark");
   }, [theme]);
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const handleLogOut = async () => {
-    console.log("aveh");
+    // console.log("aveh");
     try {
       const request = await fetch(`${API_BASE_URL}/log-out`, {
         method: "DELETE",
@@ -32,7 +45,7 @@ const Navbar = () => {
       });
       let response = await request.json();
       if (request.ok) {
-        localStorage.removeItem("JWT")
+        localStorage.removeItem("JWT");
         toast.success(response.message, { duration: 1500 });
         logout();
         navigate("/get-started");
@@ -68,7 +81,10 @@ const Navbar = () => {
                 Home
               </NavLink>
             </li>
-            <li className="relative text-base  font-medium hover:text-purple-300 transition mr-3 lg:text-lg">
+            <li
+              className="relative text-base  font-medium hover:text-purple-300 transition mr-3 lg:text-lg"
+              ref={dropdownRef}
+            >
               <button
                 onClick={() => setShowDropdown(!showDropdown)}
                 className="hidden sm:flex justify-center items-center cursor-pointer"
