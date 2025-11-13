@@ -1,4 +1,5 @@
-import React, { lazy, Suspense, useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState, } from "react";
+import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -15,8 +16,11 @@ const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const FullStack = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const params = useParams()
+
 
   useEffect(() => {
+    console.log(params)
     const fetchPosts = async () => {
       try {
         const request = await fetch(
@@ -51,7 +55,10 @@ const FullStack = () => {
             <Grid container spacing={4} padding={5}>
               {data.map((post) => (
                 <Card sx={{ minWidth: 425, maxWidth: 425 }} variant="outlined">
-                  <CardMedia sx={{ height: 200 }} image={post.image} />
+                  <CardMedia
+                    sx={{ height: 200, width: 300 }}
+                    image={post.image}
+                  />
                   <CardContent>
                     <Typography
                       gutterBottom
