@@ -1,5 +1,6 @@
 import process from "process";
 import connectDB from "../config/db.js";
+const defaultPostImg =  "../../src/assets/blog-pics/fs1React.jpg"
 
 const categoryDescriptions = {
   fullstack: [
@@ -152,7 +153,7 @@ categories.forEach((category) => {
       category: category,
       isDefault: true,
       description: categoryDescriptions[category][i],
-      image: "",
+      image: `${defaultPostImg}`,
       readTime: `${5 + (i % 5)} min`,
       likes: "",
       views: "",
