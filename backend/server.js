@@ -161,7 +161,8 @@ const StartServer = async () => {
             file: data.file,
           };
           const result = await blogs.insertOne(newBlog);
-console.log(result)
+
+          console.log(result);
           res.writeHead(201, { "content-type": "application/json" });
           return res.end(
             JSON.stringify({ code: 201, message: "Created Blog" })
@@ -192,29 +193,49 @@ console.log(result)
           );
         }
       } else if (req.url === "/my-profile" && req.method === "GET") {
-        const token = req.headers.authorization?.replace("Bearer ", "");
-        if (!token) {
-          res.writeHead(403, { "content-type": "application/json" });
+        try {
+          const token = req.headers.authorization?.replace("Bearer ", "");
+          if (!token) {
+            res.writeHead(403, { "content-type": "application/json" });
+            return res.end(
+              JSON.stringify({ message: "Forbidden: Invalid Token" })
+            );
+          }
+          const verified = verifyToken(token);
+          const users = db.collection("users");
+          const usersStats = db.collection("usersStats");
+          const user = await users.findOne({ _id: new ObjectId(verified.id) });
+          const stats = await usersStats.findOne({
+            userId: new ObjectId(verified.id),
+          });
+
+          if (!user) {
+            res.writeHead(404, { "content-type": "application/json" });
+            return res.end(JSON.stringify({ message: "User Not Found!" }));
+          }
+          const { password, ...userWithoutPassword } = user;
+          res.writeHead(200, { "content-type": "application/json" });
+          return res.end(JSON.stringify({ userWithoutPassword, stats }));
+        } catch (err) {
+          res.writeHead(500, { "content-type": "application/json" });
           return res.end(
-            JSON.stringify({ message: "Forbidden: Invalid Token" })
+            JSON.stringify({ message: "Server Error", error: err })
           );
         }
-        const verified = verifyToken(token);
-
-        const users = db.collection("users");
-        const usersStats = db.collection("usersStats");
-        const user = await users.findOne({ _id: new ObjectId(verified.id) });
-        const stats = await usersStats.findOne({
-          userId: new ObjectId(verified.id),
+      } else if (req.url === "/my-profile" && req.method === "PUT") {
+        let body = "";
+        req.on("data", (chunk) => (body += chunk));
+        req.on("end", async () => {
+          let parsedData = JSON.parse(body);
+          console.log(parsedData);
+          const usersStats = db.collection("usersStats");
+          const result = await usersStats.findOneAndUpdate(
+            { userId: new ObjectId(parsedData.id) },
+            { $set: { lastActive: parsedData.lastActive } }
+          );
+          console.log(result);
+          // res write,end
         });
-
-        if (!user) {
-          res.writeHead(404, { "content-type": "application/json" });
-          return res.end(JSON.stringify({ message: "User Not Found!" }));
-        }
-        const { password, ...userWithoutPassword } = user;
-        res.writeHead(200, { "content-type": "application/json" });
-        return res.end(JSON.stringify({ userWithoutPassword, stats }));
       } else if (req.url === "/my-profile/settings" && req.method === "PUT") {
         const token = req.headers.authorization?.replace("Bearer ", "");
         if (!token) {
@@ -267,10 +288,15 @@ console.log(result)
             })
           );
         });
-      } else {
-        res.writeHead(404, { "content-type": "application/json" });
-        return res.end(JSON.stringify({ message: "Not Found", code: 404 }));
       }
+      //  else {
+      //   res.writeHead(404, { "content-type": "application/json" });
+      //   return res.end(JSON.stringify({ message: "Not Found", code: 404 }));
+      // }
+      // if(req.method === "GET" && req.url === "/about") {
+      //   res.writeHead(200,{"content-type" : "text/plain"})
+      //   res.end("VAhe")
+      // }
     });
     server.listen(PORT, () => {
       console.log(`Server is Running at http://localhost:${PORT}`);
