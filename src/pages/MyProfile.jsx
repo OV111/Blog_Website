@@ -12,10 +12,10 @@ import {
   FaLocationArrow,
 } from "react-icons/fa";
 // import { FaGear } from "react-icons/fa6";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import SettingsIcon from '@mui/icons-material/Settings';
+import SettingsIcon from "@mui/icons-material/Settings";
 import LoadingSuspense from "../components/LoadingSuspense";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 // implememnt getting from localstorage the jwt token  for auth
@@ -23,8 +23,23 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const MyProfile = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [stats,setStats] = useState(null)
+  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const isActive = async (userId) => {
+    if(!userId) return ;
+    const request = await fetch(`${API_BASE_URL}/my-profile`, {
+      method: "PUT",
+      headers: { "content-type": "application/json" }, //! Note: that I am not sending userId
+      body: JSON.stringify({
+        id: userId,
+        lastActive: new Date().toLocaleString(),
+      }),
+    });
+    const response = await request.json();
+    console.log(response);
+  };
+
   useEffect(() => {
     const fetchingUserProfile = async () => {
       try {
@@ -54,9 +69,12 @@ const MyProfile = () => {
         }
 
         const response = await request.json();
-        console.log(response)
+        console.log(response);
+        // Setting response result
         setUser(response.userWithoutPassword);
-        setStats(response.stats)
+        // setStats(response.stats);  // ! this is initial line (but problme solved)
+        isActive(response.stats.userId)
+        setStats(response.stats);
       } catch (err) {
         console.log(err);
         // setLoading(false);
@@ -65,6 +83,9 @@ const MyProfile = () => {
     fetchingUserProfile();
   }, []);
 
+  // useEffect(() => {
+  //   isActive();
+  // }, []);
   if (loading) {
     return <LoadingSuspense></LoadingSuspense>;
   }
@@ -79,35 +100,42 @@ const MyProfile = () => {
               to="/my-profile"
               className="flex justify-start items-center font-medium text-start pl-8 text-xl rounded-sm py-3 gap-2  hover:bg-gray-300 transition-colors"
             >
-              < AccountCircleIcon/>
+              <AccountCircleIcon />
               Profile
             </Link>
             <Link
               to="/my-profile/followers"
               className="flex justify-start items-center font-medium gap-2 text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
             >
-              <PeopleOutlineIcon/>
+              <PeopleOutlineIcon />
               Followers
             </Link>
             <Link
               to="/my-profile/notifications"
               className="flex justify-start items-center font-medium gap-2 text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
             >
-              <NotificationsNoneIcon/>
+              <NotificationsNoneIcon />
               Notifications
+            </Link>
+            <Link
+              to="/my-profile/add-blog"
+              className="flex justify-start items-center font-medium text-start pl-8 text-xl rounded-sm py-3 gap-2  hover:bg-gray-300 transition-colors"
+            >
+              <AccountCircleIcon />
+              Add Blog
             </Link>
             <Link
               to="/my-profile/favourites"
               className="flex justify-start items-center font-medium  gap-2 text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
             >
-            <FaRegHeart/>
+              <FaRegHeart />
               Favourites
             </Link>
             <Link
               to="/my-profile/settings"
               className="flex justify-start items-center font-medium gap-2  text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
             >
-              <SettingsIcon/>
+              <SettingsIcon />
               Settings
             </Link>
             {/* <Link to="/my-profile/likes">Likes</Link> */}
@@ -127,7 +155,7 @@ const MyProfile = () => {
               alt="user Image"
               width={130}
               height={130}
-              className="absolute -top-17 left-13 rounded-[50%] "
+              className="aspect-square absolute -top-17 left-13 rounded-[50%] "
             />
 
             <div className="flex items-center gap-130">
@@ -146,6 +174,13 @@ const MyProfile = () => {
                   <p className="text-gray-700 leading-relaxed">
                     {stats?.bio ||
                       "User hasn't added a bio yet. Go to Settings for the edit!"}
+                  </p>
+                </div>
+                <div>
+                  {/* Think about now Date - lastActive */}
+                  <p>
+                    Last Active{" "}
+                    {new Date(stats?.lastActive).toLocaleString() || "isactive"}
                   </p>
                 </div>
               </div>
@@ -192,6 +227,9 @@ const MyProfile = () => {
             </div>
           </div>
 
+          {/* <p className="" onChange={() => {}}>
+            {`${stats?.postsCount}/0` || "1/0"}
+          </p> */}
           <div className="grid items-center justify-center mt-10 px-auto space-y-10">
             {/* Posts */}
             <input type="text" className="rounded-xl w-245 h-90 bg-gray-400" />
