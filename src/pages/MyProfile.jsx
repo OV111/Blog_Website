@@ -27,10 +27,10 @@ const MyProfile = () => {
   const [loading, setLoading] = useState(true);
 
   const isActive = async (userId) => {
-    if(!userId) return ;
+    if (!userId) return;
     const request = await fetch(`${API_BASE_URL}/my-profile`, {
       method: "PUT",
-      headers: { "content-type": "application/json" }, //! Note: that I am not sending userId
+      headers: { "content-type": "application/json" },
       body: JSON.stringify({
         id: userId,
         lastActive: new Date().toLocaleString(),
@@ -72,8 +72,8 @@ const MyProfile = () => {
         console.log(response);
         // Setting response result
         setUser(response.userWithoutPassword);
-        // setStats(response.stats);  // ! this is initial line (but problme solved)
-        isActive(response.stats.userId)
+        // setStats(response.stats);  // ! this is initial line (but problme solved)---setting state after isActive
+        isActive(response.stats.userId);
         setStats(response.stats);
       } catch (err) {
         console.log(err);
