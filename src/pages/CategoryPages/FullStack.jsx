@@ -1,5 +1,5 @@
-import React, { lazy, Suspense, useEffect, useState, } from "react";
-import { useParams } from "react-router-dom";
+import React, { lazy, Suspense, useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -9,36 +9,44 @@ import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
 
+import { Navigate } from "react-router-dom";
+
 const LoadingSuspense = lazy(() => import("../../components/LoadingSuspense"));
 
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+const ReadMore = lazy(() => import("../../components/ReadMore"))
+
 const FullStack = () => {
+  const location = useLocation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const params = useParams()
+  // const [readMore,setReadMore] = useState(false);
 
+  // const ReadMore = () => {
+  //   console.log(location)
+
+  // }
+const navigate = useNavigate()
+// console.log(navigate(`post`))
+  const fetchPosts = async () => {
+    try {
+      const request = await fetch(`${VITE_API_BASE_URL}/categories/fullstack`, {
+        method: "GET",
+        headers: { "content-type": "application/json" },
+        credentials: "include",
+      });
+
+      const response = await request.json();
+      console.log(response);
+      setData(response);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    console.log(params)
-    const fetchPosts = async () => {
-      try {
-        const request = await fetch(
-          `${VITE_API_BASE_URL}/categories/fullstack`,
-          {
-            method: "GET",
-            headers: { "content-type": "application/json" },
-            credentials: "include",
-          }
-        );
-
-        const response = await request.json();
-        setData(response);
-        setLoading(false);
-      } catch (err) {
-        console.log(err);
-      }
-    };
     fetchPosts();
   }, []);
 
@@ -55,10 +63,7 @@ const FullStack = () => {
             <Grid container spacing={4} padding={5}>
               {data.map((post) => (
                 <Card sx={{ minWidth: 425, maxWidth: 425 }} variant="outlined">
-                  <CardMedia
-                    sx={{ height: 200, width: 300 }}
-                    image={post.image}
-                  />
+                  <CardMedia sx={{ height: 200 }} image={post.image} />
                   <CardContent>
                     <Typography
                       gutterBottom
@@ -73,7 +78,12 @@ const FullStack = () => {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small" component={Link} to={``}>
+                    <Button
+                      size="small"
+                      component={Link}
+                      to={`post/${post.id}`}
+                      state={{post}}
+                    >
                       Read More
                     </Button>
                   </CardActions>
