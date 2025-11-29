@@ -4,7 +4,9 @@ import connectDB from "./config/db.js";
 import process from "process";
 import cookie from "cookie";
 
-import { postsHandling } from "./routes/postHandling.js";
+import postHandling from "./routes/postHandling.js";
+import { defaultPostsHandling } from "./routes/handleDefPosts.js";
+// import { postsHandling } from "./routes/postHandling.js";
 // import {bcrypt} from "bcrypt"
 import { signUp, login, deleteAccount } from "./controllers/authController.js";
 import { verifyToken } from "./utils/jwtToken.js";
@@ -129,10 +131,21 @@ const StartServer = async () => {
       } else if (req.method === "GET" && req.url.startsWith("/categories/")) {
         try {
           const categoryName = req.url.split("/")[2];
-          const result = await postsHandling(categoryName);
+          const isDefault = req.url.split("/")[3] === "default";
+          console.log(isDefault);
 
-          res.writeHead(result.status, { "content-type": "application/json" });
+          let result;
+          if (isDefault) {
+            result = await defaultPostsHandling(categoryName);
+          } else {
+            result = await postHandling(categoryName);
+          }
+
+          res.writeHead(result.status, {
+            "content-type": "application/json",
+          });
           return res.end(JSON.stringify(result.data));
+          // ! here getting result from cache server not DB--(postsHandling will check that)
         } catch (err) {
           console.log(err);
           res.writeHead(500, { "content-type": "application/json" });
@@ -227,13 +240,11 @@ const StartServer = async () => {
         req.on("data", (chunk) => (body += chunk));
         req.on("end", async () => {
           let parsedData = JSON.parse(body);
-          console.log(parsedData);
           const usersStats = db.collection("usersStats");
           const result = await usersStats.findOneAndUpdate(
             { userId: new ObjectId(parsedData.id) },
             { $set: { lastActive: parsedData.lastActive } }
           );
-          console.log(result);
           // res write,end
         });
       } else if (req.url === "/my-profile/settings" && req.method === "PUT") {
@@ -270,6 +281,8 @@ const StartServer = async () => {
               $set: {
                 bio: data.bio || "",
                 postsCount: data.postsCount || 0,
+                profileImage: data.profileImage || "",
+                bannerImage: data.bannerImage || "j",
                 githubLink: data.githubLink || "",
                 linkedinLink: data.linkedinLink || "",
                 twitterLink: data.twitterLink || "",
