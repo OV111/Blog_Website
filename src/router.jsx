@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import CategoryLayout from "./layouts/CategoriesLayout";
 import ProtectedMyProfile from "./routes/ProtectedMyProfile";
+import ReadMore from "./components/ReadMore";
 // import ProtectedRoutes from "./routes/ProtectedRoutes";
 
 // My Profile
@@ -11,7 +12,7 @@ const Followers = lazy(() => import("./pages/My-Profile/Followers"));
 const Favorites = lazy(() => import("./pages/My-Profile/Favorites"));
 const Notifications = lazy(() => import("./pages/My-Profile/Notifications"));
 const Settings = lazy(() => import("./pages/My-Profile/Settings"));
-const AddBlog = lazy(() => import("./pages/My-Profile/AddBlog"))
+const AddBlog = lazy(() => import("./pages/My-Profile/AddBlog"));
 
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
@@ -101,11 +102,24 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { path: "fullstack", element: <FullStack /> },
+      // ! check if it have a meaning (give a sense)
+      {path:"fullstack/default",element:<FullStack/>},
+      { path: "fullstack/post/:id", element: <ReadMore /> },
+
       { path: "backend", element: <Backend /> },
+      { path: "backend/post/:id", element: <ReadMore /> },
+
       { path: "mobile", element: <Mobile /> },
+      { path: "mobile/post/:id", element: <ReadMore /> },
+
       { path: "ai&ml", element: <AIandML /> },
+      { path: "ai&ml/post/:id", element: <ReadMore /> },
+
       { path: "qa", element: <QA /> },
+      { path: "qa/post/:id", element: <ReadMore /> },
+
       { path: "devops", element: <DevOps /> },
+      { path: "devops/post/:id", element: <ReadMore /> },
     ],
   },
   { path: "*", element: <NotFound /> },
