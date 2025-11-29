@@ -1,7 +1,7 @@
 const LoadingSuspense = () => {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="flex flex-col items-center space-y-4">
+    <div className="flex items-center justify-center min-h-screen bg-zinc-100">
+      <div className="flex flex-col justify-center items-center space-y-5">
         <div className="relative">
           <div className="w-16 h-16 border-4 border-purple-300 rounded-full animate-spin border-t-purple-600"></div>
           <div
@@ -10,10 +10,10 @@ const LoadingSuspense = () => {
           ></div>
         </div>
         <div className="text-center">
-          <h3 className="text-lg font-semibold text-gray-700 mb-1">
-            Loading your Blogs...
+          <h3 className="justify-center items-center text-2xl font-semibold text-gray-700 mb-1">
+            Loading . . .
           </h3>
-          <p className="text-sm text-gray-500">
+          <p className="justify-center items-center text-lg text-gray-500">
             Preparing your Blog reading
           </p>
         </div>

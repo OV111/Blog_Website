@@ -1,13 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import X_logo from "../assets/X_logo.png";
 import { FaGithub, FaTwitter, FaMailBulk, FaEnvelope } from "react-icons/fa";
 import { Send } from "lucide-react";
 import { useState } from "react";
 const Footer = () => {
+  const {pathname} = useLocation()
   const [hoverTwitter, setHoverTwitter] = useState(false);
 
-  const pathname = location.pathname
+  // const pathname = location.pathname
   return (
     <React.Fragment>
       <footer className="min-h-[1070px] bg-gradient-to-r from-purple-800 to-purple-950  text-white pt-10 dark:from-purple-700 dark:to-purple-800 lg:min-h-[100px]">
@@ -55,25 +56,22 @@ const Footer = () => {
               <h3 className="text-xl font-bold mb-2  text-purple-400">
                 Quick Links
               </h3>
-              <Link to="/" className={`text-lg hover:text-purple-500 transition ${pathname === "/" ? "text-pink-400" : ""}`}>
+              <Link to="/" className={`text-lg hover:text-purple-500 transition ${pathname === "/" ? "text-purple-400" : ""}`}>
                 Home
               </Link>
               <Link
                 to="/about"
-                className="text-lg  hover:text-purple-500 transition"
+                className={`text-lg  hover:text-purple-500 transition ${pathname === "/about" ? "text-purple-500": ""}`}
               >
                 About
               </Link>
               <Link
                 to="/contact"
-                className="text-lg  hover:text-purple-500 transition"
+                className={`text-lg  hover:text-purple-500 transition ${pathname === "/contact" ?"text-purple-500" : ""}`}
               >
                 Contact
               </Link>
-              <Link
-                to="/privacy"
-                className="text-lg  hover:text-purple-500 transition"
-              >
+              <Link to="/privacy" className={`text-lg  hover:text-purple-500 transition ${pathname === "/privacy" ?"text-purple-500" : ""}`}>
                 Privacy Policy
               </Link>
             </div>
@@ -83,22 +81,22 @@ const Footer = () => {
               <h3 className="text-xl font-bold mb-2  text-purple-400">
                 Categories
               </h3>
-              <Link to="/categories/fullstack" className="text-lg hover:text-purple-500 transition">
+              <Link to="/categories/fullstack" className={`text-lg  hover:text-purple-500 transition ${pathname === "/categories/fullstack" ?"text-purple-500" : ""}`}>
                 Full Stack
               </Link>
-              <Link to="/categories/backend" className="text-lg hover:text-purple-500 transition">
+              <Link to="/categories/backend" className={`text-lg  hover:text-purple-500 transition ${pathname === "/categories/backend" ?"text-purple-500" : ""}`}>
                 Backend
               </Link>
-              <Link to="/categories/mobile" className="text-lg hover:text-purple-500 transition">
+              <Link to="/categories/mobile" className={`text-lg  hover:text-purple-500 transition ${pathname === "/categories/mobile" ?"text-purple-500" : ""}`}>
                 Mobile
               </Link>
-              <Link to="/categories/ai&ml" className="text-lg hover:text-purple-500 transition">
+              <Link to="/categories/ai&ml" className={`text-lg  hover:text-purple-500 transition ${pathname === "/categories/ai&ml" ?"text-purple-500" : ""}`}>
                 AI & ML
               </Link>
-              <Link to="/categories/qa" className="text-lg hover:text-purple-500 transition">
+              <Link to="/categories/qa" className={`text-lg  hover:text-purple-500 transition ${pathname === "/categories/qa" ?"text-purple-500" : ""}`}>
                 Quality Assurance
               </Link>
-              <Link to="/categories/devops" className="text-lg hover:text-purple-500 transition">
+              <Link to="/categories/devops" className={`text-lg  hover:text-purple-500 transition ${pathname === "/categories/devops" ?"text-purple-500" : ""}`}>
                 DevOps
               </Link>
             </div>
@@ -140,8 +138,9 @@ const Footer = () => {
               </Link>
             </div> */}
         </div>
-        <hr className="border-purple-800 my-6" />
-        <div className="text-center  pb-6 text-m text-purple-300">
+        {/* <hr className="border-purple-800 my-6" /> */}
+        
+        <div className="text-center  py-8 text-m text-purple-300 ">
           © {new Date().getFullYear()} Devs Blog. All rights reserved
         </div>
       </footer>

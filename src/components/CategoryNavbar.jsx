@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { IoMdArrowDropdown } from "react-icons/io";
-import {FaMoon,FaSun} from "react-icons/fa"
-import useThemeStore from "../context/useThemeStore"
+import { FaMoon, FaSun } from "react-icons/fa";
+import useThemeStore from "../context/useThemeStore";
+import useAuthStore from "../context/useAuthStore";
 const CategoryNavbar = () => {
+  const { auth } = useAuthStore();
   const location = useLocation();
-  const theme  = useThemeStore().theme
+  const theme = useThemeStore().theme;
   const setTheme = useThemeStore().setTheme;
 
   const pathName = location.pathname;
-  
-  useEffect(() =>{
-    document.documentElement.classList.toggle("dark",theme === "dark")
-  },[theme])
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  }, [theme]);
 
   return (
     <React.Fragment>
@@ -63,8 +65,16 @@ const CategoryNavbar = () => {
             <Link to="/categories/qa">Quality Assurance</Link>
           </li>
           <li className="font-medium hover:text-purple-900 dark:hover:text-purple-300 transition">
-            <Link to="/categories/devops">DevOps </Link>
+            <Link to="/categories/devops">DevOps</Link>
           </li>
+
+          {auth ? (
+            <li className="font-medium hover:text-purple-900 dark:hover:text-purple-300 transition">
+              <Link to="/my-profile">My Profile</Link>
+            </li>
+          ) : (
+            <React.Fragment></React.Fragment>
+          )}
           <li>
             <button
               onClick={setTheme}

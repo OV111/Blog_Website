@@ -36,7 +36,6 @@ const Navbar = () => {
   }, []);
 
   const handleLogOut = async () => {
-    // console.log("aveh");
     try {
       const request = await fetch(`${API_BASE_URL}/log-out`, {
         method: "DELETE",
@@ -57,6 +56,7 @@ const Navbar = () => {
       }
     } catch (err) {
       console.log(err);
+      toast.error("Log Out Failed",{position:"top-center"})
     }
   };
 
