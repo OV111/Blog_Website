@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect, useState } from "react";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
@@ -7,31 +7,38 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import useAuthStore from "../../context/useAuthStore";
 
 const LoadingSuspense = lazy(() => import("../../components/LoadingSuspense"));
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const DevOps = () => {
+  const { auth } = useAuthStore();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    const fetchingPosts = async () => {
-      const request = await fetch(`${VITE_API_BASE_URL}/categories/devops`, {
-        method: "GET",
-        headers: { "content-type": "application/json" },
-      });
-      const response = await request.json();
+  const fetchingPosts = async () => {
+    const url = auth
+      ? `${VITE_API_BASE_URL}/categories/devops`
+      : `${VITE_API_BASE_URL}/categories/devops/default`;
+    const request = await fetch(url, {
+      method: "GET",
+      headers: { "content-type": "application/json" },
+    });
+    const response = await request.json();
 
-      setData(response);
-      setLoading(false);
-    };
+    setData(response);
+    setLoading(false);
+  };
+  useEffect(() => {
     fetchingPosts();
-  },[]);
+  }, []);
 
   return (
     <React.Fragment>
-      <h1 className="">DevOps Posts</h1>
+      <h1 className="flex justify-center items-center text-xl font-medium text-sky-800 py-6 sm:text-2xl md:text-4xl lg:text-5xl">
+        Development & Operations Posts
+      </h1>
       <div>
         <Suspense fallback={<LoadingSuspense></LoadingSuspense>}>
           {loading ? (
@@ -55,7 +62,12 @@ const DevOps = () => {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small" component={Link} to={``}>
+                    <Button
+                      size="small"
+                      component={Link}
+                      to={`post/${post.id}`}
+                      state={{ post }}
+                    >
                       Read More
                     </Button>
                   </CardActions>

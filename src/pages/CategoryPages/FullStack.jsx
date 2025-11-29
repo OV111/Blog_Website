@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect, useState } from "react";
+import React, { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
@@ -10,35 +10,35 @@ import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
 
 import { Navigate } from "react-router-dom";
+import useAuthStore from "../../context/useAuthStore";
 
 const LoadingSuspense = lazy(() => import("../../components/LoadingSuspense"));
 
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const ReadMore = lazy(() => import("../../components/ReadMore"))
+const ReadMore = lazy(() => import("../../components/ReadMore"));
 
 const FullStack = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { auth } = useAuthStore();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  // const [readMore,setReadMore] = useState(false);
 
-  // const ReadMore = () => {
-  //   console.log(location)
-
-  // }
-const navigate = useNavigate()
-// console.log(navigate(`post`))
+  console.log(auth);
   const fetchPosts = async () => {
     try {
-      const request = await fetch(`${VITE_API_BASE_URL}/categories/fullstack`, {
+      let url = auth
+        ? `${VITE_API_BASE_URL}/categories/fullstack`
+        : `${VITE_API_BASE_URL}/categories/fullstack/default`;
+
+      const request = await fetch(url, {
         method: "GET",
         headers: { "content-type": "application/json" },
         credentials: "include",
       });
 
       const response = await request.json();
-      console.log(response);
       setData(response);
       setLoading(false);
     } catch (err) {
@@ -62,7 +62,11 @@ const navigate = useNavigate()
           ) : (
             <Grid container spacing={4} padding={5}>
               {data.map((post) => (
-                <Card sx={{ minWidth: 425, maxWidth: 425 }} variant="outlined">
+                <Card
+                  key={post.id}
+                  sx={{ minWidth: 425, maxWidth: 425 }}
+                  variant="outlined"
+                >
                   <CardMedia sx={{ height: 200 }} image={post.image} />
                   <CardContent>
                     <Typography
@@ -82,7 +86,7 @@ const navigate = useNavigate()
                       size="small"
                       component={Link}
                       to={`post/${post.id}`}
-                      state={{post}}
+                      state={{ post }}
                     >
                       Read More
                     </Button>

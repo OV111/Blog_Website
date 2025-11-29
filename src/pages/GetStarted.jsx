@@ -37,11 +37,11 @@ const GetStarted = () => {
         if(result.token) {
           localStorage.setItem("JWT",result.token);
         }
-        toast.success(`${result.message}`, { duration: 1150 });
+        toast.success(`${result.message}`, { duration: 900 });
         setTimeout(() => {
           navigate("/");
           login();
-        }, 1200);
+        }, 950);
       } else if (response.status === 409) {
         toast.error(result.message);
       } else if (response.status === 404) {
@@ -66,8 +66,8 @@ const GetStarted = () => {
   return (
     <React.Fragment>
       <Toaster position="top-center" reverseOrder={false} />
-      <div className="max-w-xl mx-auto mt-8 p-8 bg-white rounded-2xl shadow-sm mb-8 ">
-        <h2 className="text-4xl font-bold text-center mb-8 text-purple-700">
+      <div className="max-w-xl mx-auto mt-8 p-8 bg-white rounded-2xl shadow-sm mb-8 dark:bg">
+        <h2 className="text-4xl font-bold text-center mb-8 text-purple-700 dark:text-white">
           {isSignedUp ? "Sign Up" : "Log In"}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
@@ -213,7 +213,7 @@ const GetStarted = () => {
 
         <p
           onClick={ToggleLink}
-          className="text-center text-blue-500 mt-4 items-center  cursor-pointer hover:underline"
+          className="text-center text-blue-500 mt-4 items-center cursor-pointer hover:underline"
         >
           {isSignedUp
             ? "Already have an account? Login"

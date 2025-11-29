@@ -7,28 +7,35 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import useAuthStore from "../../context/useAuthStore";
 
 const LoadingSuspense = lazy(() => import("../../components/LoadingSuspense"));
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const AiandML = () => {
+  const { auth } = useAuthStore();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchingPosts = async () => {
+    const url = auth
+      ? `${VITE_API_BASE_URL}/categories/ai&ml`
+      : `${VITE_API_BASE_URL}/categories/ai&ml/default`;
+    const request = await fetch(url, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const response = await request.json();
+    setData(response);
+    setLoading(false);
+  };
   useEffect(() => {
-    const fetchingPosts = async () => {
-      const request = await fetch(`${VITE_API_BASE_URL}/categories/ai&ml`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-      const response = await request.json();
-      setData(response);
-      setLoading(false);
-    };
     fetchingPosts();
   }, []);
   return (
     <React.Fragment>
-      <h1>AI and Machine Learning</h1>
+      <h1 className="flex justify-center items-center text-xl font-medium text-sky-800 py-6 sm:text-2xl md:text-4xl lg:text-5xl">
+        AI and Machine Learning
+      </h1>
       <div>
         <Suspense fallback={LoadingSuspense}>
           {loading ? (
@@ -52,7 +59,11 @@ const AiandML = () => {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small" component={Link} to={``}>
+                    <Button
+                      size="small"
+                      component={Link}
+                      to={`post/${post.id}`}
+                    >
                       Read More
                     </Button>
                   </CardActions>

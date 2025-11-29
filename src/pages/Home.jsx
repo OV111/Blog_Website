@@ -73,7 +73,7 @@ const Home = () => {
         </Suspense>
         <section className="mt-[100px] mb-[350px] ml-8 flex flex-col gap-2 sm:gap-8 lg:gap-10 max-w-4xl sm:ml-[40px] md:ml-[60px] lg:ml-[80px] ">
           <div className="w-94 h-20 lg:w-146 lg:h-35 ">
-            <h1 className="text-5xl  font-medium ml-2 text-purple-800  sm:text-5xl md:text-6xl  lg:text-7xl lg:pl-4 lg:ml-0 dark:text-purple-600">
+            <h1 className="text-5xl font-medium ml-2 text-purple-800  sm:text-5xl md:text-6xl  lg:text-7xl lg:pl-4 lg:ml-0 dark:text-purple-600">
               <TextType
                 text={[
                   "Welcome to Developers blog.",
@@ -92,13 +92,13 @@ const Home = () => {
               colors={["#8A2BE2", "#FF1493", "#FF00FF", "#9c40ff", "#00FF00"]}
               animationSpeed={8}
               showBorder={false}
-              className="text-start w-[300px]  ml-2 text-xl mt-4 py-1 px-1 sm:text-xl md:text-2xl md:w-[200] lg:text-3xl lg:w-[100%]"
+              className="text-start w-[300px] font-medium ml-2 text-xl mt-4 py-1 px-1 sm:text-xl md:text-2xl md:w-[200] lg:text-3xl lg:w-[100%]"
             >
               A place to read, write and understand topics.
             </GradientText>
           {/* </div> */}
           <div>
-            <button className="items-center justify-center  ml-3 mt-2 px-6 py-1 text-lg rounded-xl text-gray-100 border-none bg-fuchsia-700 text-whitetransition cursor-pointer hover:bg-fuchsia-600 transform  hover:scale-102 hover:shadow-lg hover:text-white dark:bg-fuchsia-550 lg:px-10 lg:py-2 lg:text-2xl lg:mt-2">
+            <button className="items-center justify-center font-medium ml-3 mt-2 px-6 py-1 text-lg rounded-xl text-gray-100 border-none bg-fuchsia-700 text-whitetransition cursor-pointer hover:bg-fuchsia-600 transform  hover:scale-102 hover:shadow-lg hover:text-white dark:bg-fuchsia-550 lg:px-10 lg:py-2 lg:text-2xl lg:mt-2">
               <Link to="get-started">Start Reading</Link>
               {/* <ShinyText
                 text="Start Reading"

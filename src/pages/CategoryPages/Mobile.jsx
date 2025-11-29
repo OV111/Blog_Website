@@ -7,24 +7,29 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import useAuthStore from "../../context/useAuthStore";
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const LoadingSuspense = lazy(() => import("../../components/LoadingSuspense"));
 
 const Mobile = () => {
+  const { auth } = useAuthStore();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchingPosts = async () => {
+    const url = auth
+      ? `${VITE_API_BASE_URL}/categories/mobile`
+      : `${VITE_API_BASE_URL}/categories/mobile/default`;
+    const request = await fetch(url, {
+      method: "GET",
+      headers: { "Content-Type": "Application/json" },
+    });
+    const response = await request.json();
+    setData(response);
+    setLoading(false);
+  };
   useEffect(() => {
-    const fetchingPosts = async () => {
-      const request = await fetch(`${VITE_API_BASE_URL}/categories/mobile`, {
-        method: "GET",
-        headers: { "Content-Type": "Application/json" },
-      });
-      const response = await request.json();
-      setData(response);
-      setLoading(false);
-    };
     fetchingPosts();
   }, []);
   return (
@@ -55,7 +60,11 @@ const Mobile = () => {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small" component={Link} to={``}>
+                    <Button
+                      size="small"
+                      component={Link}
+                      to={`post/${post.id}`}
+                    >
                       Read More
                     </Button>
                   </CardActions>

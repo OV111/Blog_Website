@@ -40,103 +40,102 @@ const MyProfile = () => {
     console.log(response);
   };
 
-  useEffect(() => {
-    const fetchingUserProfile = async () => {
-      try {
-        setLoading(false);
-        const token = localStorage.getItem("JWT");
-        if (!token) {
-          setLoading(true);
-          navigate("/get-started");
-          return undefined;
-        }
-
-        const request = await fetch(`${API_BASE_URL}/my-profile`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!request.ok) {
-          if (request.status === "403") {
-            console.log("Inavlid Token");
-            localStorage.removeItem("JWT");
-            navigate("/get-started");
-          }
-          return;
-        }
-
-        const response = await request.json();
-        console.log(response);
-        // Setting response result
-        setUser(response.userWithoutPassword);
-        // setStats(response.stats);  // ! this is initial line (but problme solved)---setting state after isActive
-        isActive(response.stats.userId);
-        setStats(response.stats);
-      } catch (err) {
-        console.log(err);
-        // setLoading(false);
+  const fetchingUserProfile = async () => {
+    try {
+      setLoading(false);
+      const token = localStorage.getItem("JWT");
+      if (!token) {
+        setLoading(true);
+        navigate("/get-started");
+        return undefined;
       }
-    };
+
+      const request = await fetch(`${API_BASE_URL}/my-profile`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!request.ok) {
+        if (request.status === "403") {
+          console.log("Inavlid Token");
+          localStorage.removeItem("JWT");
+          navigate("/get-started");
+        }
+        return;
+      }
+
+      const response = await request.json();
+      console.log(1)
+      // console.log(response);
+      setUser(response.userWithoutPassword);
+      // setStats(response.stats); // ! this is initial line (but problme solved)---setting state after isActive
+      isActive(response.stats.userId);
+      setStats(response.stats);
+      console.log(2)
+    } catch (err) {
+      console.log(err);
+      // setLoading(false);
+    }
+  };
+  useEffect(() => {
     fetchingUserProfile();
+    console.log("aveh")
   }, []);
 
-  // useEffect(() => {
-  //   isActive();
-  // }, []);
   if (loading) {
     return <LoadingSuspense></LoadingSuspense>;
   }
 
   return (
     <React.Fragment>
-      <div className="min-h-screen  flex">
+      <div className="min-h-screen flex ">
         {/* User Navs */}
-        <aside className="min-w-65 max-w-65  border-r-[#4d4d4d]">
+        <aside className="min-w-65 max-w-65  border-r border-[#252134]">
           <nav className="grid ">
             <Link
               to="/my-profile"
-              className="flex justify-start items-center font-medium text-start pl-8 text-xl rounded-sm py-3 gap-2  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center font-medium text-lg rounded-sm pl-8 py-3 gap-2  hover:bg-gray-300 transition-colors"
             >
               <AccountCircleIcon />
-              Profile
+              <p>Profile</p>
             </Link>
             <Link
               to="/my-profile/followers"
-              className="flex justify-start items-center font-medium gap-2 text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center font-medium gap-2 text-lg  pl-8 rounded-sm py-3  hover:bg-gray-300 transition-colors"
             >
               <PeopleOutlineIcon />
-              Followers
+              <p> Followers</p>
             </Link>
             <Link
               to="/my-profile/notifications"
-              className="flex justify-start items-center font-medium gap-2 text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center font-medium gap-2 text-start text-lg  pl-8 rounded-sm py-3  hover:bg-gray-300 transition-colors"
             >
               <NotificationsNoneIcon />
-              Notifications
+              <p>Notifications</p>
             </Link>
             <Link
               to="/my-profile/add-blog"
-              className="flex justify-start items-center font-medium text-start pl-8 text-xl rounded-sm py-3 gap-2  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center font-medium text-start text-lg rounded-sm  pl-8 py-3 gap-2  hover:bg-gray-300 transition-colors"
             >
               <AccountCircleIcon />
-              Add Blog
+              <p>Add Blog</p>
             </Link>
             <Link
               to="/my-profile/favourites"
-              className="flex justify-start items-center font-medium  gap-2 text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center font-medium  gap-2 text-start text-lg  pl-8 rounded-sm py-3  hover:bg-gray-300 transition-colors"
             >
               <FaRegHeart />
-              Favourites
+              <p className="pl-1">Favourites</p>
             </Link>
             <Link
               to="/my-profile/settings"
-              className="flex justify-start items-center font-medium gap-2  text-start pl-8 text-xl rounded-sm py-3  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center font-medium gap-2 text-start text-lg   pl-8 rounded-sm py-3 hover:bg-gray-300 transition-colors"
             >
               <SettingsIcon />
-              Settings
+              <p className="">Settings</p>
             </Link>
             {/* <Link to="/my-profile/likes">Likes</Link> */}
           </nav>

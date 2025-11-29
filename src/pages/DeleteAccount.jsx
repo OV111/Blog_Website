@@ -29,7 +29,7 @@ const DeleteAccount = () => {
     <React.Fragment>
       <div className="max-w-xl mx-auto p-8 mt-8 mb-8 bg-white rounded-xl shadow-sm">
         <h2 className="text-4xl font-bold text-center mb-8 text-purple-700">
-          Log Out
+          Delete Account
         </h2>
 
         <form onSubmit={handleSubmit(handleLogout)} className="space-y-3">
@@ -70,7 +70,7 @@ const DeleteAccount = () => {
             </div>
 
             <button type="submit" className="bg-red-400 mt-3 w-full rounded-sm py-3 cursor-pointer">
-              Log Out
+              Delete Acc
             </button>
           </div>
         </form>
