@@ -1,7 +1,7 @@
 // import bcrypt from "bcrypt"
 import connectDB from "../config/db.js";
 import { createToken } from "../utils/jwtToken.js";
-// Sign Up
+
 const signUp = async (data) => {
   try {
     let db = await connectDB();
@@ -54,7 +54,7 @@ const signUp = async (data) => {
   }
 };
 
-// Login
+
 const login = async (data) => {
   let db = await connectDB();
   const { email, password } = data;
