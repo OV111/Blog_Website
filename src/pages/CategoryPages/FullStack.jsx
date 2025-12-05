@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
 
+import { ScrollLine } from "../../animations/ScrollingLine";
 import { Navigate } from "react-router-dom";
 import useAuthStore from "../../context/useAuthStore";
 
@@ -52,51 +53,58 @@ const FullStack = () => {
 
   return (
     <React.Fragment>
-      <h1 className="flex justify-center items-center text-xl font-medium text-sky-800 py-6 sm:text-2xl md:text-4xl lg:text-5xl">
-        Full Stack Development Posts
-      </h1>
-      <div>
-        <Suspense fallback={<LoadingSuspense></LoadingSuspense>}>
-          {loading ? (
-            <LoadingSuspense></LoadingSuspense>
-          ) : (
-            <Grid container spacing={4} padding={5}>
-              {data.map((post) => (
-                <Card
-                  key={post.id}
-                  sx={{ minWidth: 425, maxWidth: 425 }}
-                  variant="outlined"
-                >
-                  <CardMedia sx={{ height: 200 }} image={post.image} />
-                  <CardContent>
-                    <Typography
-                      gutterBottom
-                      variant="h5"
-                      alignItems={"center"}
-                      textAlign={"center"}
-                    >
-                      {post.title}
-                    </Typography>
-                    <Typography variant="body2" maxHeight={400}>
-                      {post.description}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      component={Link}
-                      to={`post/${post.id}`}
-                      state={{ post }}
-                    >
-                      Read More
-                    </Button>
-                  </CardActions>
-                </Card>
-              ))}
-            </Grid>
-          )}
-        </Suspense>
-      </div>
+      <header className="min-h-screen mt-60">
+        <h1 className="flex justify-center items-center text-xl font-medium text-sky-800 py-6 sm:text-2xl md:text-4xl lg:text-5xl">
+          Full Stack Development
+        </h1>
+      </header>
+      <main>
+        <aside className="fixed left-0 top-0">
+          <ScrollLine />
+        </aside>
+        <div>
+          <Suspense fallback={<LoadingSuspense></LoadingSuspense>}>
+            {loading ? (
+              <LoadingSuspense></LoadingSuspense>
+            ) : (
+              <Grid container spacing={4} padding={5}>
+                {data.map((post) => (
+                  <Card
+                    key={post.id}
+                    sx={{ minWidth: 425, maxWidth: 425 }}
+                    variant="outlined"
+                  >
+                    <CardMedia sx={{ height: 200 }} image={post.image} />
+                    <CardContent>
+                      <Typography
+                        gutterBottom
+                        variant="h5"
+                        alignItems={"center"}
+                        textAlign={"center"}
+                      >
+                        {post.title}
+                      </Typography>
+                      <Typography variant="body2" maxHeight={400}>
+                        {post.description}
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button
+                        size="small"
+                        component={Link}
+                        to={`post/${post.id}`}
+                        state={{ post }}
+                      >
+                        Read More
+                      </Button>
+                    </CardActions>
+                  </Card>
+                ))}
+              </Grid>
+            )}
+          </Suspense>
+        </div>
+      </main>
     </React.Fragment>
   );
 };
