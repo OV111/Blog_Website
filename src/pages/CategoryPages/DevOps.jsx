@@ -37,7 +37,7 @@ const DevOps = () => {
   return (
     <React.Fragment>
       <h1 className="flex justify-center items-center text-xl font-medium text-sky-800 py-6 sm:text-2xl md:text-4xl lg:text-5xl">
-        Development & Operations Posts
+        Development & Operations
       </h1>
       <div>
         <Suspense fallback={<LoadingSuspense></LoadingSuspense>}>

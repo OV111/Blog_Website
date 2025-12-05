@@ -35,7 +35,7 @@ const Mobile = () => {
   return (
     <React.Fragment>
       <h1 className="flex justify-center items-center text-xl font-medium text-sky-800 py-6 sm:text-2xl md:text-4xl lg:text-5xl">
-        Mobile Development Posts
+        Mobile Development
       </h1>
       <div>
         <Suspense fallback={LoadingSuspense}>
