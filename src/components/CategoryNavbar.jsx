@@ -18,7 +18,7 @@ const CategoryNavbar = () => {
 
   return (
     <React.Fragment>
-      <nav className="bg-purple-800 px-5 py-4 shadow flex items-start justify-between">
+      <nav className="relative z-1 bg-purple-800 px-5 py-4 shadow flex items-start justify-between">
         <h2 className="text-2xl font-bold text-white dark:text-white my-1 cursor-pointer">
           Devs Blog
         </h2>
