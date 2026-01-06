@@ -11,7 +11,7 @@ const Footer = () => {
   // const pathname = location.pathname
   return (
     <React.Fragment>
-      <footer className="min-h-[1070px] bg-gradient-to-r from-purple-800 to-purple-950  text-white pt-10 dark:from-purple-700 dark:to-purple-800 lg:min-h-[100px]">
+      <footer className="relative z-1 min-h-[1070px] bg-gradient-to-r from-purple-800 to-purple-950  text-white pt-10 dark:from-purple-700 dark:to-purple-800 lg:min-h-[100px]">
         <div className="grid lg:flex justify-start items-start gap-4 lg:gap-30 mb-0 pl-8 lg:pl-30 dark:bg-from-violet-700 dark:bg-to-violet-950">
           <div className="lg:col-span-2 flex flex-col items-start">
             <Link to="/" className="flex items-center gap-2 mb-4">
