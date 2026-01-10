@@ -297,7 +297,7 @@ const StartServer = async () => {
                 bio: data.bio || "",
                 postsCount: data.postsCount || 0,
                 profileImage: data.profileImage || "",
-                bannerImage: data.bannerImage || "j",
+                bannerImage: data.bannerImage || "",
                 githubLink: data.githubLink || "",
                 linkedinLink: data.linkedinLink || "",
                 twitterLink: data.twitterLink || "",
