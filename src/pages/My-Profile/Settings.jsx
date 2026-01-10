@@ -17,6 +17,7 @@ import {
   FaEdit,
   FaLocationArrow,
 } from "react-icons/fa";
+import { faMedium } from "@fortawesome/free-brands-svg-icons";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Settings = () => {
@@ -77,7 +78,6 @@ const Settings = () => {
       });
       const response = await request.json();
       console.log(response);
-      // console.log(response.message);
       if (!request.ok) {
         setFname(oldProfile.fname);
         setLname(oldProfile.lname);
@@ -104,47 +104,46 @@ const Settings = () => {
     <React.Fragment>
       <div className="flex min-h-screen">
         <Toaster position="top-center" reverseOrder={true}></Toaster>{" "}
-        {/*Can be false*/}
-        <aside className="min-w-65 max-w-65  border-r border-[#252134]">
-          <nav className="grid ">
+        <aside className="border-gray-300 border-r min-w-65 max-w-65">
+          <nav className="grid">
             <Link
               to="/my-profile"
-              className="flex justify-start items-center font-medium text-start pl-8 text-lg rounded-sm py-3 gap-2  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center gap-2 hover:bg-gray-300 py-3 pl-8 rounded-sm font-medium text-gray-800 text-lg text-start transition-colors"
             >
               <AccountCircleIcon />
               <p>Profile</p>
             </Link>
             <Link
               to="/my-profile/followers"
-              className="flex justify-start items-center font-medium gap-2 text-start pl-8 text-lg rounded-sm py-3  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center gap-2 hover:bg-gray-300 py-3 pl-8 rounded-sm font-medium text-lg text-start transition-colors"
             >
               <PeopleOutlineIcon />
               <p>Followers</p>
             </Link>
             <Link
               to="/my-profile/notifications"
-              className="flex justify-start items-center font-medium gap-2 text-start pl-8 text-lg rounded-sm py-3  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center gap-2 hover:bg-gray-300 py-3 pl-8 rounded-sm font-medium text-lg text-start transition-colors"
             >
               <NotificationsNoneIcon />
               <p>Notifications</p>
             </Link>
             <Link
               to="/my-profile/add-blog"
-              className="flex justify-start items-center font-medium text-start pl-8 text-lg rounded-sm py-3 gap-2  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center gap-2 hover:bg-gray-300 py-3 pl-8 rounded-sm font-medium text-lg text-start transition-colors"
             >
               <AccountCircleIcon />
               <p>Add Blog</p>
             </Link>
             <Link
               to="/my-profile/favourites"
-              className="flex justify-start items-center font-medium  gap-2 text-start pl-8 text-lg rounded-sm py-3  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center gap-2 hover:bg-gray-300 py-3 pl-8 rounded-sm font-medium text-lg text-start transition-colors"
             >
               <FaRegHeart />
               <p className="pl-1">Favourites</p>
             </Link>
             <Link
               to="/my-profile/settings"
-              className="flex justify-start items-center font-medium gap-2  text-start pl-8 text-lg rounded-sm py-3  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center gap-2 hover:bg-gray-300 py-3 pl-8 rounded-sm font-medium text-lg text-start transition-colors"
             >
               <SettingsIcon />
               <p>Settings</p>
@@ -152,104 +151,170 @@ const Settings = () => {
             {/* <Link to="/my-profile/likes">Likes</Link> */}
           </nav>
         </aside>
-        <div className="pl-8 pt-8">
-          <h1 className="text-2xl font-semibold">Settings</h1>
-          <p className="text-lg">
+        <div className="p-8">
+          <h1 className="font-semibold text-2xl">Settings</h1>
+          <p className="pb-10 text-lg">
             Manage your account settings and preferences
           </p>
-          <div className="grid gap-10">
-            <div>
-              <h1 className="text-lg">Profile Section</h1>
-              <label htmlFor="">Name</label>
-              <input
-                type="text"
-                placeholder="username"
-                className="max-w-100 border-1 "
-                onChange={(e) => setFname(e.target.value)}
-              />
-              <label htmlFor="">Surname</label>
-              <input
-                type="text"
-                placeholder="username"
-                className="max-w-100 border-1 "
-                onChange={(e) => setLname(e.target.value)}
-              />
-            </div>
-            <div className="grid">
-              <label htmlFor="">Profile Image</label>
-              <input
-                type="file"
-                accept="image/*"
-                placeholder="username"
-                className="max-w-100 border-1 "
-                onChange={(e) => {
-                  setProfileImage(e.target.files[0]);
-                }}
-              />
-              <label htmlFor="">Banner Image</label>
-              <input
-                type="file"
-                accept="image/*"
-                placeholder="username"
-                className="max-w-100 border-1"
-                onChange={(e) => {
-                  setBannerImage(e.target.files[0]);
-                }}
-              />
-            </div>
-            <div className="">
-              <h1>Other Section</h1>
-              <label htmlFor="">Time Zone</label>
-              <input
-                type="text"
-                placeholder="Time Zone"
-                className="max-w-100 border-1"
-                onChange={() => {}}
-              />
-              <label htmlFor="">Bio</label>
-              <input
-                type="text"
-                placeholder="bio"
-                className="max-w-100 border-1 "
-                onChange={(e) => {
-                  setBio(e.target.value);
-                }}
-              />
+          <div className="gap-10 grid">
+            <div className="flex justify-center items-center gap-20">
+              {/* <h1 className="text-lg">Profile Section</h1> */}
+              <div className="gap-2 grid">
+                <label htmlFor="" className="font-medium text-gray-700 text-sm">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  className="focus:placeholder:opacity-0 p-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-base"
+                  onChange={(e) => setFname(e.target.value)}
+                />
+              </div>
+
+              <div className="gap-2 grid">
+                <label htmlFor="" className="font-medium text-gray-700 text-sm">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  className="focus:placeholder:opacity-0 p-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-base"
+                  onChange={(e) => setLname(e.target.value)}
+                />
+              </div>
             </div>
 
-            <div>
-              <h1>Links of Connection</h1>
+            <div className="gap-2 grid">
+              <div className="gap-2 grid max-w-sm">
+                <label className="font-medium text-gray-700 text-sm">
+                  Profile Image
+                </label>
 
-              <label htmlFor="">Links of Github</label>
-              <input
-                type="text"
-                placeholder="Enter New Url"
-                className="max-w-100 border-1 "
-                onChange={(e) => setGithubLink(e.target.value)}
-              />
-              <label htmlFor="">Links of Linkedin</label>
-              <input
-                type="text"
-                placeholder="Enter New Url"
-                className="max-w-100 border-1 "
-                onChange={(e) => setLinkedinLink(e.target.value)}
-              />
-              <label htmlFor="">Links of Twitter</label>
-              <input
-                type="text"
-                placeholder="Enter New Url"
-                className="max-w-100 border-1 "
-                onChange={(e) => setTwitterLink(e.target.value)}
-              />
+                <label className="flex justify-between items-center hover:bg-purple-50 px-4 py-3 border border-gray-300 hover:border-purple-500 focus-within:border-blue-500 border-dashed rounded-lg focus-within:ring-2 focus-within:ring-blue-500 transition cursor-pointer">
+                  <span className="text-gray-500 text-sm">Choose an image</span>
+
+                  <span className="font-medium text-purple-600 text-sm">
+                    Browse
+                  </span>
+
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      setProfileImage(e.target.files?.[0]);
+                    }}
+                  />
+                </label>
+              </div>
+
+              <div className="gap-2 grid max-w-sm">
+                <label className="font-medium text-gray-700 text-sm">
+                  Banner Image
+                </label>
+
+                <label className="flex justify-between items-center hover:bg-purple-50 px-4 py-3 border border-gray-300 hover:border-purple-500 border-dashed rounded-lg focus-within:ring-2 transition cursor-pointer">
+                  <span className="text-gray-500 text-sm">Choose an image</span>
+                  <span className="font-medium text-purple-600 text-sm">
+                    Browse
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      setProfileImage(e.target.files?.[0]);
+                    }}
+                  />
+                </label>
+              </div>
+            </div>
+
+            <div className="flex gap-20">
+              <div className="gap-2 grid">
+                <label htmlFor="" className="font-medium text-gray-700 text-sm">
+                  Bio
+                </label>
+                <input
+                  type="text"
+                  placeholder="Share your story and what you're passionate about..."
+                  className="focus:placeholder:opacity-0 px-3 py-2 border border-gray-300 rounded-lg outline-none w-100 text-gray-900"
+                  onChange={(e) => {
+                    setBio(e.target.value);
+                  }}
+                />
+              </div>
+              <div className="gap-2 grid">
+                <label className="font-medium text-gray-600 text-sm">
+                  Time Zone
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. UTC +4"
+                  className="focus:placeholder:opacity-0 px-3 py-2 border border-gray-300 rounded-lg outline-none w-full text-gray-900"
+                  onChange={() => {}}
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-20">
+              <div className="gap-2 grid">
+                <label htmlFor="" className="font-medium text-gray-700 text-sm">
+                  Links of Github
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter New Url"
+                  className="focus:placeholder:opacity-0 px-3 py-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-gray-900"
+                  onChange={(e) => setGithubLink(e.target.value)}
+                />
+              </div>
+
+              <div className="gap-2 grid">
+                <label htmlFor="" className="font-medium text-gray-700 text-sm">
+                  Links of Linkedin
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter New Url"
+                  className="focus:placeholder:opacity-0 px-3 py-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-gray-900"
+                  onChange={(e) => setLinkedinLink(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-20">
+              <div className="gap-2 grid">
+                <label htmlFor="" className="font-medium text-gray-700 text-sm">
+                  Links of Twitter
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter New Url"
+                  className="focus:placeholder:opacity-0 px-3 py-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-gray-900"
+                  onChange={(e) => setTwitterLink(e.target.value)}
+                />
+              </div>
+              <div className="gap-2 grid">
+                <label htmlFor="" className="font-medium text-gray-700 text-sm">
+                  Links of Medium
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter New Url"
+                  className="focus:placeholder:opacity-0 px-3 py-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-gray-900"
+                  onChange={(e) => setGithubLink(e.target.value)}
+                />
+              </div>
             </div>
 
             <button
               onClick={() => {
                 SaveChanges();
               }}
-              className="cursor-pointer b-2 bg-red-700"
+              className="bg-purple-600 hover:bg-purple-700 p-2 rounded-lg text-gray-900 text-xl cursor-pointer b-2"
             >
-              Save
+              Save Changes
             </button>
           </div>
         </div>
