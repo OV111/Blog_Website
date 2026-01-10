@@ -68,13 +68,11 @@ const MyProfile = () => {
       }
 
       const response = await request.json();
-      console.log(1)
-      // console.log(response);
       setUser(response.userWithoutPassword);
       // setStats(response.stats); // ! this is initial line (but problme solved)---setting state after isActive
       isActive(response.stats.userId);
       setStats(response.stats);
-      console.log(2)
+      
     } catch (err) {
       console.log(err);
       // setLoading(false);
@@ -82,7 +80,7 @@ const MyProfile = () => {
   };
   useEffect(() => {
     fetchingUserProfile();
-    console.log("aveh")
+    // console.log("aveh")
   }, []);
 
   if (loading) {
