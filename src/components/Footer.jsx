@@ -1,12 +1,14 @@
 import React from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import X_logo from "../assets/X_logo.png";
 import { FaGithub, FaTwitter, FaMailBulk, FaEnvelope } from "react-icons/fa";
 import { Send } from "lucide-react";
-import { useState } from "react";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import XIcon from "@mui/icons-material/X";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
 const Footer = () => {
-  const {pathname} = useLocation()
-  const [hoverTwitter, setHoverTwitter] = useState(false);
+  const { pathname } = useLocation();
 
   // const pathname = location.pathname
   return (
@@ -27,25 +29,24 @@ const Footer = () => {
             </p>
 
             {/* Social Links */}
-            <div className="flex items-center justify-center space-x-5 mt-0  mb-12 text-3xl">
-              <Link to="" className="text-black hover:text-white  ">
-                <FaGithub></FaGithub>
+            <div className="flex items-center justify-center space-x-5 mt-0 mb-12 ">
+              <Link to="/">
+                <GitHubIcon
+                  className="text-black hover:text-white"
+                  fontSize="medium"
+                />
               </Link>
-              <Link
-                to=""
-                className="text-blue-600 hover:"
-                onMouseEnter={() => setHoverTwitter(true)}
-                onMouseLeave={() => setHoverTwitter(false)}
-              >
-                {hoverTwitter ? (
-                  <img src={X_logo}></img>
-                ) : (
-                  <FaTwitter></FaTwitter>
-                )}
-                {/* change x logo when hovered  */}
+              <Link to="/">
+                <XIcon
+                  className="text-black hover:text-white"
+                  fontSize="medium"
+                ></XIcon>
               </Link>
-              <Link to="" className="text-white">
-                <FaEnvelope></FaEnvelope>
+              <Link to="/">
+                <MailOutlineIcon
+                  className="text-black hover:text-white"
+                  fontSize="medium"
+                />
               </Link>
             </div>
           </div>
@@ -56,22 +57,36 @@ const Footer = () => {
               <h3 className="text-xl font-bold mb-2  text-purple-400">
                 Quick Links
               </h3>
-              <Link to="/" className={`text-lg hover:text-purple-500 transition ${pathname === "/" ? "text-purple-400" : ""}`}>
+              <Link
+                to="/"
+                className={`text-lg hover:text-purple-500 transition ${
+                  pathname === "/" ? "text-purple-400" : ""
+                }`}
+              >
                 Home
               </Link>
               <Link
                 to="/about"
-                className={`text-lg  hover:text-purple-500 transition ${pathname === "/about" ? "text-purple-500": ""}`}
+                className={`text-lg  hover:text-purple-500 transition ${
+                  pathname === "/about" ? "text-purple-500" : ""
+                }`}
               >
                 About
               </Link>
               <Link
                 to="/contact"
-                className={`text-lg  hover:text-purple-500 transition ${pathname === "/contact" ?"text-purple-500" : ""}`}
+                className={`text-lg  hover:text-purple-500 transition ${
+                  pathname === "/contact" ? "text-purple-500" : ""
+                }`}
               >
                 Contact
               </Link>
-              <Link to="/privacy" className={`text-lg  hover:text-purple-500 transition ${pathname === "/privacy" ?"text-purple-500" : ""}`}>
+              <Link
+                to="/privacy"
+                className={`text-lg  hover:text-purple-500 transition ${
+                  pathname === "/privacy" ? "text-purple-500" : ""
+                }`}
+              >
                 Privacy Policy
               </Link>
             </div>
@@ -81,22 +96,52 @@ const Footer = () => {
               <h3 className="text-xl font-bold mb-2  text-purple-400">
                 Categories
               </h3>
-              <Link to="/categories/fullstack" className={`text-lg  hover:text-purple-500 transition ${pathname === "/categories/fullstack" ?"text-purple-500" : ""}`}>
+              <Link
+                to="/categories/fullstack"
+                className={`text-lg  hover:text-purple-500 transition ${
+                  pathname === "/categories/fullstack" ? "text-purple-500" : ""
+                }`}
+              >
                 Full Stack
               </Link>
-              <Link to="/categories/backend" className={`text-lg  hover:text-purple-500 transition ${pathname === "/categories/backend" ?"text-purple-500" : ""}`}>
+              <Link
+                to="/categories/backend"
+                className={`text-lg  hover:text-purple-500 transition ${
+                  pathname === "/categories/backend" ? "text-purple-500" : ""
+                }`}
+              >
                 Backend
               </Link>
-              <Link to="/categories/mobile" className={`text-lg  hover:text-purple-500 transition ${pathname === "/categories/mobile" ?"text-purple-500" : ""}`}>
+              <Link
+                to="/categories/mobile"
+                className={`text-lg  hover:text-purple-500 transition ${
+                  pathname === "/categories/mobile" ? "text-purple-500" : ""
+                }`}
+              >
                 Mobile
               </Link>
-              <Link to="/categories/ai&ml" className={`text-lg  hover:text-purple-500 transition ${pathname === "/categories/ai&ml" ?"text-purple-500" : ""}`}>
+              <Link
+                to="/categories/ai&ml"
+                className={`text-lg  hover:text-purple-500 transition ${
+                  pathname === "/categories/ai&ml" ? "text-purple-500" : ""
+                }`}
+              >
                 AI & ML
               </Link>
-              <Link to="/categories/qa" className={`text-lg  hover:text-purple-500 transition ${pathname === "/categories/qa" ?"text-purple-500" : ""}`}>
+              <Link
+                to="/categories/qa"
+                className={`text-lg  hover:text-purple-500 transition ${
+                  pathname === "/categories/qa" ? "text-purple-500" : ""
+                }`}
+              >
                 Quality Assurance
               </Link>
-              <Link to="/categories/devops" className={`text-lg  hover:text-purple-500 transition ${pathname === "/categories/devops" ?"text-purple-500" : ""}`}>
+              <Link
+                to="/categories/devops"
+                className={`text-lg  hover:text-purple-500 transition ${
+                  pathname === "/categories/devops" ? "text-purple-500" : ""
+                }`}
+              >
                 DevOps
               </Link>
             </div>
@@ -114,11 +159,11 @@ const Footer = () => {
               <input
                 type="email"
                 placeholder="Enter Your Email."
-                className="flex-grow rounded-md pl-2 outline bg-purple-700 border-purple-600 text-white placeholder-purple-300 focus:ring-purple-500 focus:border-purple-500"
+                className="flex-grow rounded-md pl-2 outline-none bg-purple-700 border-purple-600 text-white placeholder-purple-300 focus:ring-purple-500 focus:border-purple-500"
               />
               <button
                 type="submit"
-                className="bg-purple-600 hover:bg-purple-700 text-white py-2 px-2  rounded-md shadow-sm transition-colors duration-200"
+                className="bg-purple-600 cursor-pointer  hover:bg-purple-700 text-white py-2 px-2  rounded-md shadow-sm transition-colors duration-200"
               >
                 <Send className="w-5 h-5"></Send>
               </button>
@@ -139,9 +184,9 @@ const Footer = () => {
             </div> */}
         </div>
         {/* <hr className="border-purple-800 my-6" /> */}
-        
-        <div className="text-center  py-8 text-m text-purple-300 ">
-          © {new Date().getFullYear()} Devs Blog. All rights reserved
+
+        <div className="text-center  py-8 text-m text-purple-300">
+          © {new Date().getFullYear()} Devs Blog. All rights reserved!
         </div>
       </footer>
     </React.Fragment>

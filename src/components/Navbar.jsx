@@ -1,3 +1,5 @@
+/* The above code is a React component for a Navbar in a web application. Here is a summary of what the
+code is doing: */
 import React, { useState, useEffect, useRef } from "react";
 import { FaSun, FaMoon } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
@@ -5,6 +7,12 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuthStore from "../context/useAuthStore";
 import useThemeStore from "../context/useThemeStore";
 import toast from "react-hot-toast";
+
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+
+import NightsStayOutlinedIcon from "@mui/icons-material/NightsStayOutlined";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 
 import { FaBars, FaTimes } from "react-icons/fa";
 
@@ -56,30 +64,21 @@ const Navbar = () => {
       }
     } catch (err) {
       console.log(err);
-      toast.error("Log Out Failed",{position:"top-center"})
+      toast.error("Log Out Failed", { position: "top-center" });
     }
   };
 
   return (
     <React.Fragment>
       <div>
-        <nav className="relative z-1 bg-gradient-to-r from-purple-800 to-purple-900 px-5 gap-10 py-2 shadow flex items-start justify-between dark:from-purple-700 dark:to-purple-800 lg:gap-0 lg:py-4">
-          <h2 className="text-base font-bold ml-0 my-2 lg:my-1 w-[30px] cursor-pointer text-white sm:text-xl md:text-xl lg:text-2xl lg:w-auto lg:ml-3">
+        <nav className="relative space-x-1 flex items-center justify-between px-5 gap-12 py-2 shadow z-1 w-full sm:w-full lg:w-full bg-gradient-to-r from-purple-800 to-purple-900  dark:from-purple-700 dark:to-purple-800 lg:gap-10 lg:py-4">
+          <h2 className="text-base font-bold my-2 lg:my-1 w-[30px] cursor-pointer text-white sm:text-xl md:text-xl lg:text-2xl lg:w-auto lg:ml-3">
             <NavLink to="/">Devs Blog</NavLink>
           </h2>
 
-          <ul className="flex items-center space-x-4 text-gray-100 my-3.5 lg:my-1">
-            <li className="font-medium text-base mx-2 hover:text-purple-300 dark:hover:text-purple-300 transition lg:text-lg lg:mx-4">
-              <NavLink
-                to="/"
-                // className={({ isActive }) =>
-                //   `font-medium text-lg transition ${
-                //     isActive ? "text-purple-600" : "hover:text-gray-100"
-                //   }`
-                // }
-              >
-                Home
-              </NavLink>
+          <ul className="flex items-center justify-between space-x-3 text-gray-100 my-3.5 lg:my-1 lg:space-x-4">
+            <li className="font-medium text-sm hover:text-purple-300 dark:hover:text-purple-300 transition lg:text-lg lg:mx-4">
+              <NavLink to="/">Home</NavLink>
             </li>
             <li
               className="relative text-base  font-medium hover:text-purple-300 transition mr-3 lg:text-lg"
@@ -118,7 +117,7 @@ const Navbar = () => {
 
             {auth ? (
               <React.Fragment>
-                <li className="font-medium text-base  hover:text-purple-300 dark:hover:text-purple-300 transition lg:text-lg">
+                <li className="font-medium text-sm w-17 lg:text-lg lg:w-21 hover:text-purple-300 dark:hover:text-purple-300 transition">
                   <NavLink to="my-profile">My Profile</NavLink>
                 </li>
                 <li className="hidden sm:block font-medium text-base  hover:text-purple-300 dark:hover:text-purple-300 transition cursor-pointer lg:text-lg">
@@ -142,31 +141,24 @@ const Navbar = () => {
                 </li>
               </React.Fragment>
             )}
+
             <button
               onClick={setTheme}
-              className={`relative inline-flex items-center ml-0  px-1 rounded-full w-15 h-8 transition-colors ${
-                theme === "dark" ? "bg-gray-700" : "bg-gray-200"
-              }`}
+              className={"relative inline-flex items-center cursor-pointer"}
             >
-              <span className="text-white items-center text-m ml-1">
-                <FaMoon></FaMoon>
-              </span>
-              <span className="text-yellow-400 items-center text-m ml-3">
-                <FaSun></FaSun>
-              </span>
-              <span
-                className={`absolute w-6 h-6 transform rounded-full bg-white shadow-md transition-transform duration-300 ${
-                  theme === "dark" ? "translate-x-6" : "translate-x-1"
-                }`}
-              />
+              {theme === "dark" ? (
+                <NightsStayOutlinedIcon fontSize="medium" />
+              ) : (
+                <LightModeOutlinedIcon fontSize="medium" />
+              )}
             </button>
             <button
               onClick={() => {
                 setIsOpen(!isOpen);
               }}
-              className="md:hidden relative"
+              className="md:hidden mb-1"
             >
-              {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+              {isOpen ? <CloseOutlinedIcon /> : <MenuOutlinedIcon />}
             </button>
 
             {isOpen && (
