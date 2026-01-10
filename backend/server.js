@@ -214,19 +214,33 @@ const StartServer = async () => {
               JSON.stringify({ message: "Forbidden: Invalid Token" })
             );
           }
+          // 696229a232472b55252e3b5c
           const verified = verifyToken(token);
           const users = db.collection("users");
           const usersStats = db.collection("usersStats");
-          const user = await users.findOne({ _id: new ObjectId(verified.id) });
-          const stats = await usersStats.findOne({
-            userId: new ObjectId(verified.id),
-          });
+
+          const userId = new ObjectId(verified.id);
+
+          const [user, stats] = await Promise.all([
+            users.findOne({ _id: userId }),
+            usersStats.findOne({ userId }),
+          ]);
+          // const user = await users.findOne({ _id: new ObjectId(verified.id) });
+          // const stats = await usersStats.findOne({
+          //   userId: new ObjectId(verified.id),
+          // });
 
           if (!user) {
             res.writeHead(404, { "content-type": "application/json" });
             return res.end(JSON.stringify({ message: "User Not Found!" }));
           }
+
+          await usersStats.updateOne(
+            { userId },
+            { $set: { lastActive: new Date() } }
+          );
           const { password, ...userWithoutPassword } = user;
+
           res.writeHead(200, { "content-type": "application/json" });
           return res.end(JSON.stringify({ userWithoutPassword, stats }));
         } catch (err) {
@@ -245,7 +259,8 @@ const StartServer = async () => {
             { userId: new ObjectId(parsedData.id) },
             { $set: { lastActive: parsedData.lastActive } }
           );
-          // res write,end
+          res.writeHead(200, { "content-type": "application/json" });
+          return res.end(JSON.stringify({ message: "stat", result }));
         });
       } else if (req.url === "/my-profile/settings" && req.method === "PUT") {
         const token = req.headers.authorization?.replace("Bearer ", "");

@@ -2,22 +2,15 @@ import React, {  Suspense } from "react";
 import { RouterProvider } from "react-router-dom";
 import "./index.css";
 
-import AuthProvider from "./context/AuthProvider";
-import ThemeProvider from "../src/context/ThemeProvider";
-
 import router from "./router";
 import LoadingSuspense from "./components/LoadingSuspense";
 
 const App = () => {
   return (
     <React.Fragment>
-      <ThemeProvider>
-        <AuthProvider>
           <Suspense fallback={<LoadingSuspense />}>
             <RouterProvider router={router}></RouterProvider>
           </Suspense>
-        </AuthProvider>
-      </ThemeProvider>
     </React.Fragment>
   );
   // return (
