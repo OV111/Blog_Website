@@ -147,9 +147,9 @@ const Navbar = () => {
               className={"relative inline-flex items-center cursor-pointer"}
             >
               {theme === "dark" ? (
-                <NightsStayOutlinedIcon fontSize="medium" />
-              ) : (
                 <LightModeOutlinedIcon fontSize="medium" />
+              ) : (
+                <NightsStayOutlinedIcon fontSize="medium" />
               )}
             </button>
             <button
