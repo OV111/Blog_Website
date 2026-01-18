@@ -7,6 +7,8 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Toaster, toast } from "react-hot-toast";
 // import LoadingSuspense from "../components/LoadingSuspense";
+import FormLabel from "@mui/material/FormLabel";
+import TextField from '@mui/material/TextField';
 import {
   FaUserCircle,
   FaBell,
@@ -151,7 +153,7 @@ const Settings = () => {
             {/* <Link to="/my-profile/likes">Likes</Link> */}
           </nav>
         </aside>
-        <div className="p-8">
+        <div className="m-8">
           <h1 className="font-semibold text-2xl">Settings</h1>
           <p className="pb-10 text-lg">
             Manage your account settings and preferences
@@ -165,6 +167,7 @@ const Settings = () => {
                 </label>
                 <input
                   type="text"
+                  value={fname}
                   placeholder="Full Name"
                   className="focus:placeholder:opacity-0 p-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-base"
                   onChange={(e) => setFname(e.target.value)}
@@ -177,6 +180,7 @@ const Settings = () => {
                 </label>
                 <input
                   type="text"
+                  value={lname}
                   placeholder="Last Name"
                   className="focus:placeholder:opacity-0 p-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-base"
                   onChange={(e) => setLname(e.target.value)}
@@ -312,7 +316,7 @@ const Settings = () => {
               onClick={() => {
                 SaveChanges();
               }}
-              className="bg-purple-600 hover:bg-purple-700 p-2 rounded-lg text-gray-900 text-xl cursor-pointer b-2"
+              className="bg-fuchsia-600 hover:bg-fuchsia-700 p-2 font-semibold rounded-lg text-white  text-xl cursor-pointer b-2"
             >
               Save Changes
             </button>
