@@ -11,7 +11,7 @@ import {
   FaEdit,
   FaLocationArrow,
 } from "react-icons/fa";
-// import { FaGear } from "react-icons/fa6";
+import { faMedium } from "@fortawesome/free-brands-svg-icons"; // import { FaGear } from "react-icons/fa6";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
@@ -37,7 +37,7 @@ const MyProfile = () => {
       }),
     });
     const response = await request.json();
-    console.log(response);
+    // console.log(response);
   };
 
   const fetchingUserProfile = async () => {
@@ -72,7 +72,6 @@ const MyProfile = () => {
       // setStats(response.stats); // ! this is initial line (but problme solved)---setting state after isActive
       isActive(response.stats.userId);
       setStats(response.stats);
-      
     } catch (err) {
       console.log(err);
       // setLoading(false);
@@ -89,48 +88,48 @@ const MyProfile = () => {
 
   return (
     <React.Fragment>
-      <div className="min-h-screen flex ">
+      <div className="flex min-h-screen">
         {/* User Navs */}
-        <aside className="min-w-65 max-w-65  border-r border-[#252134]">
-          <nav className="grid ">
+        <aside className="border-[#252134] border-r min-w-65 max-w-65">
+          <nav className="grid">
             <Link
               to="/my-profile"
-              className="flex justify-start items-center font-medium text-lg rounded-sm pl-8 py-3 gap-2  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center gap-2 hover:bg-gray-300 py-3 pl-8 rounded-sm font-medium text-lg transition-colors"
             >
               <AccountCircleIcon />
               <p>Profile</p>
             </Link>
             <Link
               to="/my-profile/followers"
-              className="flex justify-start items-center font-medium gap-2 text-lg  pl-8 rounded-sm py-3  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center gap-2 hover:bg-gray-300 py-3 pl-8 rounded-sm font-medium text-lg transition-colors"
             >
               <PeopleOutlineIcon />
               <p> Followers</p>
             </Link>
             <Link
               to="/my-profile/notifications"
-              className="flex justify-start items-center font-medium gap-2 text-start text-lg  pl-8 rounded-sm py-3  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center gap-2 hover:bg-gray-300 py-3 pl-8 rounded-sm font-medium text-lg text-start transition-colors"
             >
               <NotificationsNoneIcon />
               <p>Notifications</p>
             </Link>
             <Link
               to="/my-profile/add-blog"
-              className="flex justify-start items-center font-medium text-start text-lg rounded-sm  pl-8 py-3 gap-2  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center gap-2 hover:bg-gray-300 py-3 pl-8 rounded-sm font-medium text-lg text-start transition-colors"
             >
               <AccountCircleIcon />
               <p>Add Blog</p>
             </Link>
             <Link
               to="/my-profile/favourites"
-              className="flex justify-start items-center font-medium  gap-2 text-start text-lg  pl-8 rounded-sm py-3  hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center gap-2 hover:bg-gray-300 py-3 pl-8 rounded-sm font-medium text-lg text-start transition-colors"
             >
               <FaRegHeart />
               <p className="pl-1">Favourites</p>
             </Link>
             <Link
               to="/my-profile/settings"
-              className="flex justify-start items-center font-medium gap-2 text-start text-lg   pl-8 rounded-sm py-3 hover:bg-gray-300 transition-colors"
+              className="flex justify-start items-center gap-2 hover:bg-gray-300 py-3 pl-8 rounded-sm font-medium text-lg text-start transition-colors"
             >
               <SettingsIcon />
               <p className="">Settings</p>
@@ -152,18 +151,18 @@ const MyProfile = () => {
               alt="user Image"
               width={130}
               height={130}
-              className="aspect-square absolute -top-17 left-13 rounded-[50%] "
+              className="-top-17 left-13 absolute rounded-[50%] aspect-square"
             />
 
             <div className="flex items-center gap-130">
-              <div className="pt-20 pl-15 space-y-2 px-2 max-w-100">
-                <h1 className="text-2xl font-bold text-gray-900">
+              <div className="space-y-2 px-2 pt-20 pl-15 max-w-100">
+                <h1 className="font-bold text-gray-900 text-2xl">
                   {user?.firstName} {user?.lastName}
                 </h1>
 
                 <p className="text-gray-600">{user?.email}</p>
-                {/* <p className="max-w-[300px] min-h-[50px] mb-1">User hasn't added a bio yet.</p> */}
-                {/* <button className=" flex justify-start items-center mt-0 gap-10 p-2 border-1 rounded-xl text-gray-500 hover:text-gray-700 transition-colors">
+                {/* <p className="mb-1 max-w-[300px] min-h-[50px]">User hasn't added a bio yet.</p> */}
+                {/* <button className="flex justify-start items-center gap-10 mt-0 p-2 border-1 rounded-xl text-gray-500 hover:text-gray-700 transition-colors">
                   <FaEdit className="w-5 h-5" />
                 </button> */}
 
@@ -182,25 +181,25 @@ const MyProfile = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col items-center lg:items-end space-y-12 mt-15  mr-30">
+              <div className="flex flex-col items-center lg:items-end space-y-12 mt-15 mr-30">
                 {/* Stats */}
                 <div className="flex gap-8">
                   <div className="text-center">
-                    <p className="text-[1.4rem] font-bold text-gray-900">120</p>
-                    <p className="text-md text-gray-600">Followers</p>
+                    <p className="font-bold text-[1.4rem] text-gray-900">120</p>
+                    <p className="text-gray-600 text-md">Followers</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-[1.4rem] font-bold text-gray-900">85</p>
-                    <p className="text-md text-gray-600">Following</p>
+                    <p className="font-bold text-[1.4rem] text-gray-900">85</p>
+                    <p className="text-gray-600 text-md">Following</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-[1.4rem] font-bold text-gray-900">45</p>
-                    <p className="text-md text-gray-600">Posts</p>
+                    <p className="font-bold text-[1.4rem] text-gray-900">45</p>
+                    <p className="text-gray-600 text-md">Posts</p>
                   </div>
                 </div>
 
                 {/* Social Links */}
-                <div className="flex gap-16 text-2xl text-gray-600">
+                <div className="flex gap-16 text-gray-600 text-2xl">
                   <Link
                     href="#"
                     className="hover:text-gray-900 transition-colors"
@@ -219,6 +218,12 @@ const MyProfile = () => {
                   >
                     <FaTwitter />
                   </Link>
+                  <Link
+                    href="#"
+                    className="hover:text-blue-400 transition-colors"
+                  >
+                    <faMedium />
+                  </Link>
                 </div>
               </div>
             </div>
@@ -227,12 +232,12 @@ const MyProfile = () => {
           {/* <p className="" onChange={() => {}}>
             {`${stats?.postsCount}/0` || "1/0"}
           </p> */}
-          <div className="grid items-center justify-center mt-10 px-auto space-y-10">
+          <div className="justify-center items-center space-y-10 grid mt-10 px-auto">
             {/* Posts */}
-            <input type="text" className="rounded-xl w-245 h-90 bg-gray-400" />
-            <input type="text" className="rounded-xl w-245 h-90 bg-gray-400" />
-            <input type="text" className="rounded-xl w-245 h-90 bg-gray-400" />
-            <input type="text" className="rounded-xl w-245 h-90 bg-gray-400" />
+            <input type="text" className="bg-gray-400 rounded-xl w-245 h-90" />
+            <input type="text" className="bg-gray-400 rounded-xl w-245 h-90" />
+            <input type="text" className="bg-gray-400 rounded-xl w-245 h-90" />
+            <input type="text" className="bg-gray-400 rounded-xl w-245 h-90" />
           </div>
         </main>
         {/* <p>My Profile dashboard</p>
