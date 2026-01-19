@@ -8,6 +8,9 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
+import { motion } from "framer-motion";
+
+import { FloatingIcons } from "../../components/FloatingIcons";
 
 import { ScrollLine } from "../../animations/ScrollingLine";
 import { Navigate } from "react-router-dom";
@@ -53,10 +56,43 @@ const FullStack = () => {
 
   return (
     <React.Fragment>
-      <header className="min-h-screen mt-60">
-        <h1 className="flex justify-center items-center text-xl font-medium text-sky-800 py-6 sm:text-2xl md:text-4xl lg:text-5xl">
+      <header className="min-h-screen mt-40">
+        {/* <h1 className="flex justify-center items-center text-xl font-medium text-sky-800 py-6 sm:text-2xl md:text-4xl lg:text-5xl">
           Full Stack Development
+        </h1> */}
+        <FloatingIcons />
+
+        <h1 className="flex justify-center items-center">
+          <motion.h1
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.3 }}
+            className=" text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"
+          >
+            <div className="grid justify-center items-center">
+              <span className="mx-auto mb-1 bg-linear-to-l from-purple-500 to-purple-800 bg-clip-text text-transparent">
+                Full Stack
+              </span>
+              <span className="bg-linear-to-r from-purple-800 to-purple-400 bg-clip-text text-transparent">
+                Development
+              </span>
+            </div>
+          </motion.h1>
         </h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-6 max-w-3xl text-lg font-semibold sm:text-xl text-muted-foreground mx-auto"
+        >
+          <span className="bg-linear-to-tr from-gray-500 to-gray-800  text-center block max-w-3xl mx-auto bg-clip-text text-transparent">
+            Master every layer of modern web development—from crafting intuitive
+            frontends to architecting scalable backends exploring DB's,
+            APIs, Cloud infrastructure.
+          </span>
+          
+        </motion.p>
       </header>
       <main>
         <aside className="fixed left-0 top-0">
