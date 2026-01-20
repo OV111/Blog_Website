@@ -3,15 +3,16 @@ import { motion } from "framer-motion";
 import {
   JavaScriptIcon,
   CSharpIcon,
+  DotNetIcon,
   DatabaseIcon,
   PythonIcon,
-  //   ApiIcon,
+  MongoDBIcon,
   AWSIcon,
-  DockerIcon,
   ReactIcon,
-  NodeJSIcon,
-  GitIcon,
+  NodeIcon,
   RedisIcon,
+  VercelIcon,
+  DockerIcon,
 } from "../icons/techIcon";
 import Icon from "@mui/material/Icon";
 
@@ -44,28 +45,155 @@ function FloatingIcon({ icon, initialX, initialY, duration, delay, size }) {
   );
 }
 
-const icons = [
-  {
-    Icon: JavaScriptIcon,
-    x: "8%",
-    y: "20%",
-    size: 60,
-    duration: 8,
-    delay: 0.3,
-  },
-  { Icon: CSharpIcon, x: "10%", y: "45%", size: 56, duration: 9, delay: 0.7 },
-  { Icon: DatabaseIcon, x: "17%", y: "65%", size: 52, duration: 7, delay: 1 },
-    { Icon: PythonIcon, x: "30%", y: "80%", size: 60, duration: 10, delay: 0.3 },
-  { Icon: RedisIcon, x: "20%", y: "25%", size: 58, duration: 8.5, delay: 1.5 },
-  { Icon: DockerIcon, x: "85%", y: "55%", size: 58, duration: 8.5, delay: 0.6 },
-  { Icon: AWSIcon, x: "40%", y: "15%", size: 54, duration: 8.5, delay: 1.6 },
+const iconsByCategory = {
+  fullstack: [
+    { Icon: ReactIcon, x: "15%", y: "20%", size: 56, duration: 8, delay: 0.3 },
+    {
+      Icon: JavaScriptIcon,
+      x: "75%",
+      y: "25%",
+      size: 56,
+      duration: 9,
+      delay: 0.7,
+    },
+    // { Icon: TypeScriptIcon, x: "25%", y: "65%", size: 52, duration: 7, delay: 1 },
+    // { Icon: TailwindIcon, x: "80%", y: "70%", size: 58, duration: 8.5, delay: 1.5 },
+    // { Icon: FigmaIcon, x: "45%", y: "15%", size: 54, duration: 9.5, delay: 0.5 },
+    {
+      Icon: VercelIcon,
+      x: "45%",
+      y: "15%",
+      size: 56,
+      duration: 9.5,
+      delay: 0.5,
+    },
+    { Icon: NodeIcon, x: "5%", y: "15%", size: 56, duration: 9.5, delay: 0.5 },
+    {
+      Icon: CSharpIcon,
+      x: "20%",
+      y: "15%",
+      size: 56,
+      duration: 9.5,
+      delay: 0.5,
+    },
+    {
+      Icon: DotNetIcon,
+      x: "20%",
+      y: "45%",
+      size: 56,
+      duration: 9.5,
+      delay: 0.5,
+    },
+    {
+      Icon: MongoDBIcon,
+      x: "20%",
+      y: "85%",
+      size: 56,
+      duration: 9.5,
+      delay: 0.5,
+    },
 
-  { Icon: ReactIcon, x: "80%", y: "30%", size: 54, duration: 9.5, delay: 0.5 },
-  { Icon: NodeJSIcon, x: "70%", y: "12%", size: 50, duration: 7.5, delay: 1.2 },
-  { Icon: GitIcon, x: "60%", y: "85%", size: 52, duration: 9, delay: 0.3 },
-];
+    {
+      Icon: DockerIcon,
+      x: "80%",
+      y: "85%",
+      size: 56,
+      duration: 9.5,
+      delay: 0.5,
+    },
 
-export function FloatingIcons() {
+    { Icon: AWSIcon, x: "50%", y: "45%", size: 56, duration: 9.5, delay: 0.5 },
+
+    {
+      Icon: DatabaseIcon,
+      x: "40%",
+      y: "95%",
+      size: 56,
+      duration: 9.5,
+      delay: 0.5,
+    },
+  ],
+
+  backend: [
+    { Icon: NodeIcon, x: "20%", y: "30%", size: 60, duration: 8, delay: 0.3 },
+    { Icon: PythonIcon, x: "70%", y: "20%", size: 56, duration: 9, delay: 0.7 },
+    { Icon: CSharpIcon, x: "30%", y: "70%", size: 52, duration: 7, delay: 1 },
+    {
+      Icon: DatabaseIcon,
+      x: "75%",
+      y: "65%",
+      size: 58,
+      duration: 8.5,
+      delay: 1.5,
+    },
+    { Icon: RedisIcon, x: "20%", y: "5%", size: 54, duration: 9.5, delay: 0.5 },
+  ],
+
+  database: [
+    {
+      Icon: DatabaseIcon,
+      x: "25%",
+      y: "25%",
+      size: 60,
+      duration: 8,
+      delay: 0.3,
+    },
+    // { Icon: PostgreSQLIcon, x: "70%", y: "30%", size: 56, duration: 9, delay: 0.7 },
+    // { Icon: MongoDBIcon, x: "35%", y: "70%", size: 52, duration: 7, delay: 1 },
+    {
+      Icon: RedisIcon,
+      x: "75%",
+      y: "60%",
+      size: 58,
+      duration: 8.5,
+      delay: 1.5,
+    },
+  ],
+
+  devops: [
+    // { Icon: DockerIcon, x: "20%", y: "35%", size: 60, duration: 8, delay: 0.3 },
+    // { Icon: KubernetesIcon, x: "70%", y: "25%", size: 56, duration: 9, delay: 0.7 },
+    // { Icon: AWSIcon, x: "30%", y: "65%", size: 52, duration: 7, delay: 1 },
+    // { Icon: GitIcon, x: "75%", y: "70%", size: 58, duration: 8.5, delay: 1.5 },
+  ],
+
+  // all: [
+  //   { Icon: JavaScriptIcon, x: "8%", y: "20%", size: 60, duration: 8, delay: 0.3 },
+  //   { Icon: CSharpIcon, x: "10%", y: "45%", size: 56, duration: 9, delay: 0.7 },
+  //   { Icon: DatabaseIcon, x: "17%", y: "65%", size: 52, duration: 7, delay: 1 },
+  //   { Icon: PythonIcon, x: "30%", y: "80%", size: 60, duration: 10, delay: 0.3 },
+  //   { Icon: RedisIcon, x: "20%", y: "25%", size: 58, duration: 8.5, delay: 1.5 },
+  //   { Icon: DockerIcon, x: "85%", y: "55%", size: 58, duration: 8.5, delay: 0.6 },
+  //   { Icon: AWSIcon, x: "40%", y: "15%", size: 54, duration: 8.5, delay: 1.6 },
+  //   { Icon: ReactIcon, x: "80%", y: "30%", size: 54, duration: 9.5, delay: 0.5 },
+  //   { Icon: NodeJSIcon, x: "70%", y: "12%", size: 50, duration: 7.5, delay: 1.2 },
+  //   { Icon: GitIcon, x: "60%", y: "85%", size: 52, duration: 9, delay: 0.3 },
+  // ],
+};
+
+// const icons = [
+//   {
+//     Icon: JavaScriptIcon,
+//     x: "8%",
+//     y: "20%",
+//     size: 60,
+//     duration: 8,
+//     delay: 0.3,
+//   },
+//   { Icon: CSharpIcon, x: "10%", y: "45%", size: 56, duration: 9, delay: 0.7 },
+//   { Icon: DatabaseIcon, x: "17%", y: "65%", size: 52, duration: 7, delay: 1 },
+//     { Icon: PythonIcon, x: "30%", y: "80%", size: 60, duration: 10, delay: 0.3 },
+//   { Icon: RedisIcon, x: "20%", y: "25%", size: 58, duration: 8.5, delay: 1.5 },
+//   { Icon: DockerIcon, x: "85%", y: "55%", size: 58, duration: 8.5, delay: 0.6 },
+//   { Icon: AWSIcon, x: "40%", y: "15%", size: 54, duration: 8.5, delay: 1.6 },
+
+//   { Icon: ReactIcon, x: "80%", y: "30%", size: 54, duration: 9.5, delay: 0.5 },
+//   { Icon: NodeJSIcon, x: "70%", y: "12%", size: 50, duration: 7.5, delay: 1.2 },
+//   { Icon: GitIcon, x: "60%", y: "85%", size: 52, duration: 9, delay: 0.3 },
+// ];
+
+export function FloatingIcons({ category }) {
+  const icons = iconsByCategory[category] || iconsByCategory.all;
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
