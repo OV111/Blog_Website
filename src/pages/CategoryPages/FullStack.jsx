@@ -23,6 +23,7 @@ const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const ReadMore = lazy(() => import("../../components/ReadMore"));
 
 const FullStack = () => {
+  const [categoryPage, setCategoryPage] = useState("fullstack");
   const location = useLocation();
   const navigate = useNavigate();
   const { auth } = useAuthStore();
@@ -60,7 +61,7 @@ const FullStack = () => {
         {/* <h1 className="flex justify-center items-center text-xl font-medium text-sky-800 py-6 sm:text-2xl md:text-4xl lg:text-5xl">
           Full Stack Development
         </h1> */}
-        <FloatingIcons />
+        <FloatingIcons category={categoryPage} />
 
         <h1 className="flex justify-center items-center">
           <motion.h1
@@ -88,10 +89,9 @@ const FullStack = () => {
         >
           <span className="bg-linear-to-tr from-gray-500 to-gray-800  text-center block max-w-3xl mx-auto bg-clip-text text-transparent">
             Master every layer of modern web development—from crafting intuitive
-            frontends to architecting scalable backends exploring DB's,
-            APIs, Cloud infrastructure.
+            frontends to architecting scalable backends exploring DB's, APIs,
+            Cloud infrastructure.
           </span>
-          
         </motion.p>
       </header>
       <main>
