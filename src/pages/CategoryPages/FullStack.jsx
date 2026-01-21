@@ -87,7 +87,7 @@ const FullStack = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-6 max-w-3xl text-lg font-semibold sm:text-xl text-muted-foreground mx-auto"
         >
-          <span className="bg-linear-to-tr from-gray-500 to-gray-800  text-center block max-w-3xl mx-auto bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-gray-600 via-purple-600 to-indigo-400 text-center block max-w-3xl mx-auto bg-clip-text text-transparent">
             Master every layer of modern web development—from crafting intuitive
             frontends to architecting scalable backends exploring DB's, APIs,
             Cloud infrastructure.
