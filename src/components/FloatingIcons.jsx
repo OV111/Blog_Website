@@ -28,6 +28,8 @@ import {
   CapacitorIcon,
   GraphQL,
   ExpoIcon,
+  FlaskIcon,
+  FlutterIcon,
 } from "../icons/techIcon";
 import Icon from "@mui/material/Icon";
 
@@ -71,7 +73,7 @@ const iconsByCategory = {
       duration: 7.2,
       delay: 0.3,
     },
-    { Icon: ReactIcon, x: "8%", y: "20%", size: 54, duration: 11, delay: 0.3 },
+    { Icon: ReactIcon, x: "8%", y: "20%", size: 52, duration: 11, delay: 0.3 },
     {
       Icon: JavaScriptIcon,
       x: "75%",
@@ -145,6 +147,14 @@ const iconsByCategory = {
 
   backend: [
     {
+      Icon: FlaskIcon,
+      x: "55%",
+      y: "14%",
+      size: 52,
+      duration: 11.5,
+      delay: 1.1,
+    },
+    {
       Icon: JavaIcon,
       x: "15%",
       y: "44%",
@@ -213,6 +223,14 @@ const iconsByCategory = {
     { Icon: GraphQL, x: "86%", y: "25%", size: 56, delay: 0.2, duration: 12 },
 
     { Icon: XcodeIcon, x: "6%", y: "35%", size: 56, delay: 0.2, duration: 12 },
+    {
+      Icon: FlutterIcon,
+      x: "10%",
+      y: "166%",
+      size: 56,
+      delay: 0.2,
+      duration: 12,
+    },
 
     {
       Icon: SwiftIcon,
