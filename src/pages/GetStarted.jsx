@@ -34,8 +34,8 @@ const GetStarted = () => {
       const result = await response.json();
 
       if (response.ok) {
-        if(result.token) {
-          localStorage.setItem("JWT",result.token);
+        if (result.token) {
+          localStorage.setItem("JWT", result.token);
         }
         toast.success(`${result.message}`, { duration: 900 });
         setTimeout(() => {
@@ -66,159 +66,175 @@ const GetStarted = () => {
   return (
     <React.Fragment>
       <Toaster position="top-center" reverseOrder={false} />
-      <div className="max-w-xl mx-auto mt-8 p-8 bg-white rounded-2xl shadow-sm mb-8 dark:bg">
-        <h2 className="text-4xl font-bold text-center mb-8 text-purple-700 dark:text-white">
-          {isSignedUp ? "Sign Up" : "Log In"}
-        </h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-          {/* First Name and Last Name */}
-          {isSignedUp && (
-            <React.Fragment>
-              <div className="flex gap-4">
-                <div className="flex-1">
-                  <label className="block mb-1 font-medium">First Name</label>
-                  <input
-                    placeholder="Enter Your First Name"
-                    {...register("firstName", {
-                      required: "First name is required.",
-                    })}
-                    className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
-                      errors.firstName ? "border-red-500" : "border-gray-300"
-                    }`}
-                  />
-                  {errors.firstName && (
-                    <p className="text-red-500 text-sm">
-                      {errors.firstName.message}
-                    </p>
-                  )}
+      <div className="mt-12 w-full  px-4 sm:px-6 md:px-8">
+        <div className="max-w-xl mx-auto mt-4 sm:mt-6 md:mt-8 p-4 sm:p-6 md:p-8 bg-white rounded-2xl shadow-sm mb-4 sm:mb-6 md:mb-8 dark:bg">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-bold text-center mb-4 sm:mb-6 md:mb-8 text-purple-700 dark:text-purple-600">
+            {isSignedUp ? "Sign Up" : "Log In"}
+          </h2>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+            {isSignedUp && (
+              <React.Fragment>
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                  <div className="flex-1">
+                    <label className="block mb-1 font-medium text-sm sm:text-base">
+                      First Name
+                    </label>
+                    <input
+                      placeholder="Enter Your First Name"
+                      {...register("firstName", {
+                        required: "First name is required.",
+                      })}
+                      className={`w-full px-3 sm:px-4 py-2 text-sm sm:text-base border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
+                        errors.firstName ? "border-red-500" : "border-gray-300"
+                      }`}
+                    />
+                    {errors.firstName && (
+                      <p className="text-red-500 text-xs sm:text-sm mt-1">
+                        {errors.firstName.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="flex-1">
+                    <label className="block mb-1 font-medium text-sm sm:text-base">
+                      Last Name
+                    </label>
+                    <input
+                      placeholder="Enter Your Last Name"
+                      {...register("lastName", {
+                        required: "Last name is required.",
+                      })}
+                      className={`w-full px-3 sm:px-4 py-2 text-sm sm:text-base border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
+                        errors.lastName ? "border-red-500" : "border-gray-300"
+                      }`}
+                    />
+                    {errors.lastName && (
+                      <p className="text-red-500 text-xs sm:text-sm mt-1">
+                        {errors.lastName.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
-
-                <div className="flex-1">
-                  <label className="block mb-1 font-medium">Last Name</label>
-                  <input
-                    placeholder="Enter Your Last Name"
-                    {...register("lastName", {
-                      required: "Last name is required.",
-                    })}
-                    className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
-                      errors.lastName ? "border-red-500" : "border-gray-300"
-                    }`}
-                  />
-                  {errors.lastName && (
-                    <p className="text-red-500 text-sm">
-                      {errors.lastName.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </React.Fragment>
-          )}
-
-          {/* Email */}
-          <label className="block mb-1 font-medium">Enter Email</label>
-          <input
-            type="email"
-            placeholder="Enter Your Email"
-            {...register("email", { required: "Email is required." })}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
-              errors.email ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {errors.email && (
-            <p className="text-red-500 text-sm">{errors.email.message}</p>
-          )}
-
-          {/* Password */}
-          <div className="relative">
-            <label className="block mb-1 font-medium">Enter Password</label>
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Enter Your Password"
-              {...register("password", {
-                required: "Password is required!",
-                minLength: {
-                  value: 6,
-                  message: "Password must contain at least 6 chars!",
-                },
-              })}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
-                errors.password ? "border-red-500" : "border-gray-300"
-              }`}
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute top-10 right-5 text-gray-400 cursor-pointer"
-            >
-              {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
-            </button>
-            {errors.password && (
-              <p className="text-red-500 text-sm">{errors.password.message}</p>
+              </React.Fragment>
             )}
-          </div>
 
-          {isSignedUp && (
-            <React.Fragment>
-              {/* Confirm Password */}
-              <div className="relative">
-                <label className="block mb-1 font-medium">
-                  Confirm Password
-                </label>
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Confirm Password"
-                  {...register("confirmPassword", {
-                    required: "Please confirm your password!",
-                    validate: (value) => {
-                      return (
-                        value === getValues("password") ||
-                        "Password don't match!"
-                      );
-                    },
-                  })}
-                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
-                    errors.confirmPassword
-                      ? "border-red-500"
-                      : "border-gray-300"
-                  }`}
-                />
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowConfirmPassword(!showConfirmPassword);
-                  }}
-                  className="absolute top-10 right-5 text-gray-400 cursor-pointer"
-                >
-                  {showConfirmPassword ? (
-                    <Eye size={20} />
-                  ) : (
-                    <EyeOff size={20} />
-                  )}
-                </button>
-                {errors.confirmPassword && (
-                  <p className="text-red-500 text-sm">
-                    {errors.confirmPassword.message}
-                  </p>
+            <div>
+              <label className="block mb-1 font-medium text-sm sm:text-base">
+                Enter Email
+              </label>
+              <input
+                type="email"
+                placeholder="Enter Your Email"
+                {...register("email", { required: "Email is required." })}
+                className={`w-full px-3 sm:px-4 py-2 text-sm sm:text-base border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
+                  errors.email ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-xs sm:text-sm mt-1">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+
+            <div className="relative">
+              <label className="block mb-1 font-medium text-sm sm:text-base">
+                Enter Password
+              </label>
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter Your Password"
+                {...register("password", {
+                  required: "Password is required!",
+                  minLength: {
+                    value: 6,
+                    message: "Password must contain at least 6 chars!",
+                  },
+                })}
+                className={`w-full px-3 sm:px-4 py-2 text-sm sm:text-base border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
+                  errors.password ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute top-9 sm:top-10 right-3 sm:right-5 text-gray-400 cursor-pointer"
+              >
+                {showPassword ? (
+                  <Eye size={18} className="sm:w-5 sm:h-5" />
+                ) : (
+                  <EyeOff size={18} className="sm:w-5 sm:h-5" />
                 )}
-              </div>
-            </React.Fragment>
-          )}
-          <button
-            type="submit"
-            className="w-full mt-3  py-2 rounded-lg text-xl mx-auto text-white font-bold   bg-fuchsia-600 cursor-pointer hover:bg-fuchsia-700 transition-colors"
-          >
-            {isSignedUp ? "Sign Up " : "Login"}
-          </button>
-        </form>
+              </button>
+              {errors.password && (
+                <p className="text-red-500 text-xs sm:text-sm mt-1">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
 
-        <p
-          onClick={ToggleLink}
-          className="text-center text-blue-500 mt-4 items-center cursor-pointer hover:underline"
-        >
-          {isSignedUp
-            ? "Already have an account? Login"
-            : "Don't have an Account? Sign Up"}
-        </p>
+            {isSignedUp && (
+              <React.Fragment>
+                <div className="relative">
+                  <label className="block mb-1 font-medium text-sm sm:text-base">
+                    Confirm Password
+                  </label>
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm Password"
+                    {...register("confirmPassword", {
+                      required: "Please confirm your password!",
+                      validate: (value) => {
+                        return (
+                          value === getValues("password") ||
+                          "Password don't match!"
+                        );
+                      },
+                    })}
+                    className={`w-full px-3 sm:px-4 py-2 text-sm sm:text-base border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
+                      errors.confirmPassword
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowConfirmPassword(!showConfirmPassword);
+                    }}
+                    className="absolute top-9 sm:top-10 right-3 sm:right-5 text-gray-400 cursor-pointer"
+                  >
+                    {showConfirmPassword ? (
+                      <Eye size={18} className="sm:w-5 sm:h-5" />
+                    ) : (
+                      <EyeOff size={18} className="sm:w-5 sm:h-5" />
+                    )}
+                  </button>
+                  {errors.confirmPassword && (
+                    <p className="text-red-500 text-xs sm:text-sm mt-1">
+                      {errors.confirmPassword.message}
+                    </p>
+                  )}
+                </div>
+              </React.Fragment>
+            )}
+            <button
+              type="submit"
+              className="text-base sm:text-lg md:text-xl w-full mt-3 py-2 sm:py-2.5 rounded-lg mx-auto text-white font-bold bg-fuchsia-600 cursor-pointer hover:bg-fuchsia-700 transition-colors"
+            >
+              {isSignedUp ? "Sign Up " : "Login"}
+            </button>
+          </form>
+
+          <p
+            onClick={ToggleLink}
+            className="text-center text-sm sm:text-base text-blue-500 mt-3 sm:mt-4 items-center cursor-pointer hover:underline"
+          >
+            {isSignedUp
+              ? "Already have an account? Login"
+              : "Don't have an Account? Sign Up"}
+          </p>
+        </div>
       </div>
     </React.Fragment>
   );
