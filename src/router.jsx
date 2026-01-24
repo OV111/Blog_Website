@@ -2,12 +2,11 @@ import React, { lazy } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
-import CategoryLayout from "./layouts/CategoriesLayout";
 import ProtectedMyProfile from "./routes/ProtectedMyProfile";
 import ReadMore from "./components/ReadMore";
+import GameDev from "./pages/CategoryPages/GameDev";
 // import ProtectedRoutes from "./routes/ProtectedRoutes";
 
-// My Profile
 const Followers = lazy(() => import("./pages/My-Profile/Followers"));
 const Favorites = lazy(() => import("./pages/My-Profile/Favorites"));
 const Notifications = lazy(() => import("./pages/My-Profile/Notifications"));
@@ -93,35 +92,37 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "categories",
+        errorElement: <NotFound />,
+        children: [
+          { path: "fullstack", element: <FullStack /> },
+          // ! check if it have a meaning (give a sense)
+          // {path:"fullstack/default",element:<FullStack/>},
+          { path: "fullstack/post/:id", element: <ReadMore /> },
+
+          { path: "backend", element: <Backend /> },
+          { path: "backend/post/:id", element: <ReadMore /> },
+
+          { path: "mobile", element: <Mobile /> },
+          { path: "mobile/post/:id", element: <ReadMore /> },
+
+          { path: "ai&ml", element: <AIandML /> },
+          { path: "ai&ml/post/:id", element: <ReadMore /> },
+
+          { path: "qa", element: <QA /> },
+          { path: "qa/post/:id", element: <ReadMore /> },
+
+          { path: "devops", element: <DevOps /> },
+          { path: "devops/post/:id", element: <ReadMore /> },
+
+          { path: "gamedev", element: <GameDev /> },
+          { path: "gamedev/post/:id", element: <ReadMore /> },
+        ],
+      },
     ],
   },
 
-  {
-    path: "categories",
-    element: <CategoryLayout />,
-    errorElement: <NotFound />,
-    children: [
-      { path: "fullstack", element: <FullStack /> },
-      // ! check if it have a meaning (give a sense)
-      {path:"fullstack/default",element:<FullStack/>},
-      { path: "fullstack/post/:id", element: <ReadMore /> },
-
-      { path: "backend", element: <Backend /> },
-      { path: "backend/post/:id", element: <ReadMore /> },
-
-      { path: "mobile", element: <Mobile /> },
-      { path: "mobile/post/:id", element: <ReadMore /> },
-
-      { path: "ai&ml", element: <AIandML /> },
-      { path: "ai&ml/post/:id", element: <ReadMore /> },
-
-      { path: "qa", element: <QA /> },
-      { path: "qa/post/:id", element: <ReadMore /> },
-
-      { path: "devops", element: <DevOps /> },
-      { path: "devops/post/:id", element: <ReadMore /> },
-    ],
-  },
   { path: "*", element: <NotFound /> },
 ]);
 export default router;
