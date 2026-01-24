@@ -2,17 +2,19 @@ import React, { useEffect } from "react";
 import { lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import TextType from "../components/TextType";
-import ShinyText from "../components/ShinyText";
+// import ShinyText from "../components/ShinyText";
 import GradientText from "../components/GradientText";
 import LoadingSuspense from "../components/LoadingSuspense";
 
 import { Toaster, toast } from "react-hot-toast";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import useAuthStore from "../context/useAuthStore";
 
-// import SplashCursor from "../components/SplashCursor";
-const SplashCursor = lazy(() => import("../components/SplashCursor"));
+import SplashCursor from "../components/SplashCursor";
+// const SplashCursor = lazy(() => import("../components/SplashCursor"));
 
 const Home = () => {
+  const { auth } = useAuthStore();
   const acceptCookies = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/accept-cookies`, {
@@ -68,6 +70,7 @@ const Home = () => {
             reverseOrder={false}
             className="wide-toast-container"
           ></Toaster>
+
           <Suspense fallback={<LoadingSuspense />}>
             {/* <SplashCursor/> */}
           </Suspense>
@@ -100,7 +103,9 @@ const Home = () => {
             {/* </div> */}
             <div>
               <button className="justify-center items-center bg-fuchsia-700 hover:bg-fuchsia-600 dark:bg-fuchsia-550 hover:shadow-lg mt-2 lg:mt-2 ml-3 px-6 lg:px-10 py-1 lg:py-2 border-none rounded-xl font-medium text-gray-100 text-whitetransition hover:text-white text-lg lg:text-2xl hover:scale-102 cursor-pointer transform">
-                <Link to="get-started">Start Reading</Link>
+                <Link to={auth ? "my-profile" : "get-started"}>
+                  Start Reading
+                </Link>
                 {/* <ShinyText
                 text="Start Reading"
                 disabled={false}
@@ -113,7 +118,7 @@ const Home = () => {
         </div>
         <div>
           <img
-            src="src/assets/componentImage.png"
+            src="src/assets/Gemini_Generated_Image_sx3kfzsx3kfzsx3k.png"
             alt="image"
             className="w-120 h-120"
           />
