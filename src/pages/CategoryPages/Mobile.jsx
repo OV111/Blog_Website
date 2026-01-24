@@ -71,10 +71,8 @@ const Mobile = () => {
           className="mt-6 max-w-3xl text-lg font-semibold sm:text-xl text-muted-foreground mx-auto"
         >
           <span className="bg-gradient-to-r from-slate-400 via-purple-600 to-indigo-400 text-center block max-w-3xl mx-auto bg-clip-text text-transparent">
-            Develop robust server-side applications—craft scalable APIs and web
-            services, design efficient database schemas across relational and
-            NoSQL systems, implement secure authentication and authorization
-            mechanisms
+              Explore modern mobile development from end to end — craft responsive, user-friendly interfaces, handle data and APIs, and connect your apps to scalable, cloud-powered backends.
+
           </span>
         </motion.p>
       </header>

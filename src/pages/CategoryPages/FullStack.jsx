@@ -1,3 +1,5 @@
+/* This code snippet is a React component named `FullStack` that represents a page for displaying full
+stack development content. Here's a breakdown of what the code is doing: */
 import React, { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";

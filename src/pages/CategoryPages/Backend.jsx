@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import useAuthStore from "../../context/useAuthStore";
-import { motion } from "framer-motion";
+  import { motion } from "framer-motion";
 
 import { FloatingIcons } from "../../components/FloatingIcons";
 const LoadingSuspense = lazy(() => import("../../components/LoadingSuspense"));
@@ -61,7 +61,7 @@ const Backend = () => {
           </motion.h1>
         </h1>
 
-         <motion.p
+        <motion.p
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.4 }}
