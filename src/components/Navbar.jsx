@@ -68,10 +68,19 @@ const Navbar = () => {
     }
   };
 
+  const closeDropdown = () => {
+    setShowDropdown(false);
+  };
+
+  const closeDropdownMobile = () => {
+    setShowDropdownMobile(false);
+    setIsOpen(false);
+  };
+
   return (
     <React.Fragment>
       <div>
-        <nav className="relative space-x-1 flex items-center justify-between px-5 gap-12 py-2 shadow z-1 w-full sm:w-full lg:w-full bg-gradient-to-r from-purple-800 to-purple-900  dark:from-purple-700 dark:to-purple-800 lg:gap-10 lg:py-4">
+        <nav className="relative space-x-1 flex items-center justify-between px-5 gap-12 py-2 shadow z-1 w-full sm:w-full lg:w-full bg-linear-to-r from-purple-700 to-purple-900  dark:from-purple-700 dark:to-purple-800 lg:gap-10 lg:py-4">
           <h2 className="text-base font-bold my-2 lg:my-1 w-[30px] cursor-pointer text-white sm:text-xl md:text-xl lg:text-2xl lg:w-auto lg:ml-3">
             <NavLink to="/">Devs Blog</NavLink>
           </h2>
@@ -94,22 +103,42 @@ const Navbar = () => {
               {showDropdown && (
                 <ul className="absolute top-full mt-2 left-0 text-black bg-gray-200 dark:bg-gray-600 dark:text-white shadow-md rounded w-40 py-2 z-10">
                   <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                    <NavLink to="/categories/fullstack">Full Stack</NavLink>
+                    <NavLink to="/categories/fullstack" onClick={closeDropdown}>
+                      Full Stack
+                    </NavLink>
                   </li>
                   <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                    <NavLink to="/categories/backend">Backend</NavLink>
+                    <NavLink to="/categories/backend" onClick={closeDropdown}>
+                      Backend
+                    </NavLink>
                   </li>
                   <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                    <NavLink to="/categories/mobile">Mobile</NavLink>
+                    <NavLink to="/categories/mobile" onClick={closeDropdown}>
+                      Mobile
+                    </NavLink>
                   </li>
                   <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                    <NavLink to="/categories/ai&ml">AI & ML</NavLink>
+                    <NavLink to="/categories/ai&ml" onClick={closeDropdown}>
+                      AI & ML
+                    </NavLink>
                   </li>
                   <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                    <NavLink to="/categories/qa">Quality Assurance</NavLink>
+                    <NavLink to="/categories/qa" onClick={closeDropdown}>
+                      Quality Assurance
+                    </NavLink>
                   </li>
                   <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                    <NavLink to="/categories/devops">DevOps</NavLink>
+                    <NavLink to="/categories/devops" onClick={closeDropdown}>
+                      DevOps
+                    </NavLink>
+                  </li>
+                  <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <NavLink
+                      to="/categories/gamedev"
+                      onClick={closeDropdownMobile}
+                    >
+                      Game Dev
+                    </NavLink>
                   </li>
                 </ul>
               )}
@@ -174,28 +203,73 @@ const Navbar = () => {
                   {showDropdownMobile && (
                     <ul className="absolute top-full mt-2 left-0 text-black bg-gray-200 dark:bg-gray-600 dark:text-white shadow-md rounded w-40 py-2 z-10">
                       <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <NavLink to="/categories/fullstack">Full Stack</NavLink>
+                        <NavLink
+                          to="/categories/fullstack"
+                          onClick={closeDropdownMobile}
+                        >
+                          Full Stack
+                        </NavLink>
                       </li>
                       <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <NavLink to="/categories/backend">Backend</NavLink>
+                        <NavLink
+                          to="/categories/backend"
+                          onClick={closeDropdownMobile}
+                        >
+                          Backend
+                        </NavLink>
                       </li>
                       <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <NavLink to="/categories/mobile">Mobile</NavLink>
+                        <NavLink
+                          to="/categories/mobile"
+                          onClick={closeDropdownMobile}
+                        >
+                          Mobile
+                        </NavLink>
                       </li>
                       <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <NavLink to="/categories/ai&ml">AI & ML</NavLink>
+                        <NavLink
+                          to="/categories/ai&ml"
+                          onClick={closeDropdownMobile}
+                        >
+                          AI & ML
+                        </NavLink>
                       </li>
                       <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <NavLink to="/categories/qa">Quality Assurance</NavLink>
+                        <NavLink
+                          to="/categories/qa"
+                          onClick={closeDropdownMobile}
+                        >
+                          Quality Assurance
+                        </NavLink>
+                      </li>
+                      <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <NavLink
+                          to="/categories/devops"
+                          onClick={closeDropdownMobile}
+                        >
+                          DevOps
+                        </NavLink>
+                      </li>
+                      <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <NavLink
+                          to="/categories/gamedev"
+                          onClick={closeDropdownMobile}
+                        >
+                          Game Dev
+                        </NavLink>
                       </li>
                     </ul>
                   )}
                 </li>
                 <li className="font-medium text-base  hover:text-purple-300 dark:hover:text-purple-300 transition">
-                  <NavLink to="about">About</NavLink>
+                  <NavLink to="about" onClick={() => setIsOpen(false)}>
+                    About
+                  </NavLink>
                 </li>
                 <li className="font-medium text-base  hover:text-purple-300 dark:hover:text-purple-300 transition">
-                  <NavLink to="privacy">Privacy</NavLink>
+                  <NavLink to="privacy" onClick={() => setIsOpen(false)}>
+                    Privacy
+                  </NavLink>
                 </li>
                 {auth && (
                   <li className="font-medium text-base  hover:text-purple-300 dark:hover:text-purple-300 transition cursor-pointer lg:text-lg">

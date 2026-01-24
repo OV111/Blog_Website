@@ -3,10 +3,14 @@ import FuzzyText from "./FuzzyText";
 
 const NotFound = () => {
   return (
-    <div className="grid items-center justify-center mt-26 text-center gap-10">
-      <div className="translate-x-38">
+    <div className="grid justify-center gap-2 sm:gap-6 md:gap-8 my-6 sm:my-8 md:my-12 text-center px-4">
+      {/* <div className="
+      translate-x-38
+      "> */}
+      <div className="flex justify-center items-center text-center">
         <FuzzyText
-          fontSize="clamp(6rem,14vw,14rem)"
+          // fontSize="clamp(6rem,14vw,14rem)"
+          fontSize="clamp(4rem, 14vw, 14rem)"
           baseIntensity={0.3}
           hoverIntensity={0.5}
           enableHover={true}
@@ -14,9 +18,11 @@ const NotFound = () => {
           404
         </FuzzyText>
       </div>
-      <FuzzyText baseIntensity={0.3} hoverIntensity={0.5} enableHover={true}>
-        Not found!
-      </FuzzyText>
+      <div>
+        <FuzzyText baseIntensity={0.3} hoverIntensity={0.5} enableHover={true}>
+          Not found!
+        </FuzzyText>
+      </div>
     </div>
   );
 };
