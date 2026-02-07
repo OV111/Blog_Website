@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import DeleteAccount from "../DeleteAccount";
 import { Link } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -7,8 +7,9 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Toaster, toast } from "react-hot-toast";
 // import LoadingSuspense from "../components/LoadingSuspense";
+import SideBar from "./components/SideBar";
 import FormLabel from "@mui/material/FormLabel";
-import TextField from '@mui/material/TextField';
+import TextField from "@mui/material/TextField";
 import {
   FaUserCircle,
   FaBell,
@@ -19,140 +20,118 @@ import {
   FaEdit,
   FaLocationArrow,
 } from "react-icons/fa";
-import { faMedium } from "@fortawesome/free-brands-svg-icons";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Settings = () => {
-  const [fname, setFname] = useState("");
-  const [lname, setLname] = useState("");
-  const [profileImage, setProfileImage] = useState(null);
-  const [bannerImage, setBannerImage] = useState(null);
-  const [bio, setBio] = useState("");
-  const [postsCount, setPostsCount] = useState(0);
-  const [githubLink, setGithubLink] = useState("");
-  const [linkedinLink, setLinkedinLink] = useState("");
-  const [twitterLink, setTwitterLink] = useState("");
+  // const [fname, setFname] = useState("");
+  // const [lname, setLname] = useState("");
+  // const [bio, setBio] = useState("");
+  // const [postsCount, setPostsCount] = useState(0);
+  // const [githubLink, setGithubLink] = useState("");
+  // const [linkedinLink, setLinkedinLink] = useState("");
+  // const [twitterLink, setTwitterLink] = useState("");
   const [savedClicked, setSavedClicked] = useState(false);
 
-  //   useEffect(() => {
-  //     const fetchRequest = async () => {
-  //         const request = await fetch(`${API_BASE_URL}/my-profile/settings`,{
+  const [formData, setFormData] = useState({
+    fname: "",
+    lname: "",
+    bio: "",
+    postsCount: 0,
+    githubLink: "",
+    linkedinLink: "",
+    twitterLink: "",
+  });
+  const [originalData, setOriginalData] = useState({});
+  const [profileImage, setProfileImage] = useState(null);
+  const [bannerImage, setBannerImage] = useState(null);
 
-  //         })
-  //         const response = await request.json()
-  //         console.log(response);
-  //     };
-  //     fetchRequest();
-  //   }, [savedClicked]);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem("JWT");
+
+        const request = await fetch(`${API_BASE_URL}/my-profile`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const response = await request.json();
+        const userData = {
+          fname: response.userWithoutPassword.firstName || "",
+          lname: response.userWithoutPassword.lastName || "",
+          bio: response.stats.bio || "",
+          postsCount: response.stats.postsCount || 0,
+          githubLink: response.stats.githubLink || "",
+          linkedinLink: response.stats.linkedinLink || "",
+          twitterLink: response.stats.twitterLink || "",
+          mediumLink: response.stats.mediumLink || "",
+        };
+        setFormData(userData);
+        setOriginalData(userData);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchUserData();
+  }, []);
 
   const SaveChanges = async () => {
-    console.log("vahe");
-
-    const oldProfile = {
-      fname,
-      lname,
-      bio,
-      postsCount,
-      githubLink,
-      linkedinLink,
-      twitterLink,
-    };
-
     try {
       const token = localStorage.getItem("JWT");
+      const formDataToSend = new FormData();
+      Object.keys(formData).forEach((key) => {
+        if (formData[key] !== originalData[key]) {
+          formDataToSend.append(key, formData[key]);
+        }
+      });
+      if (profileImage) formDataToSend.append("profileImage", profileImage);
+
+      if (bannerImage) formDataToSend.append("bannerImage", bannerImage);
+
       const request = await fetch(`${API_BASE_URL}/my-profile/settings`, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          fname,
-          lname,
-          bio,
-          postsCount,
-          profileImage,
-          bannerImage,
-          githubLink,
-          linkedinLink,
-          twitterLink,
-        }),
+        body: formDataToSend,
       });
       const response = await request.json();
-      console.log(response);
-      if (!request.ok) {
-        setFname(oldProfile.fname);
-        setLname(oldProfile.lname);
+      if (request.ok && response.stats && response.user) {
+        const updatedData = {
+          fname: response.user.firstName || "",
+          lname: response.user.lastName || "",
+          bio: response.stats.bio || "",
+          postsCount: response.stats.postsCount || 0,
+          githubLink: response.stats.githubLink || "",
+          linkedinLink: response.stats.linkedinLink || "",
+          twitterLink: response.stats.twitterLink || "",
+        };
+        setFormData(updatedData);
+        setOriginalData(updatedData);
+        setSavedClicked(true);
+        toast.success(response.message || "Changes saved successfully");
+        console.log("aveh");
+
+        setProfileImage(null);
+        setBannerImage(null);
       } else {
-        setFname(response.user.firstName);
-        setLname(response.user.lastName);
-        setBio(response.stats.bio);
-        setProfileImage(response.stats.profileImage);
-        setBannerImage(response.stats.bannerImage);
-        setGithubLink(response.stats.githubLink);
-        setLinkedinLink(response.stats.linkedinLink);
-        setTwitterLink(response.stats.twitterLink);
+        toast.error(response.message || "Failed to save changes"); // this gives me in save changes so something went wrong
       }
-      setSavedClicked(true);
-      toast.success("Changes Saved");
     } catch (err) {
       console.log(err);
     }
   };
-
-  const handleImage = () => {};
+  const handleChange = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   return (
     <React.Fragment>
       <div className="flex min-h-screen">
-        <Toaster position="top-center" reverseOrder={true}></Toaster>{" "}
-        <aside className="border-gray-300 border-r min-w-65 max-w-65">
-          <nav className="grid">
-            <Link
-              to="/my-profile"
-              className="flex justify-start items-center gap-2 hover:bg-gray-300 py-3 pl-8 rounded-sm font-medium text-gray-800 text-lg text-start transition-colors"
-            >
-              <AccountCircleIcon />
-              <p>Profile</p>
-            </Link>
-            <Link
-              to="/my-profile/followers"
-              className="flex justify-start items-center gap-2 hover:bg-gray-300 py-3 pl-8 rounded-sm font-medium text-lg text-start transition-colors"
-            >
-              <PeopleOutlineIcon />
-              <p>Followers</p>
-            </Link>
-            <Link
-              to="/my-profile/notifications"
-              className="flex justify-start items-center gap-2 hover:bg-gray-300 py-3 pl-8 rounded-sm font-medium text-lg text-start transition-colors"
-            >
-              <NotificationsNoneIcon />
-              <p>Notifications</p>
-            </Link>
-            <Link
-              to="/my-profile/add-blog"
-              className="flex justify-start items-center gap-2 hover:bg-gray-300 py-3 pl-8 rounded-sm font-medium text-lg text-start transition-colors"
-            >
-              <AccountCircleIcon />
-              <p>Add Blog</p>
-            </Link>
-            <Link
-              to="/my-profile/favourites"
-              className="flex justify-start items-center gap-2 hover:bg-gray-300 py-3 pl-8 rounded-sm font-medium text-lg text-start transition-colors"
-            >
-              <FaRegHeart />
-              <p className="pl-1">Favourites</p>
-            </Link>
-            <Link
-              to="/my-profile/settings"
-              className="flex justify-start items-center gap-2 hover:bg-gray-300 py-3 pl-8 rounded-sm font-medium text-lg text-start transition-colors"
-            >
-              <SettingsIcon />
-              <p>Settings</p>
-            </Link>
-            {/* <Link to="/my-profile/likes">Likes</Link> */}
-          </nav>
-        </aside>
+        <Toaster position="top-center" reverseOrder={true} />
+        <SideBar />
         <div className="m-8">
           <h1 className="font-semibold text-2xl">Settings</h1>
           <p className="pb-10 text-lg">
@@ -160,17 +139,16 @@ const Settings = () => {
           </p>
           <div className="gap-10 grid">
             <div className="flex justify-center items-center gap-20">
-              {/* <h1 className="text-lg">Profile Section</h1> */}
               <div className="gap-2 grid">
                 <label htmlFor="" className="font-medium text-gray-700 text-sm">
                   Full Name
                 </label>
                 <input
                   type="text"
-                  value={fname}
+                  value={formData.fname}
                   placeholder="Full Name"
                   className="focus:placeholder:opacity-0 p-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-base"
-                  onChange={(e) => setFname(e.target.value)}
+                  onChange={(e) => handleChange("fname", e.target.value)}
                 />
               </div>
 
@@ -180,10 +158,10 @@ const Settings = () => {
                 </label>
                 <input
                   type="text"
-                  value={lname}
+                  value={formData.lname}
                   placeholder="Last Name"
                   className="focus:placeholder:opacity-0 p-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-base"
-                  onChange={(e) => setLname(e.target.value)}
+                  onChange={(e) => handleChange("lname", e.target.value)}
                 />
               </div>
             </div>
@@ -195,7 +173,9 @@ const Settings = () => {
                 </label>
 
                 <label className="flex justify-between items-center hover:bg-purple-50 px-4 py-3 border border-gray-300 hover:border-purple-500 focus-within:border-blue-500 border-dashed rounded-lg focus-within:ring-2 focus-within:ring-blue-500 transition cursor-pointer">
-                  <span className="text-gray-500 text-sm">Choose an image</span>
+                  <span className="text-gray-500 text-sm">
+                    {profileImage ? profileImage.name : "Choose an image"}
+                  </span>
 
                   <span className="font-medium text-purple-600 text-sm">
                     Browse
@@ -205,9 +185,7 @@ const Settings = () => {
                     type="file"
                     accept="image/*"
                     className="hidden"
-                    onChange={(e) => {
-                      setProfileImage(e.target.files?.[0]);
-                    }}
+                    onChange={(e) => setProfileImage(e.target.files?.[0])}
                   />
                 </label>
               </div>
@@ -218,7 +196,9 @@ const Settings = () => {
                 </label>
 
                 <label className="flex justify-between items-center hover:bg-purple-50 px-4 py-3 border border-gray-300 hover:border-purple-500 border-dashed rounded-lg focus-within:ring-2 transition cursor-pointer">
-                  <span className="text-gray-500 text-sm">Choose an image</span>
+                  <span className="text-gray-500 text-sm">
+                    {bannerImage ? bannerImage.name : "Choose an image"}
+                  </span>
                   <span className="font-medium text-purple-600 text-sm">
                     Browse
                   </span>
@@ -226,9 +206,7 @@ const Settings = () => {
                     type="file"
                     accept="image/*"
                     className="hidden"
-                    onChange={(e) => {
-                      setProfileImage(e.target.files?.[0]);
-                    }}
+                    onChange={(e) => setBannerImage(e.target.files?.[0])}
                   />
                 </label>
               </div>
@@ -241,11 +219,10 @@ const Settings = () => {
                 </label>
                 <input
                   type="text"
+                  value={formData.bio}
                   placeholder="Share your story and what you're passionate about..."
                   className="focus:placeholder:opacity-0 px-3 py-2 border border-gray-300 rounded-lg outline-none w-100 text-gray-900"
-                  onChange={(e) => {
-                    setBio(e.target.value);
-                  }}
+                  onChange={(e) => handleChange("bio", e.target.value)}
                 />
               </div>
               <div className="gap-2 grid">
@@ -268,9 +245,10 @@ const Settings = () => {
                 </label>
                 <input
                   type="text"
+                  value={formData.githubLink}
                   placeholder="Enter New Url"
                   className="focus:placeholder:opacity-0 px-3 py-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-gray-900"
-                  onChange={(e) => setGithubLink(e.target.value)}
+                  onChange={(e) => handleChange("githubLink", e.target.value)}
                 />
               </div>
 
@@ -280,9 +258,10 @@ const Settings = () => {
                 </label>
                 <input
                   type="text"
+                  value={formData.linkedinLink}
                   placeholder="Enter New Url"
                   className="focus:placeholder:opacity-0 px-3 py-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-gray-900"
-                  onChange={(e) => setLinkedinLink(e.target.value)}
+                  onChange={(e) => handleChange("linkedinLink", e.target.value)}
                 />
               </div>
             </div>
@@ -294,9 +273,10 @@ const Settings = () => {
                 </label>
                 <input
                   type="text"
+                  value={formData.twitterLink}
                   placeholder="Enter New Url"
                   className="focus:placeholder:opacity-0 px-3 py-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-gray-900"
-                  onChange={(e) => setTwitterLink(e.target.value)}
+                  onChange={(e) => handleChange("twitterLink", e.target.value)}
                 />
               </div>
               <div className="gap-2 grid">
@@ -305,26 +285,23 @@ const Settings = () => {
                 </label>
                 <input
                   type="text"
+                  value={formData.mediumLink}
                   placeholder="Enter New Url"
                   className="focus:placeholder:opacity-0 px-3 py-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-gray-900"
-                  onChange={(e) => setGithubLink(e.target.value)}
+                  onChange={(e) => handleChange("mediumLink", e.target.value)}
                 />
               </div>
             </div>
 
             <button
-              onClick={() => {
-                SaveChanges();
-              }}
-              className="bg-fuchsia-600 hover:bg-fuchsia-700 p-2 font-semibold rounded-lg text-white  text-xl cursor-pointer b-2"
+              onClick={SaveChanges}
+              className="bg-fuchsia-600 hover:bg-fuchsia-700 p-2 font-semibold rounded-lg text-white text-xl cursor-pointer b-2"
             >
               Save Changes
             </button>
           </div>
         </div>
       </div>
-
-      <DeleteAccount />
     </React.Fragment>
   );
 };
