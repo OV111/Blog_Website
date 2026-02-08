@@ -23,13 +23,6 @@ import {
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Settings = () => {
-  // const [fname, setFname] = useState("");
-  // const [lname, setLname] = useState("");
-  // const [bio, setBio] = useState("");
-  // const [postsCount, setPostsCount] = useState(0);
-  // const [githubLink, setGithubLink] = useState("");
-  // const [linkedinLink, setLinkedinLink] = useState("");
-  // const [twitterLink, setTwitterLink] = useState("");
   const [savedClicked, setSavedClicked] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -117,7 +110,7 @@ const Settings = () => {
         setProfileImage(null);
         setBannerImage(null);
       } else {
-        toast.error(response.message || "Failed to save changes"); // this gives me in save changes so something went wrong
+        toast.error(response.message || "Failed to save changes");
       }
     } catch (err) {
       console.log(err);
@@ -129,58 +122,59 @@ const Settings = () => {
 
   return (
     <React.Fragment>
-      <div className="flex min-h-screen">
-        <Toaster position="top-center" reverseOrder={true} />
+      <div className="flex min-h-screen bg-gray-50">
+        <Toaster position="top-center" reverseOrder />
+
         <SideBar />
-        <div className="m-8">
-          <h1 className="font-semibold text-2xl">Settings</h1>
-          <p className="pb-10 text-lg">
+
+        <div className="flex-1 p-4 sm:p-6 lg:p-8">
+          <h1 className="mb-2 font-semibold text-xl lg:text-2xl">Settings</h1>
+
+          <p className="pb-8 text-sm lg:text-lg text-gray-700 max-w-xl">
             Manage your account settings and preferences
           </p>
-          <div className="gap-10 grid">
-            <div className="flex justify-center items-center gap-20">
-              <div className="gap-2 grid">
-                <label htmlFor="" className="font-medium text-gray-700 text-sm">
+
+          <div className="grid gap-8">
+            <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
+              <div className="grid gap-2 w-full lg:max-w-[400px]">
+                <label className="text-sm font-medium text-gray-700">
                   Full Name
                 </label>
                 <input
                   type="text"
                   value={formData.fname}
                   placeholder="Full Name"
-                  className="focus:placeholder:opacity-0 p-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-base"
+                  className="p-2 border border-gray-300 rounded-lg outline-none w-full"
                   onChange={(e) => handleChange("fname", e.target.value)}
                 />
               </div>
 
-              <div className="gap-2 grid">
-                <label htmlFor="" className="font-medium text-gray-700 text-sm">
+              <div className="grid gap-2 w-full lg:max-w-[400px]">
+                <label className="text-sm font-medium text-gray-700">
                   Last Name
                 </label>
                 <input
                   type="text"
                   value={formData.lname}
                   placeholder="Last Name"
-                  className="focus:placeholder:opacity-0 p-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-base"
+                  className="p-2 border border-gray-300 rounded-lg outline-none w-full"
                   onChange={(e) => handleChange("lname", e.target.value)}
                 />
               </div>
             </div>
 
-            <div className="gap-2 grid">
-              <div className="gap-2 grid max-w-sm">
-                <label className="font-medium text-gray-700 text-sm">
+            <div className="grid gap-6 max-w-sm">
+              <div className="grid gap-2">
+                <label className="text-sm font-medium text-gray-700">
                   Profile Image
                 </label>
-
-                <label className="flex justify-between items-center hover:bg-purple-50 px-4 py-3 border border-gray-300 hover:border-purple-500 focus-within:border-blue-500 border-dashed rounded-lg focus-within:ring-2 focus-within:ring-blue-500 transition cursor-pointer">
-                  <span className="text-gray-500 text-sm">
+                <label className="flex justify-between items-center px-4 py-3 border border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-purple-50">
+                  <span className="text-sm text-gray-500">
                     {profileImage ? profileImage.name : "Choose an image"}
                   </span>
-
-                  <span className="font-medium text-purple-600 text-sm">
+                  <span className="text-sm font-medium text-purple-600">
                     Browse
                   </span>
-
                   <input
                     type="file"
                     accept="image/*"
@@ -190,16 +184,15 @@ const Settings = () => {
                 </label>
               </div>
 
-              <div className="gap-2 grid max-w-sm">
-                <label className="font-medium text-gray-700 text-sm">
+              <div className="grid gap-2">
+                <label className="text-sm font-medium text-gray-700">
                   Banner Image
                 </label>
-
-                <label className="flex justify-between items-center hover:bg-purple-50 px-4 py-3 border border-gray-300 hover:border-purple-500 border-dashed rounded-lg focus-within:ring-2 transition cursor-pointer">
-                  <span className="text-gray-500 text-sm">
+                <label className="flex justify-between items-center px-4 py-3 border border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-purple-50">
+                  <span className="text-sm text-gray-500">
                     {bannerImage ? bannerImage.name : "Choose an image"}
                   </span>
-                  <span className="font-medium text-purple-600 text-sm">
+                  <span className="text-sm font-medium text-purple-600">
                     Browse
                   </span>
                   <input
@@ -212,90 +205,76 @@ const Settings = () => {
               </div>
             </div>
 
-            <div className="flex gap-20">
-              <div className="gap-2 grid">
-                <label htmlFor="" className="font-medium text-gray-700 text-sm">
-                  Bio
-                </label>
+            <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
+              <div className="grid gap-2 w-full lg:max-w-[400px]">
+                <label className="text-sm font-medium text-gray-700">Bio</label>
                 <input
                   type="text"
                   value={formData.bio}
-                  placeholder="Share your story and what you're passionate about..."
-                  className="focus:placeholder:opacity-0 px-3 py-2 border border-gray-300 rounded-lg outline-none w-100 text-gray-900"
+                  placeholder="Tell others a bit about yourself and what you're passionate about..."
+                  className="px-3 py-2 border border-gray-300 rounded-lg w-full"
                   onChange={(e) => handleChange("bio", e.target.value)}
                 />
               </div>
-              <div className="gap-2 grid">
-                <label className="font-medium text-gray-600 text-sm">
+
+              <div className="grid gap-2 w-full lg:max-w-[300px]">
+                <label className="text-sm font-medium text-gray-700">
                   Time Zone
                 </label>
                 <input
                   type="text"
                   placeholder="e.g. UTC +4"
-                  className="focus:placeholder:opacity-0 px-3 py-2 border border-gray-300 rounded-lg outline-none w-full text-gray-900"
-                  onChange={() => {}}
+                  className="px-3 py-2 border border-gray-300 rounded-lg w-full"
                 />
               </div>
             </div>
 
-            <div className="flex gap-20">
-              <div className="gap-2 grid">
-                <label htmlFor="" className="font-medium text-gray-700 text-sm">
-                  Links of Github
+            <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
+              <div className="grid gap-2 w-full lg:max-w-[400px]">
+                <label className="text-sm font-medium text-gray-700">
+                  Github
                 </label>
                 <input
                   type="text"
                   value={formData.githubLink}
-                  placeholder="Enter New Url"
-                  className="focus:placeholder:opacity-0 px-3 py-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-gray-900"
+                  placeholder="Enter URL"
+                  className="px-3 py-2 border border-gray-300 rounded-lg w-full"
                   onChange={(e) => handleChange("githubLink", e.target.value)}
                 />
               </div>
 
-              <div className="gap-2 grid">
-                <label htmlFor="" className="font-medium text-gray-700 text-sm">
-                  Links of Linkedin
+              <div className="grid gap-2 w-full lg:max-w-[400px]">
+                <label className="text-sm font-medium text-gray-700">
+                  Linkedin
                 </label>
                 <input
                   type="text"
                   value={formData.linkedinLink}
-                  placeholder="Enter New Url"
-                  className="focus:placeholder:opacity-0 px-3 py-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-gray-900"
+                  placeholder="Enter URL"
+                  className="px-3 py-2 border border-gray-300 rounded-lg w-full"
                   onChange={(e) => handleChange("linkedinLink", e.target.value)}
                 />
               </div>
             </div>
 
-            <div className="flex gap-20">
-              <div className="gap-2 grid">
-                <label htmlFor="" className="font-medium text-gray-700 text-sm">
-                  Links of Twitter
+            <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
+              <div className="grid gap-2 w-full lg:max-w-[400px]">
+                <label className="text-sm font-medium text-gray-700">
+                  Twitter
                 </label>
                 <input
                   type="text"
                   value={formData.twitterLink}
-                  placeholder="Enter New Url"
-                  className="focus:placeholder:opacity-0 px-3 py-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-gray-900"
+                  placeholder="Enter URL"
+                  className="px-3 py-2 border border-gray-300 rounded-lg w-full"
                   onChange={(e) => handleChange("twitterLink", e.target.value)}
-                />
-              </div>
-              <div className="gap-2 grid">
-                <label htmlFor="" className="font-medium text-gray-700 text-sm">
-                  Links of Medium
-                </label>
-                <input
-                  type="text"
-                  value={formData.mediumLink}
-                  placeholder="Enter New Url"
-                  className="focus:placeholder:opacity-0 px-3 py-2 border border-gray-300 rounded-lg outline-none w-100 max-w-100 text-gray-900"
-                  onChange={(e) => handleChange("mediumLink", e.target.value)}
                 />
               </div>
             </div>
 
             <button
               onClick={SaveChanges}
-              className="bg-fuchsia-600 hover:bg-fuchsia-700 p-2 font-semibold rounded-lg text-white text-xl cursor-pointer b-2"
+              className="w-full transition duration-300 lg:w-full sm:w-fit bg-fuchsia-600 hover:bg-fuchsia-700 px-6 py-3 font-semibold rounded-lg text-white text-lg cursor-pointer"
             >
               Save Changes
             </button>
