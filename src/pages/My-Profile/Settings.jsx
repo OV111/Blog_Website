@@ -168,7 +168,7 @@ const Settings = () => {
                 <label className="text-sm font-medium text-gray-700">
                   Profile Image
                 </label>
-                <label className="flex justify-between items-center px-4 py-3 border border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-purple-50">
+                <label className="flex justify-between items-center px-4 py-3 border border-dashed border-gray-300 rounded-lg cursor-pointer transition duration-300 hover:border-purple-500">
                   <span className="text-sm text-gray-500">
                     {profileImage ? profileImage.name : "Choose an image"}
                   </span>
@@ -188,7 +188,7 @@ const Settings = () => {
                 <label className="text-sm font-medium text-gray-700">
                   Banner Image
                 </label>
-                <label className="flex justify-between items-center px-4 py-3 border border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-purple-50">
+                <label className="flex justify-between items-center px-4 py-3 border border-dashed transition duration-300 border-gray-300 rounded-lg cursor-pointer hover:border-purple-500">
                   <span className="text-sm text-gray-500">
                     {bannerImage ? bannerImage.name : "Choose an image"}
                   </span>
