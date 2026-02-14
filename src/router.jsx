@@ -9,9 +9,10 @@ import GameDev from "./pages/CategoryPages/GameDev";
 
 const Followers = lazy(() => import("./pages/My-Profile/Followers"));
 const Favorites = lazy(() => import("./pages/My-Profile/Favorites"));
+const AddBlog = lazy(() => import("./pages/My-Profile/AddBlog"));
+const Chats = lazy(() => import("./pages/My-Profile/Chats"));
 const Notifications = lazy(() => import("./pages/My-Profile/Notifications"));
 const Settings = lazy(() => import("./pages/My-Profile/Settings"));
-const AddBlog = lazy(() => import("./pages/My-Profile/AddBlog"));
 
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
@@ -19,6 +20,8 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const MyProfile = lazy(() => import("./pages/MyProfile"));
 const GetStarted = lazy(() => import("./pages/GetStarted"));
+
+const UserProfile = lazy(() => import("./pages/Users/UserProfile"));
 
 const FullStack = lazy(() => import("./pages/CategoryPages/FullStack"));
 const Backend = lazy(() => import("./pages/CategoryPages/Backend"));
@@ -39,6 +42,7 @@ const router = createBrowserRouter([
       { path: "contact", element: <Contact /> },
       { path: "privacy", element: <Privacy /> },
       { path: "get-started", element: <GetStarted /> },
+      { path: "users/:username", element: <UserProfile /> },
       {
         path: "my-profile",
         children: [
@@ -71,6 +75,14 @@ const router = createBrowserRouter([
             element: (
               <ProtectedMyProfile>
                 <AddBlog />
+              </ProtectedMyProfile>
+            ),
+          },
+          {
+            path: "chats",
+            element: (
+              <ProtectedMyProfile>
+                <Chats />
               </ProtectedMyProfile>
             ),
           },

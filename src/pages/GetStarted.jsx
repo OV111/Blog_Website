@@ -20,16 +20,36 @@ const GetStarted = () => {
     formState: { errors },
   } = useForm();
 
+  const generateUsername = (firstName = "", lastName = "") => {
+    const base = `${firstName}${lastName}`
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "")
+      .slice(0, 16);
+    const suffix = `${Date.now().toString().slice(-4)}${Math.floor(
+      Math.random() * 100,
+    )
+      .toString()
+      .padStart(2, "0")}`;
+
+    return `${base || "dev"}_${suffix}`;
+  };
+
   const onSubmit = async (data) => {
     const url = isSignedUp
       ? `${API_BASE_URL}/get-started`
       : `${API_BASE_URL}/login`;
+    const payload = isSignedUp
+      ? {
+          ...data,
+          username: generateUsername(data.firstName, data.lastName),
+        }
+      : data;
 
     try {
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
       const result = await response.json();
 
