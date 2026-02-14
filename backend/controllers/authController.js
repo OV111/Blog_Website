@@ -2,10 +2,21 @@
 import connectDB from "../config/db.js";
 import { createToken } from "../utils/jwtToken.js";
 
+const sanitizeUsername = (value = "") =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "")
+    .slice(0, 16);
+
+const uniqueSuffix = () =>
+  `${Date.now().toString().slice(-4)}${Math.floor(Math.random() * 100)
+    .toString()
+    .padStart(2, "0")}`;
+
 const signUp = async (data) => {
   try {
     let db = await connectDB();
-    const { firstName, lastName, email, password } = data;
+    const { firstName, lastName, email, password, username } = data;
 
     const users = db.collection("users"); //initial Line
     const usersStats = db.collection("usersStats");
@@ -17,9 +28,22 @@ const signUp = async (data) => {
         message: "User with that Email already registered",
       };
     }
+
+    const baseUsername =
+      sanitizeUsername(username) ||
+      sanitizeUsername(`${firstName}${lastName}`) ||
+      "dev";
+    let finalUsername = `${baseUsername}_${uniqueSuffix()}`;
+
+    // Retry if there is a collision with an existing username.
+    while (await users.findOne({ username: finalUsername })) {
+      finalUsername = `${baseUsername}_${uniqueSuffix()}`;
+    }
+
     const result = await users.insertOne({
       firstName,
       lastName,
+      username: finalUsername,
       email,
       password,
       // confirmPassword,
