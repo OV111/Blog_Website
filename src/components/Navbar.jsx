@@ -1,12 +1,12 @@
 /* The above code is a React component for a Navbar in a web application. Here is a summary of what the
 code is doing: */
 import React, { useState, useEffect, useRef } from "react";
-import { FaSun, FaMoon } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "../context/useAuthStore";
 import useThemeStore from "../context/useThemeStore";
 import toast from "react-hot-toast";
+import SearchBar from "./search/SearchBar";
 
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
@@ -14,18 +14,23 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import NightsStayOutlinedIcon from "@mui/icons-material/NightsStayOutlined";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 
-import { FaBars, FaTimes } from "react-icons/fa";
+import SearchResults from "./search/SearchResults";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const dropdownRef = useRef(null);
+  const desktopSearchRef = useRef(null);
+  const mobileSearchRef = useRef(null);
+  const { auth, logout } = useAuthStore();
+  const { theme, setTheme } = useThemeStore();
+  const [searchValue, setSearchValue] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [showDropdownMobile, setShowDropdownMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const { auth, logout } = useAuthStore();
-  const { theme, setTheme } = useThemeStore();
-  const navigate = useNavigate();
+  const showSearch = pathname !== "/";
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
@@ -77,6 +82,24 @@ const Navbar = () => {
     setIsOpen(false);
   };
 
+  const handleSearchSubmit = (query) => {
+    const trimmedQuery = query.trim();
+    navigate(
+      trimmedQuery ? `/?search=${encodeURIComponent(trimmedQuery)}` : "/",
+    );
+    setIsOpen(false);
+  };
+
+  const handleSearchSelect = (item) => {
+    if (item.type === "user") {
+      navigate(`/users/${item.username}`);
+    } else if (item.type === "post") {
+      navigate(`/?search=${encodeURIComponent(item.title)}`);
+    }
+    setSearchValue("");
+    setIsOpen(false);
+  };
+
   return (
     <React.Fragment>
       <div>
@@ -84,6 +107,25 @@ const Navbar = () => {
           <h2 className="text-base font-bold my-2 lg:my-1 w-[30px] cursor-pointer text-white sm:text-xl md:text-xl lg:text-2xl lg:w-auto lg:ml-3">
             <NavLink to="/">Devs Blog</NavLink>
           </h2>
+
+          {showSearch && (
+            <div
+              ref={desktopSearchRef}
+              className="relative hidden flex-1 justify-end text-gray-100 md:flex"
+            >
+              <SearchBar
+                value={searchValue}
+                onChange={setSearchValue}
+                onSubmit={handleSearchSubmit}
+                placeholder="Search"
+              />
+              <SearchResults
+                query={searchValue}
+                onSelect={handleSearchSelect}
+                boundaryRef={desktopSearchRef}
+              />
+            </div>
+          )}
 
           <ul className="flex items-center justify-between space-x-3 text-gray-100 my-3.5 lg:my-1 lg:space-x-4">
             <li className="font-medium text-sm hover:text-purple-300 dark:hover:text-purple-300 transition lg:text-lg lg:mx-4">
@@ -101,7 +143,7 @@ const Navbar = () => {
               </button>
 
               {showDropdown && (
-                <ul className="absolute top-full mt-2 left-0 text-black bg-gray-200 dark:bg-gray-600 dark:text-white shadow-md rounded w-40 py-2 z-10">
+                <ul className="absolute top-full mt-2 left-0 text-black bg-gray-200 dark:bg-gray-600 dark:text-white shadow-md rounded w-40 py-2 z-2">
                   <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
                     <NavLink to="/categories/fullstack" onClick={closeDropdown}>
                       Full Stack
@@ -173,26 +215,44 @@ const Navbar = () => {
 
             <button
               onClick={setTheme}
-              className={"relative inline-flex items-center cursor-pointer"}
+              className={" relative inline-flex items-center cursor-pointer"}
             >
               {theme === "dark" ? (
-                <LightModeOutlinedIcon fontSize="medium" />
+                <LightModeOutlinedIcon className="text-3xl" />
               ) : (
-                <NightsStayOutlinedIcon fontSize="medium" />
+                <NightsStayOutlinedIcon className="text-3xl" />
               )}
             </button>
             <button
               onClick={() => {
                 setIsOpen(!isOpen);
               }}
-              className="md:hidden mb-1"
+              className="md:hidden mb-1 "
             >
               {isOpen ? <CloseOutlinedIcon /> : <MenuOutlinedIcon />}
             </button>
 
             {isOpen && (
-              <ul className="absolute top-16 left-0 w-full bg-purple-700 flex flex-col gap-4 p-6 md:hidden">
-                <li className="relative text-base  font-medium hover:text-purple-300 transition mr-3 lg:text-lg">
+              <ul className="absolute top-16 left-0 w-full bg-purple-700 flex flex-col gap-4 p-6 md:hidden z-3">
+                {showSearch && (
+                  <li>
+                    <div ref={mobileSearchRef} className="relative">
+                      <SearchBar
+                        value={searchValue}
+                        onChange={setSearchValue}
+                        onSubmit={handleSearchSubmit}
+                        placeholder="Search posts..."
+                        className="max-w-full"
+                      />
+                      <SearchResults
+                        query={searchValue}
+                        onSelect={handleSearchSelect}
+                        boundaryRef={mobileSearchRef}
+                      />
+                    </div>
+                  </li>
+                )}
+                <li className="relative text-base  font-medium hover:text-purple-300 transition mr-3 lg:text-lg ">
                   <button
                     onClick={() => setShowDropdownMobile(!showDropdownMobile)}
                     className="flex justify-center items-center cursor-pointer"
@@ -201,7 +261,7 @@ const Navbar = () => {
                   </button>
 
                   {showDropdownMobile && (
-                    <ul className="absolute top-full mt-2 left-0 text-black bg-gray-200 dark:bg-gray-600 dark:text-white shadow-md rounded w-40 py-2 z-10">
+                    <ul className="absolute top-full mt-2 left-0 text-black bg-gray-200 dark:bg-gray-600 dark:text-white shadow-md rounded w-40 py-2 z-2">
                       <li className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700">
                         <NavLink
                           to="/categories/fullstack"
