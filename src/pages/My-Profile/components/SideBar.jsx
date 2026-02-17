@@ -1,6 +1,8 @@
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { Link } from "react-router-dom";
+import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
+import MarkUnreadChatAltOutlinedIcon from "@mui/icons-material/MarkUnreadChatAltOutlined";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -28,14 +30,20 @@ const sidebarArr = [
     label: "Add Blog",
   },
   {
+    to: "/my-profile/chats",
+    icon: <ChatOutlinedIcon sx={{ color: "#374151", fontSize: "22px" }} />,
+    label: "Chats",
+  },
+  {
     to: "/my-profile/favourites",
-    icon: <BookmarkBorderOutlinedIcon sx={{ color: "#374151" }} />,
+    icon: (
+      <BookmarkBorderOutlinedIcon fontSize="small" sx={{ color: "#374151" }} />
+    ),
     label: "Favourites",
-    // extraClass: "pl-1",
   },
   {
     to: "/my-profile/settings",
-    icon: <SettingsOutlinedIcon sx={{ color: "#374151" }} />,
+    icon: <SettingsOutlinedIcon fontSize="small" sx={{ color: "#374151" }} />,
     label: "Settings",
   },
 ];
