@@ -31,6 +31,14 @@ let db;
 //     process.exit(1);
 //   }
 // })();
+const failedLoginByIp = new Map();
+const MAX_FAILED_LOGINS = 5;
+const getClientIp = (req) => {
+  return (req.headers["x-forwarded-for"] || req.socket.remoteAddress || "")
+    .toString()
+    .split(",")[0]
+    .trim();
+};
 
 const StartServer = async () => {
   try {
@@ -90,7 +98,6 @@ const StartServer = async () => {
             } else if (req.url === "/get-started") {
               const result = await signUp(data);
 
-              // !console.log(result)
               if (result.status === 409) {
                 res.writeHead(result.status, {
                   "content-type": "application/json",
@@ -103,9 +110,20 @@ const StartServer = async () => {
               });
               return res.end(JSON.stringify(result));
             } else if (req.url === "/login") {
+              const ip = getClientIp(req);
+              const failedCount = failedLoginByIp.get(ip) || 0;
+              if (failedCount >= MAX_FAILED_LOGINS) {
+                res.writeHead(429, { "content-type": "application/json" });
+                return res.end(
+                  JSON.stringify({
+                    message: "Too many login attempts. Please try again later.",
+                    code: 429,
+                  }),
+                );
+              }
               const result = await login(data);
-              // console.log(result);
               if (result.status === 200) {
+                failedLoginByIp.delete(ip);
                 const serialized = cookie.serialize("session", result.userId, {
                   httpOnly: true,
                   secure: false,
@@ -114,6 +132,8 @@ const StartServer = async () => {
                   path: "/",
                 });
                 res.setHeader("Set-Cookie", serialized);
+              } else if ([401, 404].includes(result.status)) {
+                failedLoginByIp.set(ip, failedCount + 1);
               }
 
               res.writeHead(result.status, {
@@ -184,7 +204,6 @@ const StartServer = async () => {
           };
           const result = await blogs.insertOne(newBlog);
 
-          console.log(result);
           res.writeHead(201, { "content-type": "application/json" });
           return res.end(
             JSON.stringify({ code: 201, message: "Created Blog" }),
@@ -360,54 +379,6 @@ const StartServer = async () => {
           }
         });
         req.pipe(bb);
-
-        // let body = "";
-        // req.on("data", (chunk) => {
-        //   body += chunk;
-        // });
-        // req.on("end", async () => {
-        //   const verified = verifyToken(token);
-        //   if (!verified) {
-        //     res.writeHead(403, { "Content-Type": "application/json" });
-        //     return res.end(JSON.stringify("Forbidden: Invalid Token"));
-        //   }
-
-        //   const data = JSON.parse(body);
-        //   const users = db.collection("users");
-        //   const usersStats = db.collection("usersStats");
-
-        //   const updatedUser = await users.findOneAndUpdate(
-        //     { _id: new ObjectId(verified.id) },
-        //     { $set: { firstName: data.fname, lastName: data.lname } },
-        //     { returnDocument: "after" },
-        //   );
-
-        //   const updatedStats = await usersStats.findOneAndUpdate(
-        //     { userId: new ObjectId(verified.id) },
-        //     {
-        //       $set: {
-        //         bio: data.bio || "",
-        //         postsCount: data.postsCount || 0,
-        //         profileImage: data.profileImage || "",
-        //         bannerImage: data.bannerImage || "",
-        //         githubLink: data.githubLink || "",
-        //         linkedinLink: data.linkedinLink || "",
-        //         twitterLink: data.twitterLink || "",
-        //         lastActive: new Date(),
-        //       },
-        //     },
-        //     { returnDocument: "after" },
-        //   );
-
-        //   res.writeHead(200, { "Content-Type": "application/json" });
-        //   return res.end(
-        //     JSON.stringify({
-        //       message: "Account Updated Successfully!",
-        //       user: updatedUser,
-        //       stats: updatedStats,
-        //     }),
-        //   );
-        // });
       }
 
       if (req.method === "GET" && req.url.startsWith("/search/users")) {
@@ -459,7 +430,6 @@ const StartServer = async () => {
           );
         }
       }
-
       if (req.method === "GET" && req.url.startsWith("/search/categories")) {
         try {
           const reqUrl = new URL(req.url, `http://${req.headers.host}`);
@@ -490,8 +460,7 @@ const StartServer = async () => {
           );
         }
       }
-
-      if (req.url.startsWith("/users/") && req.method === "GET") {
+      if (req.method === "GET" && req.url.startsWith("/users/")) {
         const userName = decodeURIComponent(req.url.split("/")[2] || "").trim();
         if (!userName) {
           res.writeHead(400, { "content-type": "application/json" });
