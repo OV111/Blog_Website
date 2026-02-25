@@ -67,10 +67,11 @@ const DevOps = () => {
           className="mt-6 max-w-3xl text-lg font-semibold sm:text-xl text-muted-foreground mx-auto"
         >
           <span className="bg-gradient-to-r from-slate-400 via-purple-600 to-indigo-400 text-center block max-w-3xl mx-auto bg-clip-text text-transparent">
-            Develop robust server-side applications—craft scalable APIs and web
-            services, design efficient database schemas across relational and
-            NoSQL systems, implement secure authentication and authorization
-            mechanisms
+            Design and operate resilient infrastructure—build automated CI/CD
+            pipelines, architect scalable cloud environments, optimize
+            containerized workloads, implement infrastructure as code, enforce
+            security and compliance policies, and ensure high availability
+            through monitoring, observability, and proactive incident response
           </span>
         </motion.p>
       </header>

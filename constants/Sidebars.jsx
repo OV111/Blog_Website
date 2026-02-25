@@ -14,7 +14,7 @@ export const sidebarArr = [
       {
         to: "/my-profile",
         icon: (
-          <PersonOutlineIcon sx={{ fontSize: 26, color: "currentColor" }} />
+          <PersonOutlineIcon sx={{ fontSize: 22, color: "currentColor" }} />
         ),
         label: "Profile",
         end: true,
@@ -22,14 +22,14 @@ export const sidebarArr = [
       {
         to: "/my-profile/followers",
         icon: (
-          <PeopleOutlineIcon sx={{ fontSize: 26, color: "currentColor" }} />
+          <PeopleOutlineIcon sx={{ fontSize: 22, color: "currentColor" }} />
         ),
         label: "Followers",
       },
       {
         to: "/my-profile/notifications",
         icon: (
-          <NotificationsNoneIcon sx={{ fontSize: 26, color: "currentColor" }} />
+          <NotificationsNoneIcon sx={{ fontSize: 22, color: "currentColor" }} />
         ),
         label: "Notifications",
       },
@@ -40,19 +40,19 @@ export const sidebarArr = [
     items: [
       {
         to: "/my-profile/add-blog",
-        icon: <EditOutlinedIcon sx={{ fontSize: 26, color: "currentColor" }} />,
+        icon: <EditOutlinedIcon sx={{ fontSize: 22, color: "currentColor" }} />,
         label: "Add Blog",
       },
       {
         to: "/my-profile/chats",
-        icon: <ChatOutlinedIcon sx={{ fontSize: 26, color: "currentColor" }} />,
+        icon: <ChatOutlinedIcon sx={{ fontSize: 22, color: "currentColor" }} />,
         label: "Chats",
       },
       {
         to: "/my-profile/favourites",
         icon: (
           <BookmarkBorderOutlinedIcon
-            sx={{ fontSize: 26, color: "currentColor" }}
+            sx={{ fontSize: 22, color: "currentColor" }}
           />
         ),
         label: "Favourites",
@@ -64,13 +64,13 @@ export const sidebarArr = [
     items: [
       {
         to: "/my-profile/settings",
-        icon: <LinkIcon sx={{ fontSize: 26, color: "currentColor" }} />,
+        icon: <LinkIcon sx={{ fontSize: 22, color: "currentColor" }} />,
         label: "Connected Accounts",
       },
       {
         to: "/my-profile/settings",
         icon: (
-          <GroupOffOutlinedIcon sx={{ fontSize: 26, color: "currentColor" }} />
+          <GroupOffOutlinedIcon sx={{ fontSize: 22, color: "currentColor" }} />
         ),
         label: "Blocked Users",
       },
@@ -82,7 +82,7 @@ export const sidebarArr = [
       {
         to: "/my-profile/settings",
         icon: (
-          <SettingsOutlinedIcon sx={{ fontSize: 26, color: "currentColor" }} />
+          <SettingsOutlinedIcon sx={{ fontSize: 22, color: "currentColor" }} />
         ),
         label: "Settings",
       },

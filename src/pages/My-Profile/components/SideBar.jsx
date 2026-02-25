@@ -103,7 +103,7 @@ export default function SideBar({ isOpen, onClose }) {
   // }, []);
 
   return (
-    <div className="">
+    <>
       {isOpen && (
         <div
           className="fixed inset-0 z-20 bg-black/20 backdrop-blur-[1px] lg:hidden"
@@ -111,7 +111,7 @@ export default function SideBar({ isOpen, onClose }) {
         />
       )}
       {/* Need to correct the height for responsive */}
-      <aside className="flex h-full w-10 flex-col bg-white border-r border-gray-200 transition-all duration-300 lg:h-screen lg:w-54 lg:static lg:sticky lg:top-0">
+      <aside className="flex h-dvh w-10 flex-col overflow-hidden bg-white border-r border-gray-200 transition-all duration-300 lg:h-screen lg:w-56 lg:static lg:sticky lg:top-0">
         <div className=" flex items-center gap-3 border-b border-gray-100 pt-4 pb-2 px-0 lg:px-3 ">
           <button
             onClick={() => {
@@ -148,13 +148,13 @@ export default function SideBar({ isOpen, onClose }) {
           </div>
         )}
 
-        <nav className="grid min-h-0 flex-1 overflow-y-auto py-0 px-0 lg:py-2 lg:px-3">
+        <nav className="flex min-h-0 flex-1 flex-col overflow-y-auto px-0 py-0 lg:px-2 lg:py-2">
           {sidebarArr.map((group) => (
             <div
               key={group.section}
-              className="grid font-normal items-center py-0 lg:pt-2"
+              className="grid font-normal py-0 lg:pt-2 first:lg:pt-0"
             >
-              <p className="hidden px-2 py-0 text-[12px] uppercase tracking-wider text-gray-400 font-semibold lg:block">
+              <p className="hidden px-2 py-0 text-[10px] uppercase tracking-wider text-gray-400 font-semibold lg:block">
                 {group.section}
               </p>
 
@@ -164,13 +164,13 @@ export default function SideBar({ isOpen, onClose }) {
                   to={item.to}
                   end={item.end}
                   className={({ isActive }) =>
-                    `flex w-10 items-center justify-center gap-0 rounded-none py-0 px-0 text-gray-700 transition-colors hover:bg-purple-50 lg:mx-auto lg:w-full lg:justify-start lg:gap-2 lg:rounded-lg lg:py-2 lg:px-3 ${
+                    `flex w-10 items-center justify-center gap-0 rounded-none py-1 px-0 text-gray-700 transition-colors hover:bg-purple-50 lg:mx-auto lg:w-full lg:justify-start lg:gap-2 lg:rounded-lg lg:py-2 lg:px-3 ${
                       isActive ? "lg:bg-purple-50 text-purple-600" : ""
                     }`
                   }
                 >
                   <p className="flex items-center">{item.icon}</p>
-                  <p className="hidden text-xs lg:block">{item.label}</p>
+                  <p className="hidden text-[14px] lg:block">{item.label}</p>
                 </NavLink>
               ))}
             </div>
@@ -191,6 +191,6 @@ export default function SideBar({ isOpen, onClose }) {
           />
         </div>
       </aside>
-    </div>
+    </>
   );
 }
