@@ -111,8 +111,8 @@ export default function SideBar({ isOpen, onClose }) {
         />
       )}
       {/* Need to correct the height for responsive */}
-      <aside className="flex h-dvh w-10 flex-col overflow-hidden bg-white border-r border-gray-200 transition-all duration-300 lg:h-screen lg:w-56 lg:static lg:sticky lg:top-0">
-        <div className=" flex items-center gap-3 border-b border-gray-100 pt-4 pb-2 px-0 lg:px-3 ">
+      <aside className="flex h-dvh w-10 flex-col overflow-hidden border-r border-gray-200 bg-white transition-all duration-300 dark:border-gray-800 dark:bg-gray-950 lg:h-screen lg:w-56 lg:static lg:sticky lg:top-0">
+        <div className=" flex items-center gap-3 border-b border-gray-100 pt-4 pb-2 px-0 dark:border-gray-800 lg:px-3 ">
           <button
             onClick={() => {
               if (avatarSrc) setOpenImage(true);
@@ -126,10 +126,12 @@ export default function SideBar({ isOpen, onClose }) {
             />
           </button>
           <div className="hidden lg:block">
-            <p className="text-sm font-medium text-gray-800 overflow-x-auto">
+            <p className="text-sm font-medium text-gray-800 overflow-x-auto dark:text-gray-100">
               {fullName}
             </p>
-            <p className="text-xs text-gray-500 overflow-x-auto">{email}</p>
+            <p className="text-xs text-gray-500 overflow-x-auto dark:text-gray-400">
+              {email}
+            </p>
           </div>
         </div>
         {openImage && (
@@ -154,7 +156,7 @@ export default function SideBar({ isOpen, onClose }) {
               key={group.section}
               className="grid font-normal py-0 lg:pt-2 first:lg:pt-0"
             >
-              <p className="hidden px-2 py-0 text-[10px] uppercase tracking-wider text-gray-400 font-semibold lg:block">
+              <p className="hidden px-2 py-0 text-[10px] uppercase tracking-wider text-gray-400 font-semibold dark:text-gray-500 lg:block">
                 {group.section}
               </p>
 
@@ -164,8 +166,10 @@ export default function SideBar({ isOpen, onClose }) {
                   to={item.to}
                   end={item.end}
                   className={({ isActive }) =>
-                    `flex w-10 items-center justify-center gap-0 rounded-none py-1 px-0 text-gray-700 transition-colors hover:bg-purple-50 lg:mx-auto lg:w-full lg:justify-start lg:gap-2 lg:rounded-lg lg:py-2 lg:px-3 ${
-                      isActive ? "lg:bg-purple-50 text-purple-600" : ""
+                    `flex w-10 items-center justify-center gap-0 rounded-none py-1 px-0 text-gray-700 transition-colors hover:bg-purple-50 dark:text-gray-300 dark:hover:bg-gray-900 lg:mx-auto lg:w-full lg:justify-start lg:gap-2 lg:rounded-lg lg:py-2 lg:px-3 ${
+                      isActive
+                        ? "text-purple-600 dark:bg-gray-900 dark:text-purple-400 lg:bg-purple-50"
+                        : ""
                     }`
                   }
                 >
@@ -181,7 +185,7 @@ export default function SideBar({ isOpen, onClose }) {
           onClick={() => {
             handleLogOut();
           }}
-          className="group mt-auto flex cursor-pointer items-center justify-center border-t border-gray-100 py-3.5 text-gray-700 transition-colors hover:bg-red-50 hover:text-red-600 lg:justify-between lg:px-4"
+          className="group mt-auto flex cursor-pointer items-center justify-center border-t border-gray-100 py-3.5 text-gray-700 transition-colors hover:bg-red-50 hover:text-red-600 dark:border-gray-800 dark:text-gray-300 dark:hover:bg-red-950/40 dark:hover:text-red-400 lg:justify-between lg:px-4"
         >
           <p className="hidden text-sm font-medium lg:block">Logout</p>
           <LogoutRoundedIcon
