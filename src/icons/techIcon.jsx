@@ -1,8 +1,4 @@
-// Full Stack
-
-import React from "react";
-
-/////////////////////////////////////////////////////////////////////////////
+// ====================== Full Stack / Shared ======================
 export function JavaScriptIcon(className) {
   return (
     <svg className={className} viewBox="0 0 48 48" fill="none">
@@ -169,7 +165,7 @@ export function NodeIcon({ className }) {
   );
 }
 
-/* Backend */
+// ====================== Backend ======================
 
 export function MySQLIcon(className) {
   return (
@@ -201,9 +197,7 @@ export function RustIcon(className) {
   );
 }
 
-{
-  /* AI & ML */
-}
+// ====================== AI & ML ======================
 
 export function RIcon(className) {
   return (
@@ -235,24 +229,52 @@ export function TenserFlowIcon(className) {
   );
 }
 
-{
-  /* <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#013243">
-          <title>NumPy</title>
-          <path d="M10.315 4.876L6.3048 2.8517l-4.401 2.1965 4.1186 2.0683zm1.8381.9277l4.2045 2.1223-4.3622 2.1906-4.125-2.0718zm5.6153-2.9213l4.3193 2.1658-3.863 1.9402-4.2131-2.1252zm-1.859-.9329L12.021 0 8.1742 1.9193l4.0068 2.0208zm-3.0401 16.7443V24l4.7107-2.3507-.0053-5.3085zm4.7037-4.2057l-.0052-5.2528-4.6985 2.3356v5.2546zm5.6553-.9845v5.327l-4.0178 2.0052-.0029-5.3028zm0-1.8626V6.4214l-4.0253 2.001.0034 5.2633zM11.2062 11.571L8.0333 9.9756v6.895s-3.8804-8.2564-4.2399-8.998c-.0463-.0957-.2371-.2007-.2858-.2262C2.8118 7.2812.773 6.2485.773 6.2485V18.43l2.8204 1.5076v-6.3674s3.8392 7.3775 3.878 7.458c.0389.0807.4245.8582.8362 1.1314.5485.363 2.8992 1.7766 2.8992 1.7766z" />
-        </svg> */
+export function NumPyIcon(className) {
+  return (
+    <svg
+      role="img"
+      className={className}
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="#013243"
+    >
+      <title>NumPy</title>
+      <path d="M10.315 4.876L6.3048 2.8517l-4.401 2.1965 4.1186 2.0683zm1.8381.9277l4.2045 2.1223-4.3622 2.1906-4.125-2.0718zm5.6153-2.9213l4.3193 2.1658-3.863 1.9402-4.2131-2.1252zm-1.859-.9329L12.021 0 8.1742 1.9193l4.0068 2.0208zm-3.0401 16.7443V24l4.7107-2.3507-.0053-5.3085zm4.7037-4.2057l-.0052-5.2528-4.6985 2.3356v5.2546zm5.6553-.9845v5.327l-4.0178 2.0052-.0029-5.3028zm0-1.8626V6.4214l-4.0253 2.001.0034 5.2633zM11.2062 11.571L8.0333 9.9756v6.895s-3.8804-8.2564-4.2399-8.998c-.0463-.0957-.2371-.2007-.2858-.2262C2.8118 7.2812.773 6.2485.773 6.2485V18.43l2.8204 1.5076v-6.3674s3.8392 7.3775 3.878 7.458c.0389.0807.4245.8582.8362 1.1314.5485.363 2.8992 1.7766 2.8992 1.7766z" />
+    </svg>
+  );
 }
-{
-  /* <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#150458">
-          <title>pandas</title>
-          <path d="M16.922 0h2.623v18.104h-2.623zm-4.126 12.94h2.623v2.57h-2.623zm0-7.037h2.623v5.446h-2.623zm0 11.197h2.623v5.446h-2.623zM4.456 5.896h2.622V24H4.455zm4.213 2.559h2.623v2.57H8.67zm0 4.151h2.623v5.447H8.67zm0-11.187h2.623v5.446H8.67Z" />
-        </svg> */
+
+export function PandasIcon(className) {
+  return (
+    <svg
+      role="img"
+      className={className}
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="#150458"
+    >
+      <title>pandas</title>
+      <path d="M16.922 0h2.623v18.104h-2.623zm-4.126 12.94h2.623v2.57h-2.623zm0-7.037h2.623v5.446h-2.623zm0 11.197h2.623v5.446h-2.623zM4.456 5.896h2.622V24H4.455zm4.213 2.559h2.623v2.57H8.67zm0 4.151h2.623v5.447H8.67zm0-11.187h2.623v5.446H8.67Z" />
+    </svg>
+  );
 }
-{
-  /* <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#EE4C2C">
-          <title>PyTorch</title>
-          <path d="M12.005 0L4.952 7.053a9.865 9.865 0 000 14.022 9.866 9.866 0 0014.022 0c3.984-3.9 3.986-10.205.085-14.023l-1.744 1.743c2.904 2.905 2.904 7.634 0 10.538s-7.634 2.904-10.538 0-2.904-7.634 0-10.538l4.647-4.646.582-.665zm3.568 3.899a1.327 1.327 0 00-1.327 1.327 1.327 1.327 0 001.327 1.328A1.327 1.327 0 0016.9 5.226 1.327 1.327 0 0015.573 3.9z" />
-        </svg> */
+
+export function PyTorchIcon(className) {
+  return (
+    <svg
+      role="img"
+      className={className}
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="#EE4C2C"
+    >
+      <title>PyTorch</title>
+      <path d="M12.005 0L4.952 7.053a9.865 9.865 0 000 14.022 9.866 9.866 0 0014.022 0c3.984-3.9 3.986-10.205.085-14.023l-1.744 1.743c2.904 2.905 2.904 7.634 0 10.538s-7.634 2.904-10.538 0-2.904-7.634 0-10.538l4.647-4.646.582-.665zm3.568 3.899a1.327 1.327 0 00-1.327 1.327 1.327 1.327 0 001.327 1.328A1.327 1.327 0 0016.9 5.226 1.327 1.327 0 0015.573 3.9z" />
+    </svg>
+  );
 }
+
+// ====================== Languages ======================
 
 export function CPPIcon(className) {
   return (
@@ -326,6 +348,8 @@ export function LangChain({ className = "" }) {
     </svg>
   );
 }
+
+// ====================== Platform / DevOps ======================
 
 export function VercelIcon({ className = "" }) {
   return (
@@ -446,9 +470,7 @@ export function DockerIcon(className) {
   );
 }
 
-{
-  /* Devops */
-}
+// ====================== DevOps (Reference Icons) ======================
 {
   /* <svg
           role="img"
@@ -544,9 +566,7 @@ export function DockerIcon(className) {
           <path d="M.113 10.27A13.026 13.026 0 000 11.48h18.23c-.064-.125-.15-.237-.235-.347-3.117-4.027-4.793-3.677-7.19-3.78-.8-.034-1.34-.048-4.524-.048-1.704 0-3.555.005-5.358.01-.234.63-.459 1.24-.567 1.737h9.342v1.216H.113v.002zm18.26 2.426H.009c.02.326.05.645.094.961h16.955c.754 0 1.179-.429 1.315-.96zm-17.318 4.28s2.81 6.902 10.93 7.024c4.855 0 9.027-2.883 10.92-7.024H1.056zM11.988 0C7.5 0 3.593 2.466 1.531 6.108l4.75-.005v-.002c3.71 0 3.849.016 4.573.047l.448.016c1.563.052 3.485.22 4.996 1.364.82.621 2.007 1.99 2.712 2.965.654.902.842 1.94.396 2.934-.408.914-1.289 1.458-2.353 1.458H.391s.099.42.249.886h22.748A12.026 12.026 0 0024 12.005C24 5.377 18.621 0 11.988 0z" />
         </svg> */
 }
-{
-  /* Mobile */
-}
+// ====================== Mobile ======================
 
 export function PostgreSqlIcon(className) {
   return (
@@ -845,9 +865,7 @@ export function TypeScriptIcon(className) {
     </svg>
   );
 }
-{
-  /* QA */
-}
+// ====================== QA (Reference Icons) ======================
 
 {
   /* <svg
@@ -919,3 +937,461 @@ export function TypeScriptIcon(className) {
           <path d="M11.571 11.513H0a5.218 5.218 0 0 0 5.232 5.215h2.13v2.057A5.215 5.215 0 0 0 12.575 24V12.518a1.005 1.005 0 0 0-1.005-1.005zm5.723-5.756H5.736a5.215 5.215 0 0 0 5.215 5.214h2.129v2.058a5.218 5.218 0 0 0 5.215 5.214V6.758a1.001 1.001 0 0 0-1.001-1.001zM23.013 0H11.455a5.215 5.215 0 0 0 5.215 5.215h2.129v2.057A5.215 5.215 0 0 0 24 12.483V1.005A1.001 1.001 0 0 0 23.013 0Z" />
         </svg> */
 }
+
+export const techIconsByCategory = {
+  aiml: {
+    LangChain,
+    NumPyIcon,
+    PandasIcon,
+    PythonIcon,
+    PyTorchIcon,
+    RIcon,
+    TenserFlowIcon,
+  },
+  backend: {
+    FlaskIcon,
+    GoIcon,
+    GraphQL,
+    JavaIcon,
+    MongoDBIcon,
+    MySQLIcon,
+    PHPIcon,
+    PostgreSqlIcon,
+    PythonIcon,
+    RedisIcon,
+    RubyIcon,
+    RustIcon,
+    SQLiteIcon,
+  },
+  devops: {
+    AWSIcon,
+    DockerIcon,
+    RedisIcon,
+    VercelIcon,
+  },
+  devtools: {
+    AWSIcon,
+    DockerIcon,
+    VercelIcon,
+  },
+  fullstack: {
+    AWSIcon,
+    CSharpIcon,
+    DatabaseIcon,
+    DockerIcon,
+    DotNetIcon,
+    JavaScriptIcon,
+    MongoDBIcon,
+    MySQLIcon,
+    NestJSIcon,
+    NodeIcon,
+    PostgreSqlIcon,
+    ReactIcon,
+    RedisIcon,
+    TypeScriptIcon,
+    VercelIcon,
+  },
+  languages: {
+    CPPIcon,
+    CSharpIcon,
+    GoIcon,
+    JavaIcon,
+    JavaScriptIcon,
+    PHPIcon,
+    PythonIcon,
+    RIcon,
+    RubyIcon,
+    RustIcon,
+    TypeScriptIcon,
+  },
+  mobile: {
+    CapacitorIcon,
+    ExpoIcon,
+    FlutterIcon,
+    KotlinIcon,
+    ReactNativeIcon,
+    SwiftIcon,
+    XcodeIcon,
+  },
+  qa: {
+    DatabaseIcon,
+    GraphQL,
+    PostgreSqlIcon,
+    PythonIcon,
+    TypeScriptIcon,
+  },
+};
+
+export const techIconRegistry = {
+  // AI & ML
+  LangChain,
+  NumPyIcon,
+  PandasIcon,
+  PythonIcon,
+  PyTorchIcon,
+  RIcon,
+  TenserFlowIcon,
+
+  // Backend
+  FlaskIcon,
+  GoIcon,
+  GraphQL,
+  JavaIcon,
+  MongoDBIcon,
+  MySQLIcon,
+  PHPIcon,
+  PostgreSqlIcon,
+  RedisIcon,
+  RubyIcon,
+  RustIcon,
+  SQLiteIcon,
+
+  // Fullstack
+  AWSIcon,
+  CSharpIcon,
+  DatabaseIcon,
+  DockerIcon,
+  DotNetIcon,
+  JavaScriptIcon,
+  NestJSIcon,
+  NodeIcon,
+  ReactIcon,
+  TypeScriptIcon,
+  VercelIcon,
+
+  // Mobile
+  CapacitorIcon,
+  ExpoIcon,
+  FlutterIcon,
+  KotlinIcon,
+  ReactNativeIcon,
+  SwiftIcon,
+  XcodeIcon,
+};
+
+export const floatingIconsLayoutByCategory = {
+  // AI & ML
+  aiml: [
+    {
+      icon: "TenserFlowIcon",
+      x: "18%",
+      y: "22%",
+      size: 56,
+      duration: 10,
+      delay: 0.4,
+    },
+    {
+      icon: "NumPyIcon",
+      x: "78%",
+      y: "26%",
+      size: 52,
+      duration: 9.2,
+      delay: 0.7,
+    },
+    {
+      icon: "PandasIcon",
+      x: "12%",
+      y: "66%",
+      size: 52,
+      duration: 12.1,
+      delay: 1.1,
+    },
+    {
+      icon: "PyTorchIcon",
+      x: "72%",
+      y: "72%",
+      size: 56,
+      duration: 11.5,
+      delay: 0.6,
+    },
+    {
+      icon: "PythonIcon",
+      x: "44%",
+      y: "18%",
+      size: 56,
+      duration: 9.8,
+      delay: 0.9,
+    },
+    { icon: "RIcon", x: "56%", y: "70%", size: 54, duration: 13.2, delay: 1.3 },
+    {
+      icon: "LangChain",
+      x: "42%",
+      y: "48%",
+      size: 60,
+      duration: 10.6,
+      delay: 0.5,
+    },
+  ],
+
+  // Backend
+  backend: [
+    {
+      icon: "FlaskIcon",
+      x: "55%",
+      y: "14%",
+      size: 52,
+      duration: 11.5,
+      delay: 1.1,
+    },
+    {
+      icon: "JavaIcon",
+      x: "15%",
+      y: "44%",
+      size: 52,
+      duration: 11.5,
+      delay: 1.1,
+    },
+    {
+      icon: "PostgreSqlIcon",
+      x: "83%",
+      y: "72%",
+      size: 52,
+      duration: 8.5,
+      delay: 1.1,
+    },
+    {
+      icon: "RubyIcon",
+      x: "65%",
+      y: "82%",
+      size: 50,
+      duration: 12.5,
+      delay: 1.1,
+    },
+    {
+      icon: "PHPIcon",
+      x: "34%",
+      y: "80%",
+      size: 58,
+      duration: 11.5,
+      delay: 1.2,
+    },
+    {
+      icon: "TypeScriptIcon",
+      x: "85%",
+      y: "30%",
+      size: 56,
+      duration: 8.5,
+      delay: 1,
+    },
+    { icon: "NodeIcon", x: "20%", y: "20%", size: 60, duration: 8, delay: 0.3 },
+    {
+      icon: "PythonIcon",
+      x: "70%",
+      y: "20%",
+      size: 54,
+      duration: 9,
+      delay: 0.7,
+    },
+    {
+      icon: "CSharpIcon",
+      x: "11%",
+      y: "76%",
+      size: 54,
+      duration: 14,
+      delay: 1,
+    },
+    {
+      icon: "DatabaseIcon",
+      x: "5%",
+      y: "32%",
+      size: 54,
+      duration: 10.5,
+      delay: 0.3,
+    },
+    { icon: "GoIcon", x: "40%", y: "22%", size: 56, duration: 9.5, delay: 0.2 },
+    {
+      icon: "RedisIcon",
+      x: "79%",
+      y: "48%",
+      size: 54,
+      duration: 19.5,
+      delay: 0.9,
+    },
+  ],
+
+  // Pending categories
+  devops: [
+    { icon: "DockerIcon", x: "16%", y: "24%", size: 58, duration: 10.5, delay: 0.4 },
+    { icon: "AWSIcon", x: "78%", y: "20%", size: 56, duration: 9.7, delay: 0.7 },
+    { icon: "RedisIcon", x: "24%", y: "74%", size: 54, duration: 12.2, delay: 0.9 },
+    { icon: "VercelIcon", x: "82%", y: "70%", size: 52, duration: 10.9, delay: 0.6 },
+  ],
+
+  // Fullstack
+  fullstack: [
+    {
+      icon: "MySQLIcon",
+      x: "6%",
+      y: "58%",
+      size: 58,
+      duration: 7.2,
+      delay: 0.3,
+    },
+    {
+      icon: "NestJSIcon",
+      x: "37%",
+      y: "18%",
+      size: 56,
+      duration: 7.2,
+      delay: 0.3,
+    },
+    {
+      icon: "ReactIcon",
+      x: "8%",
+      y: "20%",
+      size: 52,
+      duration: 11,
+      delay: 0.3,
+    },
+    {
+      icon: "JavaScriptIcon",
+      x: "75%",
+      y: "25%",
+      size: 56,
+      duration: 9,
+      delay: 0.7,
+    },
+    {
+      icon: "TypeScriptIcon",
+      x: "80%",
+      y: "80%",
+      size: 54,
+      duration: 8.5,
+      delay: 1.5,
+    },
+    {
+      icon: "VercelIcon",
+      x: "90%",
+      y: "20%",
+      size: 52,
+      duration: 9.5,
+      delay: 0.5,
+    },
+    {
+      icon: "NodeIcon",
+      x: "15%",
+      y: "76%",
+      size: 56,
+      duration: 9.5,
+      delay: 0.5,
+    },
+    {
+      icon: "CSharpIcon",
+      x: "36%",
+      y: "80%",
+      size: 56,
+      duration: 7.5,
+      delay: 0.5,
+    },
+    {
+      icon: "DotNetIcon",
+      x: "16%",
+      y: "45%",
+      size: 56,
+      duration: 11.5,
+      delay: 0.5,
+    },
+    {
+      icon: "MongoDBIcon",
+      x: "24%",
+      y: "24%",
+      size: 56,
+      duration: 12.5,
+      delay: 0.5,
+    },
+    {
+      icon: "DockerIcon",
+      x: "60%",
+      y: "20%",
+      size: 56,
+      duration: 15,
+      delay: 0.5,
+    },
+    {
+      icon: "AWSIcon",
+      x: "60%",
+      y: "86%",
+      size: 56,
+      duration: 9.5,
+      delay: 0.5,
+    },
+    {
+      icon: "DatabaseIcon",
+      x: "85%",
+      y: "47%",
+      size: 56,
+      duration: 9.5,
+      delay: 0.5,
+    },
+  ],
+
+  // Mobile
+  mobile: [
+    {
+      icon: "KotlinIcon",
+      x: "10%",
+      y: "65%",
+      size: 54,
+      delay: 1,
+      duration: 11,
+    },
+    { icon: "GraphQL", x: "86%", y: "25%", size: 56, delay: 0.2, duration: 12 },
+    {
+      icon: "XcodeIcon",
+      x: "6%",
+      y: "35%",
+      size: 56,
+      delay: 0.2,
+      duration: 12,
+    },
+    {
+      icon: "FlutterIcon",
+      x: "10%",
+      y: "166%",
+      size: 56,
+      delay: 0.2,
+      duration: 12,
+    },
+    {
+      icon: "SwiftIcon",
+      x: "23%",
+      y: "22%",
+      size: 54,
+      delay: 0.9,
+      duration: 22.3,
+    },
+    { icon: "JavaIcon", x: "66%", y: "20%", size: 56, delay: 3, duration: 9 },
+    {
+      icon: "ReactNativeIcon",
+      x: "90%",
+      y: "55%",
+      size: 86,
+      delay: 2.1,
+      duration: 8.3,
+    },
+    {
+      icon: "ExpoIcon",
+      x: "20%",
+      y: "45%",
+      size: 48,
+      delay: 3.3,
+      duration: 12.3,
+    },
+    {
+      icon: "CapacitorIcon",
+      x: "80%",
+      y: "45%",
+      size: 56,
+      delay: 3.3,
+      duration: 12.3,
+    },
+  ],
+
+  qa: [
+    { icon: "TypeScriptIcon", x: "18%", y: "22%", size: 56, duration: 9.2, delay: 0.3 },
+    { icon: "PythonIcon", x: "78%", y: "24%", size: 56, duration: 10.7, delay: 0.8 },
+    { icon: "PostgreSqlIcon", x: "24%", y: "72%", size: 54, duration: 12.4, delay: 1.1 },
+    { icon: "GraphQL", x: "74%", y: "70%", size: 54, duration: 11.5, delay: 0.6 },
+    { icon: "DatabaseIcon", x: "46%", y: "46%", size: 60, duration: 10.2, delay: 0.5 },
+  ],
+};
