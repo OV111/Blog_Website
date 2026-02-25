@@ -95,6 +95,8 @@ const Navbar = () => {
       navigate(`/users/${item.username}`);
     } else if (item.type === "post") {
       navigate(`/?search=${encodeURIComponent(item.title)}`);
+    } else if (item.type === "category") {
+      navigate(`/categories/${item.slug}`);
     }
     setSearchValue("");
     setIsOpen(false);
@@ -103,9 +105,9 @@ const Navbar = () => {
   return (
     <React.Fragment>
       <div>
-        <nav className="relative space-x-1 flex items-center justify-between px-5 gap-12 py-2 shadow z-1 w-full sm:w-full lg:w-full bg-linear-to-r from-purple-700 to-purple-900  dark:from-purple-700 dark:to-purple-800 lg:gap-10 lg:py-4">
-          <h2 className="text-base font-bold my-2 lg:my-1 w-[30px] cursor-pointer text-white sm:text-xl md:text-xl lg:text-2xl lg:w-auto lg:ml-3">
-            <NavLink to="/">Devs Blog</NavLink>
+        <nav className="relative space-x-1 flex items-center justify-between px-3 gap-10 py-1 shadow z-1 w-full sm:w-full lg:w-full bg-linear-to-r from-purple-700 to-purple-900  dark:from-purple-700 dark:to-purple-800 lg:gap-10 lg:py-4">
+          <h2 className="text-base font-bold my-1 lg:my-0.5 cursor-pointer sm:text-xl text-purple-600 md:text-xl lg:text-xl lg:w-auto lg:ml-3">
+            <NavLink to="/">DevsFlow</NavLink>
           </h2>
 
           {showSearch && (
@@ -127,12 +129,12 @@ const Navbar = () => {
             </div>
           )}
 
-          <ul className="flex items-center justify-between space-x-3 text-gray-100 my-3.5 lg:my-1 lg:space-x-4">
-            <li className="font-medium text-sm hover:text-purple-300 dark:hover:text-purple-300 transition lg:text-lg lg:mx-4">
+          <ul className="flex items-center gap-2 text-gray-100 my-2 lg:my-0.5">
+            <li className="font-medium text-sm md:text-sm lg:text-base px-1 py-1 hover:text-purple-300 dark:hover:text-purple-300 transition">
               <NavLink to="/">Home</NavLink>
             </li>
             <li
-              className="relative text-base  font-medium hover:text-purple-300 transition mr-3 lg:text-lg"
+              className="relative text-sm md:text-sm lg:text-base font-medium px-1 py-1 hover:text-purple-300 transition"
               ref={dropdownRef}
             >
               <button
@@ -188,10 +190,10 @@ const Navbar = () => {
 
             {auth ? (
               <React.Fragment>
-                <li className="font-medium text-sm w-17 lg:text-lg lg:w-21 hover:text-purple-300 dark:hover:text-purple-300 transition">
+                <li className="font-medium text-sm md:text-sm lg:text-base px-1 py-1 hover:text-purple-300 dark:hover:text-purple-300 transition">
                   <NavLink to="my-profile">My Profile</NavLink>
                 </li>
-                <li className="hidden sm:block font-medium text-base  hover:text-purple-300 dark:hover:text-purple-300 transition cursor-pointer lg:text-lg">
+                <li className="hidden sm:block font-medium text-sm md:text-sm lg:text-base px-1 py-1 hover:text-purple-300 dark:hover:text-purple-300 transition cursor-pointer">
                   <button
                     className="cursor-pointer"
                     onClick={() => {
@@ -204,10 +206,10 @@ const Navbar = () => {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <li className="hidden md:block font-medium text-lg  hover:text-purple-300 dark:hover:text-purple-300 transition">
+                <li className="hidden md:block font-medium text-sm md:text-sm lg:text-base px-1 py-1 hover:text-purple-300 dark:hover:text-purple-300 transition">
                   <NavLink to="about">About</NavLink>
                 </li>
-                <li className="font-medium text-base  hover:text-purple-300 dark:hover:text-purple-300 transition lg:text-lg">
+                <li className="font-medium text-sm md:text-sm lg:text-base px-1 py-1 hover:text-purple-300 dark:hover:text-purple-300 transition">
                   <NavLink to="get-started">Get Started</NavLink>
                 </li>
               </React.Fragment>

@@ -16,6 +16,20 @@ const ReccomendedTags = [
   "HTML",
   "Python",
 ];
+let category = [
+  "Full Stack Development",
+  "Mobile Development",
+  "Game Development",
+  "ML & AI",
+  "Backend Development",
+  "Quality Assurance",
+  "DevOps",
+  "Data Science",
+  "Cybersecurity",
+  "Cloud Computing",
+  "Data Science",
+  "Database Management",
+];
 
 export default function AddBlog() {
   const [title, setTitle] = useState("");
@@ -83,15 +97,15 @@ export default function AddBlog() {
 
       <main className="flex-1 max-w-5xl m-8 w-full">
         {/* Header */}
-        <header className="flex justify-between items-start mb-10">
+        <header className="lg:flex justify-between grid items-start mb-10">
           <div>
-            <h1 className="text-3xl font-bold">Write a new blog</h1>
-            <p className="text-gray-600 mt-1">
+            <h1 className="text-xl lg:text-3xl font-bold">Write a new blog</h1>
+            <p className="text-base lg:text-xl text-gray-600 mt-1">
               Share knowledge with the developer community
             </p>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex gap-3 ">
             <button
               onClick={() => handleSubmit("draft")}
               disabled={isSubmitting}
@@ -122,10 +136,12 @@ export default function AddBlog() {
             size="small"
             sx={{
               "& .MuiInputBase-root": { height: 40 },
-              "& .MuiInputBase-input": { padding: "2px 12px" },
+              "& .MuiInputBase-input": {
+                padding: "2px 12px",
+                fontSize: { lg: "16px", xs: "12px" },
+              },
             }}
           />
-
           <TextField
             label="Short Description"
             required
@@ -135,15 +151,18 @@ export default function AddBlog() {
             multiline
             sx={{
               "& .MuiInputBase-root": { height: 90 },
-              "& .MuiInputBase-input": { padding: "4px 8px" },
+              "& .MuiInputBase-input": {
+                padding: "4px 8px",
+                fontSize: { lg: "16px", xs: "12px" },
+              },
             }}
             minRows={2.5}
             fullWidth
             helperText={`${description.length}/100 characters recommended`}
           />
           <div>
-            <div className="flex justify-between text-sm text-gray-500 mb-1">
-              <span>Content (Markdown supported)</span>
+            <div className="flex justify-between  text-sm text-gray-500 mb-1">
+              <span className="">Content (Markdown supported)</span>
               <span>{readTime} min read</span>
             </div>
             <TextField
@@ -156,7 +175,7 @@ export default function AddBlog() {
             />
           </div>
 
-          {/* Tags */}
+          {/* Tags  & Categories */}
           <div>
             <FormLabel>Tags:</FormLabel>
             <div className="flex flex-wrap gap-2 mt-2">
@@ -178,6 +197,17 @@ export default function AddBlog() {
                 ))}
               </div>
             )}
+          </div>
+
+          <div>
+            <select className="ml-2 border border-gray-300 rounded-lg px-2 py-1 text-sm">
+              <option value="">Select category</option>
+              {category.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Cover Image */}

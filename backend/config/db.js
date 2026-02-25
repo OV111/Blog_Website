@@ -1,10 +1,10 @@
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 import process from "process";
-dotenv.config();
+dotenv.config({path:"./backend/.env"});
 
 const MONGO_URI = process.env.MONGO_URI;
-const client = new MongoClient(MONGO_URI);
+export const client = new MongoClient(MONGO_URI);
 
 let db;
 
@@ -18,8 +18,13 @@ const connectDB = async () => {
     return db;
   } catch (err) {
     console.error("MongoDB connection error", err);
-    throw err;
+    return {
+      code: 500,
+      message: "Failed to Connect DB",
+      err: err,
+    };
   }
 };
-// connectDB()
+// let x = await connectDB()
+// console.log(x)
 export default connectDB;

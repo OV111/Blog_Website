@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchUserData } from "./services/SearchApi";
+import { fetchCategoryData, fetchUserData } from "./services/SearchApi";
 
 export default function SearchResults({ query = "", onSelect, boundaryRef }) {
   const [open, setOpen] = useState(false);
@@ -18,9 +18,17 @@ export default function SearchResults({ query = "", onSelect, boundaryRef }) {
       }
 
       setIsLoading(true);
-      const results = await fetchUserData(normalizedQuery);
+      const [userResults, categoryResults] = await Promise.all([
+        fetchUserData(normalizedQuery),
+        fetchCategoryData(normalizedQuery),
+      ]);
+
       if (!ignore) {
-        setItems(Array.isArray(results) ? results : []);
+        const users = Array.isArray(userResults) ? userResults : [];
+        const categories = Array.isArray(categoryResults)
+          ? categoryResults
+          : [];
+        setItems([...categories, ...users]);
         setIsLoading(false);
       }
     };
@@ -54,12 +62,12 @@ export default function SearchResults({ query = "", onSelect, boundaryRef }) {
     };
   }, [boundaryRef, normalizedQuery]);
 
-  // then for the posts maybe
   const users = items.filter((item) => item.type === "user");
+  const categories = items.filter((item) => item.type === "category");
 
   if (!open) return null;
   return (
-    <div className="absolute top-[calc(100%+6px)] w-full max-w-[620px] z-4 overflow-hidden rounded-2xl border border-white/10 bg-purple-900 shadow-xl backdrop-blur ">
+    <div className="absolute top-[calc(100%+6px)] w-full max-w-[620px] z-4 overflow-hidden rounded-2xl border border-white/10 bg-linear-to-r from-purple-800 to-purple-900 shadow-xl backdrop-blur ">
       <div className="max-h-80 overflow-auto p-2">
         {isLoading && (
           <div className="px-3 py-2 text-sm text-white/70">Searching...</div>
@@ -77,6 +85,20 @@ export default function SearchResults({ query = "", onSelect, boundaryRef }) {
           >
             <span className="font-medium">{user.title}</span>
             <span className="ml-2 text-white/60">~{user.username}</span>
+          </button>
+        ))}
+
+        {categories.map((category) => (
+          <button
+            key={`${category.type}-${category.id || category.title}`}
+            type="button"
+            onClick={() => {
+              setOpen(false);
+              onSelect?.(category);
+            }}
+            className="cursor-pointer block w-full rounded-lg px-3 py-2 text-left text-sm text-white hover:bg-white/10"
+          >
+            <span className="font-medium">{category.title}</span>
           </button>
         ))}
         {!isLoading && items.length === 0 && (

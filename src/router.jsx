@@ -10,7 +10,7 @@ import GameDev from "./pages/CategoryPages/GameDev";
 const Followers = lazy(() => import("./pages/My-Profile/Followers"));
 const Favorites = lazy(() => import("./pages/My-Profile/Favorites"));
 const AddBlog = lazy(() => import("./pages/My-Profile/AddBlog"));
-const Chats = lazy(() => import("./pages/My-Profile/Chats"));
+// const Chats = lazy(() => import("./pages/My-Profile/Chats"));
 const Notifications = lazy(() => import("./pages/My-Profile/Notifications"));
 const Settings = lazy(() => import("./pages/My-Profile/Settings"));
 
@@ -78,14 +78,14 @@ const router = createBrowserRouter([
               </ProtectedMyProfile>
             ),
           },
-          {
-            path: "chats",
-            element: (
-              <ProtectedMyProfile>
-                <Chats />
-              </ProtectedMyProfile>
-            ),
-          },
+          // {
+          //   path: "chats",
+          //   element: (
+          //     <ProtectedMyProfile>
+          //       <Chats />
+          //     </ProtectedMyProfile>
+          //   ),
+          // },
           {
             path: "notifications",
             element: (

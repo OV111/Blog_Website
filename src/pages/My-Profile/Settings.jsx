@@ -1,5 +1,5 @@
 import React, { use, useEffect, useState } from "react";
-import DeleteAccount from "../DeleteAccount";
+import DeleteAccount from "../../components/DeleteAccount";
 import { Link } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
@@ -8,18 +8,6 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { Toaster, toast } from "react-hot-toast";
 // import LoadingSuspense from "../components/LoadingSuspense";
 import SideBar from "./components/SideBar";
-import FormLabel from "@mui/material/FormLabel";
-import TextField from "@mui/material/TextField";
-import {
-  FaUserCircle,
-  FaBell,
-  FaRegHeart,
-  FaGithub,
-  FaLinkedin,
-  FaTwitter,
-  FaEdit,
-  FaLocationArrow,
-} from "react-icons/fa";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Settings = () => {
@@ -278,6 +266,8 @@ const Settings = () => {
             >
               Save Changes
             </button>
+
+            <DeleteAccount />
           </div>
         </div>
       </div>

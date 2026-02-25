@@ -12,6 +12,7 @@ const GetStarted = () => {
   const [isSignedUp, setIsSignedUp] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [authUiMessage, setAuthUiMessage] = useState("");
   const {
     register,
     handleSubmit,
@@ -35,6 +36,7 @@ const GetStarted = () => {
   };
 
   const onSubmit = async (data) => {
+    setAuthUiMessage("");
     const url = isSignedUp
       ? `${API_BASE_URL}/get-started`
       : `${API_BASE_URL}/login`;
@@ -63,14 +65,25 @@ const GetStarted = () => {
           login();
         }, 950);
       } else if (response.status === 409) {
+        setAuthUiMessage(result.message);
         toast.error(result.message);
       } else if (response.status === 404) {
+        setAuthUiMessage(result.message);
         toast.error(result.message);
       } else if (response.status === 401) {
+        setAuthUiMessage(result.message);
         toast.error(result.message);
+      } else if (response.status === 429) {
+        setAuthUiMessage(
+          result.message || "Too many login attempts. Please try again later.",
+        );
+      } else {
+        setAuthUiMessage(result.message || "Request failed");
+        toast.error(result.message || "Request failed");
       }
     } catch (err) {
       console.error(err);
+      setAuthUiMessage("Server is unavailable. Please try again later.");
       toast.error("Server is unavailable. Please try again later!", {
         duration: 2500,
       });
@@ -80,6 +93,7 @@ const GetStarted = () => {
 
   const ToggleLink = () => {
     setIsSignedUp(!isSignedUp);
+    setAuthUiMessage("");
     reset();
   };
 
@@ -91,6 +105,11 @@ const GetStarted = () => {
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-bold text-center mb-4 sm:mb-6 md:mb-8 text-purple-700 dark:text-purple-600">
             {isSignedUp ? "Sign Up" : "Log In"}
           </h2>
+          {authUiMessage && (
+            <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+              {authUiMessage}
+            </div>
+          )}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             {isSignedUp && (
               <React.Fragment>

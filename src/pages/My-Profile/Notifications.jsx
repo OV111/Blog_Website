@@ -1,10 +1,12 @@
 import React from "react";
+import SideBar from "./components/SideBar";
 
 const Notifications = () => {
     return (
-        <React.Fragment>
+        <div className="flex min-h-screen"> 
+            <SideBar/>
             <p>Notifications</p>
-        </React.Fragment>
+        </div>
     )
 }
 export default Notifications;
