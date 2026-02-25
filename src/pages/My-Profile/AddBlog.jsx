@@ -29,6 +29,7 @@ let category = [
   "Cloud Computing",
   "Data Science",
   "Database Management",
+  "Quantum Computing",
 ];
 
 export default function AddBlog() {

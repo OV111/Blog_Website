@@ -64,7 +64,6 @@ const MyProfile = () => {
       }
 
       const response = await request.json();
-      console.log(response);
 
       setUser(response.userWithoutPassword ?? null);
       setStats(response.stats ?? {});

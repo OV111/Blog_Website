@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import SideBar from "./components/SideBar";
 import AppsIcon from "@mui/icons-material/Apps";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
@@ -21,17 +21,21 @@ const Followers = () => {
   const [followingCount, setFollowingCount] = useState(0);
 
   useEffect(() => {
-
-      setUsers([
-          {
-              id:1,
-      name: "John Doe",
-      username: "johndoe",
-      avatar: "https://example.com/avatar.jpg",
-    },
-    
-])
-},[])
+    setUsers([
+      {
+        id: 1,
+        name: "John Doe",
+        username: "johndoe",
+        avatar: "https://example.com/avatar.jpg",
+      },
+      {
+        id: 2,
+        name: "John Doe",
+        username: "johndoe221",
+        avatar: "https://example.com/avatar.jpg",
+      },
+    ]);
+  }, []);
   return (
     <div className="flex min-h-screen">
       <SideBar />
@@ -55,7 +59,7 @@ const Followers = () => {
                 className={`rounded-lg px-3 py-2 cursor-pointer transition duration-400 ${
                   !followersView
                     ? "bg-purple-600 text-white"
-                    : "bg-purple-100 text-gray-700"
+                    : "bg-purple-50 text-gray-700 hover:bg-purple-100"
                 }`}
               >
                 Followers ({followersCount})
@@ -66,7 +70,7 @@ const Followers = () => {
                 className={`rounded-lg px-3 py-2 cursor-pointer transition duration-400 ${
                   followersView
                     ? "bg-purple-600 text-white"
-                    : "bg-purple-100 text-gray-700"
+                    : "bg-purple-50 text-gray-700 hover:bg-purple-100"
                 }`}
               >
                 Following ({followingCount})
@@ -82,7 +86,7 @@ const Followers = () => {
                     className={`cursor-pointer rounded-md px-2 py-1 transition duration-400 ${
                       sortBy === option
                         ? "bg-purple-700 text-white"
-                        : "bg-gray-100 text-purple-700 hover:bg-gray-200"
+                        : "bg-purple-50 text-purple-700 hover:bg-purple-100"
                     }`}
                   >
                     {option}
@@ -107,7 +111,7 @@ const Followers = () => {
                       className={`inline-flex cursor-pointer items-center gap-1 rounded-lg px-3 py-1 transition duration-400 ${
                         isActive
                           ? "bg-purple-600 text-white"
-                          : "bg-purple-100 text-gray-700 hover:bg-gray-200"
+                          : "bg-purple-50 text-gray-700 hover:bg-purple-100"
                       }`}
                     >
                       <Icon fontSize="small" />
@@ -121,16 +125,20 @@ const Followers = () => {
           {/* Users */}
           <div className="px-2">
             {users.map((user) => (
-              <div key={user.id} className="flex border border-gray-300 rounded-lg gap-2">
+              <div
+                key={user.id}
+                className="flex border border-gray-300 rounded-lg gap-2"
+              >
                 <img
                   src=""
                   alt="profile image"
                   className="w-10 h-10 lg:w-15 lg:h-15 rounded-full object-cover bg-gray-300"
                 />
                 <div className="grid">
-
-                <p className="text-gray-900 text-lg font-semibold">{user.name}</p>
-                <p className="text-gray-400">{user.username}</p>
+                  <p className="text-gray-900 text-lg font-semibold">
+                    {user.name}
+                  </p>
+                  <p className="text-gray-400">{user.username}</p>
                 </div>
               </div>
             ))}

@@ -122,7 +122,7 @@ const Settings = () => {
             Manage your account settings and preferences
           </p>
 
-          <div className="grid gap-8">
+          <div className="grid gap-8" id="general">
             <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
               <div className="grid gap-2 w-full lg:max-w-[400px]">
                 <label className="text-sm font-medium text-gray-700">
@@ -266,7 +266,6 @@ const Settings = () => {
             >
               Save Changes
             </button>
-
             <DeleteAccount />
           </div>
         </div>

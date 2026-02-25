@@ -14,7 +14,7 @@ const DeleteAccount = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [errors,setErrors] = useState({email:"",password:""});
+  const [errors, setErrors] = useState({ email: "", password: "" });
 
   const handleDeleteAccount = async () => {
     const trimmedEmail = email.trim();
@@ -25,7 +25,6 @@ const DeleteAccount = () => {
     if (!trimmedPassword) nextErrors.password = "Password is required";
     if (nextErrors.email || nextErrors.password) {
       setErrors(nextErrors);
-      toast.error("Email and password are required");
       return;
     }
     setErrors({ email: "", password: "" });
@@ -91,7 +90,8 @@ const DeleteAccount = () => {
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
-                  if (errors.email) setErrors((prev) => ({ ...prev, email: "" }));
+                  if (errors.email)
+                    setErrors((prev) => ({ ...prev, email: "" }));
                 }}
                 placeholder="Enter your email to confirm"
                 className="w-full rounded-lg border border-gray-300 outline-none px-3 py-2"
