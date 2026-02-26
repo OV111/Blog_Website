@@ -21,6 +21,7 @@ export const sidebarArr = [
       },
       {
         to: "/my-profile/followers",
+        activePaths: ["/my-profile/following"],
         icon: (
           <PeopleOutlineIcon sx={{ fontSize: 22, color: "currentColor" }} />
         ),
@@ -63,12 +64,12 @@ export const sidebarArr = [
     section: "Privacy",
     items: [
       {
-        to: "/my-profile/settings",
+        to: "/",
         icon: <LinkIcon sx={{ fontSize: 22, color: "currentColor" }} />,
         label: "Connected Accounts",
       },
       {
-        to: "/my-profile/settings",
+        to: "/",
         icon: (
           <GroupOffOutlinedIcon sx={{ fontSize: 22, color: "currentColor" }} />
         ),

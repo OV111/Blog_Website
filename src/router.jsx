@@ -71,6 +71,14 @@ const router = createBrowserRouter([
             ),
           },
           {
+            path: "following",
+            element: (
+              <ProtectedMyProfile>
+                <Followers />
+              </ProtectedMyProfile>
+            ),
+          },
+          {
             path: "add-blog",
             element: (
               <ProtectedMyProfile>

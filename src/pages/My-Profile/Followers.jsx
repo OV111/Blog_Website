@@ -1,41 +1,77 @@
 import { useState, useEffect } from "react";
 import SideBar from "./components/SideBar";
-import AppsIcon from "@mui/icons-material/Apps";
-import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
-import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
-import GroupWorkOutlinedIcon from "@mui/icons-material/GroupWorkOutlined";
+import { sortOptions, filterOptions } from "../../../constants/FollowersPage";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const sortOptions = ["Most Relevant", "Newest", "Oldest"];
-const filterOptions = [
-  { content: "All", icon: AppsIcon },
-  { content: "Mutuals", icon: PeopleAltOutlinedIcon },
-  { content: "Verified", icon: VerifiedOutlinedIcon },
-  { content: "Contributors", icon: GroupWorkOutlinedIcon },
-];
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const Followers = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [sortBy, setSortBy] = useState("Most Relevant");
-  const [followersView, setFollowersView] = useState(false);
   const [activeFilter, setActiveFilter] = useState("All");
-  const [users, setUsers] = useState([]);
+  const [followers, setFollowers] = useState([]);
+  const [stats, setStast] = useState([]);
+  const [followings, setFollowings] = useState([]);
   const [followersCount, setFollowersCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
+  const followersView = location.pathname.endsWith("/following");
+
+  const fetchFollowers = async () => {
+    try {
+      const token = localStorage.getItem("JWT");
+      const request = await fetch(`${API_BASE_URL}/my-profile/followers`, {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!request.ok) {
+        console.log("error");
+      }
+
+      const response = await request.json();
+      setFollowers(response.followers ?? []);
+      setFollowersCount(response.followersCount ?? 0);
+      setFollowingCount(response.followingCount ?? 0);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchFollowing = async () => {
+    try {
+      const token = localStorage.getItem("JWT");
+      const request = await fetch(`${API_BASE_URL}/my-profile/following`, {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!request.ok) {
+        console.log("error");
+      }
+
+      const response = await request.json();
+      setFollowings(response.following ?? []);
+      setFollowersCount(response.followersCount ?? 0);
+      setFollowingCount(response.followingCount ?? 0);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    setUsers([
-      {
-        id: 1,
-        name: "John Doe",
-        username: "johndoe",
-        avatar: "https://example.com/avatar.jpg",
-      },
-      {
-        id: 2,
-        name: "John Doe",
-        username: "johndoe221",
-        avatar: "https://example.com/avatar.jpg",
-      },
-    ]);
-  }, []);
+    if (followersView) {
+      fetchFollowers();
+    }
+    fetchFollowing();
+  }, [followersView]);
+
   return (
     <div className="flex min-h-screen">
       <SideBar />
@@ -50,12 +86,11 @@ const Followers = () => {
         </p>
 
         <div className="bg-white w-full rounded-lg">
-          {/* Header */}
           <div className="flex justify-between items-center p-2 border-b-1 border-gray-300">
             <div className="flex justify-center items-center gap-2">
               <button
                 type="button"
-                onClick={() => setFollowersView(false)}
+                onClick={() => navigate("/my-profile/followers")}
                 className={`rounded-lg px-3 py-2 cursor-pointer transition duration-400 ${
                   !followersView
                     ? "bg-purple-600 text-white"
@@ -66,7 +101,7 @@ const Followers = () => {
               </button>
               <button
                 type="button"
-                onClick={() => setFollowersView(true)}
+                onClick={() => navigate("/my-profile/following")}
                 className={`rounded-lg px-3 py-2 cursor-pointer transition duration-400 ${
                   followersView
                     ? "bg-purple-600 text-white"
@@ -76,6 +111,7 @@ const Followers = () => {
                 Following ({followingCount})
               </button>
             </div>
+
             <ul className="flex items-center gap-2 text-sm">
               <li className="text-sm text-gray-600">Sort by:</li>
               {sortOptions.map((option) => (
@@ -95,19 +131,18 @@ const Followers = () => {
               ))}
             </ul>
           </div>
-          {/* Options */}
+
           <div className="px-2 my-2">
             <ul className="flex gap-2">
               {filterOptions.map((option) => {
                 const Icon = option.icon;
                 const isActive = activeFilter === option.content;
+
                 return (
-                  <li key={option.id} className="">
+                  <li key={option.content}>
                     <button
                       type="button"
-                      onClick={() => {
-                        setActiveFilter(option.content);
-                      }}
+                      onClick={() => setActiveFilter(option.content)}
                       className={`inline-flex cursor-pointer items-center gap-1 rounded-lg px-3 py-1 transition duration-400 ${
                         isActive
                           ? "bg-purple-600 text-white"
@@ -122,30 +157,50 @@ const Followers = () => {
               })}
             </ul>
           </div>
-          {/* Users */}
+
           <div className="px-2">
-            {users.map((user) => (
-              <div
-                key={user.id}
-                className="flex border border-gray-300 rounded-lg gap-2"
-              >
-                <img
-                  src=""
-                  alt="profile image"
-                  className="w-10 h-10 lg:w-15 lg:h-15 rounded-full object-cover bg-gray-300"
-                />
-                <div className="grid">
-                  <p className="text-gray-900 text-lg font-semibold">
-                    {user.name}
-                  </p>
-                  <p className="text-gray-400">{user.username}</p>
-                </div>
-              </div>
-            ))}
+            {followersView
+              ? followings.map((user) => (
+                  <div
+                    key={user._id ?? user.id}
+                    className="flex border border-gray-300 rounded-lg gap-2"
+                  >
+                    <img
+                      src="/user_profile/User_Profile.jpg"
+                      alt="profile image"
+                      className="w-10 h-10 lg:w-15 lg:h-15 rounded-full object-cover bg-gray-300"
+                    />
+                    <div className="grid">
+                      <p className="text-gray-900 text-lg font-semibold">
+                        {user.name}
+                      </p>
+                      <p className="text-gray-400">{user.username}</p>
+                    </div>
+                  </div>
+                ))
+              : followers.map((user) => (
+                  <div
+                    key={user._id ?? user.id}
+                    className="flex border border-gray-300 rounded-lg gap-2"
+                  >
+                    <img
+                      src="/user_profile/User_Profile.jpg"
+                      alt="profile image"
+                      className="w-10 h-10 lg:w-15 lg:h-15 rounded-full object-cover bg-gray-300"
+                    />
+                    <div className="grid">
+                      <p className="text-gray-900 text-lg font-semibold">
+                        {user.name}
+                      </p>
+                      <p className="text-gray-400">{user.username}</p>
+                    </div>
+                  </div>
+                ))}
           </div>
         </div>
       </div>
     </div>
   );
 };
+
 export default Followers;

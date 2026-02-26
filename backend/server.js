@@ -15,6 +15,11 @@ import { signUp, login } from "./controllers/authController.js";
 import { verifyToken } from "./utils/jwtToken.js";
 import { ObjectId } from "mongodb";
 import { CATEGORY_OPTIONS } from "../constants/Categories.js";
+import {
+  getAuthToken,
+  getFollowersData,
+  getFollowingData,
+} from "./services/followService.js";
 
 dotenv.config();
 
@@ -381,6 +386,28 @@ const StartServer = async () => {
         req.pipe(bb);
       }
 
+      if (req.url === "/my-profile/following" && req.method === "GET") {
+        const auth = getAuthToken(req.headers.authorization);
+        if (!auth.ok) {
+          res.writeHead(auth.status, { "content-type": "application/json" });
+          return res.end(JSON.stringify({ message: auth.message }));
+        }
+        const userId = auth.userObjectId;
+        const data = await getFollowingData({ userId, db });
+        res.writeHead(200, { "content-type": "application/json" });
+        return res.end(JSON.stringify(data));
+      } else if (req.url === "/my-profile/followers" && req.method === "GET") {
+        const auth = getAuthToken(req.headers.authorization);
+        if (!auth.ok) {
+          res.writeHead(auth.status, { "content-type": "application/json" });
+          return res.end(JSON.stringify({ message: auth.message }));
+        }
+        const userId = auth.userObjectId;
+        const data = await getFollowersData({ userId, db });
+        res.writeHead(200, { "content-type": "application/json" });
+        return res.end(JSON.stringify(data));
+      }
+
       if (req.method === "GET" && req.url.startsWith("/search/users")) {
         try {
           const reqUrl = new URL(req.url, `http://${req.headers.host}`);
@@ -429,8 +456,10 @@ const StartServer = async () => {
             }),
           );
         }
-      }
-      if (req.method === "GET" && req.url.startsWith("/search/categories")) {
+      } else if (
+        req.method === "GET" &&
+        req.url.startsWith("/search/categories")
+      ) {
         try {
           const reqUrl = new URL(req.url, `http://${req.headers.host}`);
           const query = reqUrl.searchParams.get("q")?.trim() || "";
@@ -459,8 +488,7 @@ const StartServer = async () => {
             }),
           );
         }
-      }
-      if (req.method === "GET" && req.url.startsWith("/users/")) {
+      } else if (req.method === "GET" && req.url.startsWith("/users/")) {
         const userName = decodeURIComponent(req.url.split("/")[2] || "").trim();
         if (!userName) {
           res.writeHead(400, { "content-type": "application/json" });
