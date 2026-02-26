@@ -1,5 +1,5 @@
 import { sidebarArr } from "../../../../constants/Sidebars.jsx";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "../../../context/useAuthStore";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import { useEffect, useState } from "react";
@@ -8,6 +8,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function SideBar({ isOpen, onClose }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { logout } = useAuthStore();
   const [userInfo, setUserInfo] = useState(null);
   const [openImage, setOpenImage] = useState(false);
@@ -33,7 +34,6 @@ export default function SideBar({ isOpen, onClose }) {
       } else {
         toast.error("Log Out Failed!");
         console.error("Log Out failed!");
-        // toast(response.message, {duration:1500});
       }
     } catch (err) {
       console.log(err);
@@ -160,13 +160,19 @@ export default function SideBar({ isOpen, onClose }) {
 
               {group.items.map((item) => (
                 <NavLink
-                  key={item.to}
+                  key={`${item.to}-${item.label}`}
                   to={item.to}
                   end={item.end}
                   className={({ isActive }) =>
-                    `flex w-10 items-center justify-center gap-0 rounded-none py-0 px-0 text-gray-700 transition-colors hover:bg-purple-50 lg:mx-auto lg:w-full lg:justify-start lg:gap-2 lg:rounded-lg lg:py-2 lg:px-3 ${
-                      isActive ? "lg:bg-purple-50 text-purple-600" : ""
-                    }`
+                    (() => {
+                      const isAliasActive = item.activePaths?.includes(
+                        location.pathname,
+                      );
+                      const active = isActive || isAliasActive;
+                      return `flex w-10 items-center justify-center gap-0 rounded-none py-0 px-0 text-gray-700 transition-colors hover:bg-purple-50 lg:mx-auto lg:w-full lg:justify-start lg:gap-2 lg:rounded-lg lg:py-2 lg:px-3 ${
+                        active ? "lg:bg-purple-50 text-purple-600" : ""
+                      }`;
+                    })()
                   }
                 >
                   <p className="flex items-center">{item.icon}</p>
