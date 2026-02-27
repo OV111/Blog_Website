@@ -1,22 +1,16 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import DeleteAccount from "../../components/DeleteAccount";
-import { Link } from "react-router-dom";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import SettingsIcon from "@mui/icons-material/Settings";
 import { Toaster, toast } from "react-hot-toast";
 // import LoadingSuspense from "../components/LoadingSuspense";
 import SideBar from "./components/SideBar";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Settings = () => {
-  const [savedClicked, setSavedClicked] = useState(false);
-
   const [formData, setFormData] = useState({
     fname: "",
     lname: "",
     bio: "",
+    location: "",
     postsCount: 0,
     githubLink: "",
     linkedinLink: "",
@@ -43,6 +37,7 @@ const Settings = () => {
           fname: response.userWithoutPassword.firstName || "",
           lname: response.userWithoutPassword.lastName || "",
           bio: response.stats.bio || "",
+          location: response.stats.location || "",
           postsCount: response.stats.postsCount || 0,
           githubLink: response.stats.githubLink || "",
           linkedinLink: response.stats.linkedinLink || "",
@@ -84,6 +79,7 @@ const Settings = () => {
           fname: response.user.firstName || "",
           lname: response.user.lastName || "",
           bio: response.stats.bio || "",
+          location: response.stats.location || "",
           postsCount: response.stats.postsCount || 0,
           githubLink: response.stats.githubLink || "",
           linkedinLink: response.stats.linkedinLink || "",
@@ -91,9 +87,7 @@ const Settings = () => {
         };
         setFormData(updatedData);
         setOriginalData(updatedData);
-        setSavedClicked(true);
         toast.success(response.message || "Changes saved successfully");
-        console.log("aveh");
 
         setProfileImage(null);
         setBannerImage(null);
@@ -101,7 +95,7 @@ const Settings = () => {
         toast.error(response.message || "Failed to save changes");
       }
     } catch (err) {
-      console.log(err);
+      console.error("Error saving settings:", err);
     }
   };
   const handleChange = (field, value) => {
@@ -194,6 +188,7 @@ const Settings = () => {
             </div>
 
             <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
+              {/* Change to textarea */}
               <div className="grid gap-2 w-full lg:max-w-[400px]">
                 <label className="text-sm font-medium text-gray-700">Bio</label>
                 <input
@@ -204,8 +199,9 @@ const Settings = () => {
                   onChange={(e) => handleChange("bio", e.target.value)}
                 />
               </div>
-
-              <div className="grid gap-2 w-full lg:max-w-[300px]">
+            </div>
+            <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
+              <div className="grid gap-2 w-full lg:max-w-[400px]">
                 <label className="text-sm font-medium text-gray-700">
                   Time Zone
                 </label>
@@ -213,6 +209,21 @@ const Settings = () => {
                   type="text"
                   placeholder="e.g. UTC +4"
                   className="px-3 py-2 border border-gray-300 rounded-lg w-full"
+                />
+              </div>
+              <div className="grid gap-2 w-full lg:max-w-[400px]">
+                <label className="text-sm font-medium text-gray-700">
+                  Location
+                </label>
+                <input
+                  type="text"
+                  name="location"
+                  value={formData.location}
+                  placeholder="City, Country"
+                  className="px-3 py-2 border border-gray-300 rounded-lg w-full"
+                  onChange={(e) => {
+                    handleChange("location", e.target.value);
+                  }}
                 />
               </div>
             </div>

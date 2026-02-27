@@ -45,6 +45,9 @@ const getClientIp = (req) => {
     .trim();
 };
 
+const DEFAULT_FOLLOWERS_LIMIT = 25;
+const MAX_FOLLOWERS_LIMIT = 50;
+
 const StartServer = async () => {
   try {
     db = await connectDB();
@@ -339,6 +342,8 @@ const StartServer = async () => {
               statsUpdate.linkedinLink = fields.linkedinLink;
             if (fields.twitterLink !== undefined)
               statsUpdate.twitterLink = fields.twitterLink;
+            if (fields.location !== undefined)
+              statsUpdate.location = fields.location;
             if (files.profileImage)
               statsUpdate.profileImage = files.profileImage;
             if (files.bannerImage) statsUpdate.bannerImage = files.bannerImage;
@@ -386,24 +391,43 @@ const StartServer = async () => {
         req.pipe(bb);
       }
 
-      if (req.url === "/my-profile/following" && req.method === "GET") {
+      if (req.method === "GET" && req.url.startsWith("/my-profile/following")) {
+        const reqUrl = new URL(req.url, `http://${req.headers.host}`);
+        const rawPage = Number(reqUrl.searchParams.get("page"));
+        const rawLimit = Number(reqUrl.searchParams.get("limit"));
+        const page = Number.isFinite(rawPage) && rawPage > 0 ? rawPage : 1;
+        const limit =
+          Number.isFinite(rawLimit) && rawLimit > 0
+            ? Math.min(rawLimit, DEFAULT_FOLLOWERS_LIMIT)
+            : DEFAULT_FOLLOWERS_LIMIT;
         const auth = getAuthToken(req.headers.authorization);
         if (!auth.ok) {
           res.writeHead(auth.status, { "content-type": "application/json" });
           return res.end(JSON.stringify({ message: auth.message }));
         }
         const userId = auth.userObjectId;
-        const data = await getFollowingData({ userId, db });
+        const data = await getFollowingData({ userId, db, page, limit });
         res.writeHead(200, { "content-type": "application/json" });
         return res.end(JSON.stringify(data));
-      } else if (req.url === "/my-profile/followers" && req.method === "GET") {
+      } else if (
+        req.method === "GET" &&
+        req.url.startsWith("/my-profile/followers")
+      ) {
+        const reqUrl = new URL(req.url, `http://${req.headers.host}`)
+        const rawPage = Number(reqUrl.searchParams.get("page"));
+        const rawLimit = Number(reqUrl.searchParams.get("limit"));
+        const page = Number.isFinite(rawPage) && rawPage > 0 ? rawPage : 1;
+        const limit =
+          Number.isFinite(rawLimit) && rawLimit > 0
+            ? Math.min(rawLimit, DEFAULT_FOLLOWERS_LIMIT)
+            : DEFAULT_FOLLOWERS_LIMIT;
         const auth = getAuthToken(req.headers.authorization);
         if (!auth.ok) {
           res.writeHead(auth.status, { "content-type": "application/json" });
           return res.end(JSON.stringify({ message: auth.message }));
         }
         const userId = auth.userObjectId;
-        const data = await getFollowersData({ userId, db });
+        const data = await getFollowersData({ userId, db, page, limit });
         res.writeHead(200, { "content-type": "application/json" });
         return res.end(JSON.stringify(data));
       }
