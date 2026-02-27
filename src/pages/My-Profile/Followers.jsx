@@ -93,12 +93,11 @@ const Followers = () => {
   }, [followingPage]);
 
   useEffect(() => {
-    if (!followersView) fetchFollowers();
-  }, [followersView, fetchFollowers]);
-
-  useEffect(() => {
-    if (followersView) fetchFollowing();
-  }, [followersView, fetchFollowing]);
+    if (!followersView) {
+      fetchFollowers();
+    }
+    fetchFollowing();
+  }, [followersView, fetchFollowers, fetchFollowing]);
 
   useEffect(() => {
     setFollowerPage(1);
@@ -108,51 +107,52 @@ const Followers = () => {
     setLoadingMore(false);
   }, [followersView]);
 
-  const handleFollowToggle = async (user, isFollowing) => {
-    if (!user?.username) return;
+  // Need to implement my way 
+  // const handleFollowToggle = async (user, isFollowing) => {
+  //   if (!user?.username) return;
 
-    try {
-      setActionLoadingId(user._id ?? user.id ?? user.username);
-      const request = await fetch(
-        `${API_BASE_URL}/users/${user.username}/follow`,
-        {
-          method: isFollowing ? "DELETE" : "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("JWT")}`,
-          },
-        },
-      );
+  //   try {
+  //     setActionLoadingId(user._id ?? user.id ?? user.username);
+  //     const request = await fetch(
+  //       `${API_BASE_URL}/users/${user.username}/follow`,
+  //       {
+  //         method: isFollowing ? "DELETE" : "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${localStorage.getItem("JWT")}`,
+  //         },
+  //       },
+  //     );
 
-      if (!request.ok) return;
+  //     if (!request.ok) return;
 
-      if (isFollowing) {
-        setFollowings((prev) =>
-          prev.filter(
-            (item) =>
-              (item._id ?? item.id ?? item.username) !==
-              (user._id ?? user.id ?? user.username),
-          ),
-        );
-        setFollowingCount((prev) => Math.max(prev - 1, 0));
-      } else {
-        setFollowings((prev) => {
-          const exists = prev.some(
-            (item) =>
-              (item._id ?? item.id ?? item.username) ===
-              (user._id ?? user.id ?? user.username),
-          );
-          if (exists) return prev;
-          return [...prev, user];
-        });
-        setFollowingCount((prev) => prev + 1);
-      }
-    } catch (err) {
-      console.error("follow toggle error", err);
-    } finally {
-      setActionLoadingId(null);
-    }
-  };
+  //     if (isFollowing) {
+  //       setFollowings((prev) =>
+  //         prev.filter(
+  //           (item) =>
+  //             (item._id ?? item.id ?? item.username) !==
+  //             (user._id ?? user.id ?? user.username),
+  //         ),
+  //       );
+  //       setFollowingCount((prev) => Math.max(prev - 1, 0));
+  //     } else {
+  //       setFollowings((prev) => {
+  //         const exists = prev.some(
+  //           (item) =>
+  //             (item._id ?? item.id ?? item.username) ===
+  //             (user._id ?? user.id ?? user.username),
+  //         );
+  //         if (exists) return prev;
+  //         return [...prev, user];
+  //       });
+  //       setFollowingCount((prev) => prev + 1);
+  //     }
+  //   } catch (err) {
+  //     console.error("follow toggle error", err);
+  //   } finally {
+  //     setActionLoadingId(null);
+  //   }
+  // };
 
   const usersList = followersView ? followings : followers;
   const followingUsernames = new Set(
@@ -256,7 +256,7 @@ const Followers = () => {
                 actionLoading={
                   actionLoadingId === (user._id ?? user.id ?? user.username)
                 }
-                onToggleFollow={handleFollowToggle}
+                // onToggleFollow={handleFollowToggle}
               />
             ))}
           </div>
