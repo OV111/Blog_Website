@@ -8,9 +8,9 @@ import busboy from "busboy";
 import fs from "fs";
 import path from "path";
 
-import postHandling from "./routes/postHandling.js";
+import { postHandling } from "./routes/postHandling.js";
 import { defaultPostsHandling } from "./routes/handleDefPosts.js";
-// import { postsHandling } from "./routes/postHandling.js";
+
 import { signUp, login } from "./controllers/authController.js";
 import { verifyToken } from "./utils/jwtToken.js";
 import { ObjectId } from "mongodb";
@@ -413,7 +413,7 @@ const StartServer = async () => {
         req.method === "GET" &&
         req.url.startsWith("/my-profile/followers")
       ) {
-        const reqUrl = new URL(req.url, `http://${req.headers.host}`)
+        const reqUrl = new URL(req.url, `http://${req.headers.host}`);
         const rawPage = Number(reqUrl.searchParams.get("page"));
         const rawLimit = Number(reqUrl.searchParams.get("limit"));
         const page = Number.isFinite(rawPage) && rawPage > 0 ? rawPage : 1;
