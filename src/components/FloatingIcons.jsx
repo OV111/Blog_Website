@@ -64,7 +64,7 @@ export function FloatingIcons({ category }) {
   const icons = buildIconsForCategory(category);
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+      {/* <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" /> */}
 
       <div
         className="absolute inset-0 opacity-[0.03]"
