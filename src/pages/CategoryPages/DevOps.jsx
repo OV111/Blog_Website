@@ -1,14 +1,8 @@
 import React, { lazy, Suspense, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
 import useAuthStore from "../../context/useAuthStore";
 import { motion } from "framer-motion";
+
+import BlogCard from "@/components/BlogCard";
 
 import { FloatingIcons } from "../../components/FloatingIcons";
 const LoadingSuspense = lazy(() => import("../../components/LoadingSuspense"));
@@ -80,36 +74,41 @@ const DevOps = () => {
           {loading ? (
             <LoadingSuspense />
           ) : (
-            <Grid container spacing={4} padding={5}>
-              {data.map((post) => (
-                <Card sx={{ minWidth: 425, maxWidth: 425 }} variant="outlined">
-                  <CardMedia sx={{ height: 200 }} image={post.image} />
-                  <CardContent>
-                    <Typography
-                      gutterBottom
-                      variant="h5"
-                      alignItems={"center"}
-                      textAlign={"center"}
-                    >
-                      {post.title}
-                    </Typography>
-                    <Typography variant="body2" maxHeight={400}>
-                      {post.description}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      component={Link}
-                      to={`post/${post.id}`}
-                      state={{ post }}
-                    >
-                      Read More
-                    </Button>
-                  </CardActions>
-                </Card>
-              ))}
-            </Grid>
+            // <Grid container spacing={4} padding={5}>
+            //   {data.map((post) => (
+            //     <Card sx={{ minWidth: 425, maxWidth: 425 }} variant="outlined">
+            //       <CardMedia sx={{ height: 200 }} image={post.image} />
+            //       <CardContent>
+            //         <Typography
+            //           gutterBottom
+            //           variant="h5"
+            //           alignItems={"center"}
+            //           textAlign={"center"}
+            //         >
+            //           {post.title}
+            //         </Typography>
+            //         <Typography variant="body2" maxHeight={400}>
+            //           {post.description}
+            //         </Typography>
+            //       </CardContent>
+            //       <CardActions>
+            //         <Button
+            //           size="small"
+            //           component={Link}
+            //           to={`post/${post.id}`}
+            //           state={{ post }}
+            //         >
+            //           Read More
+            //         </Button>
+            //       </CardActions>
+            //     </Card>
+            //   ))}
+            // </Grid>
+             <div className="flex flex-wrap justify-center gap-10 px-2 pb-10 lg:px-0">
+                          {data.map((card) => (
+                            <BlogCard key={card.id} card={card} />
+                          ))}
+                        </div>
           )}
         </Suspense>
       </div>

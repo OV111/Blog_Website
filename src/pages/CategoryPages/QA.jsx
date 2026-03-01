@@ -1,15 +1,10 @@
 import React, { lazy, Suspense, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
 import useAuthStore from "../../context/useAuthStore";
-
+import BlogCard from "@/components/BlogCard";
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { motion } from "framer-motion";
+
+import { FloatingIcons } from "../../components/FloatingIcons";
 
 const LoadingSuspense = lazy(() => import("../../components/LoadingSuspense"));
 
@@ -35,44 +30,52 @@ const QA = () => {
 
   return (
     <React.Fragment>
-      <h1 className="flex justify-center items-center text-xl font-medium text-sky-800 py-6 sm:text-2xl md:text-4xl lg:text-5xl">
-        Quality Assurance
-      </h1>
+      <header className="min-h-screen pt-40">
+        <FloatingIcons category={"qa"} />
+
+        <h1 className="flex justify-center items-center">
+          <motion.h1
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 0.3 }}
+            className=" text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"
+          >
+            <div className="grid justify-center items-center">
+              <span className="tracking-[4px] mx-auto mb-1 bg-linear-to-l from-purple-500 to-purple-800 bg-clip-text text-transparent">
+                Quality
+              </span>
+              <span className="tracking-[4px] bg-linear-to-r from-purple-800 to-purple-400 bg-clip-text text-transparent">
+                Assurance
+              </span>
+            </div>
+          </motion.h1>
+        </h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.4 }}
+          className="mt-6 max-w-3xl text-lg font-semibold sm:text-xl text-muted-foreground mx-auto"
+        >
+          <span className="bg-gradient-to-r from-slate-400 via-purple-600 to-indigo-400 text-center block max-w-3xl mx-auto bg-clip-text text-transparent">
+            Deliver high-quality software experiences—architect end-to-end
+            testing processes, automate UI and API validation, execute
+            performance and load testing, and ensure stability, security, and
+            reliability across scalable systems
+          </span>
+        </motion.p>
+      </header>
 
       <div>
         <Suspense fallback={LoadingSuspense}>
           {loading ? (
             <LoadingSuspense></LoadingSuspense>
           ) : (
-            <Grid container spacing={4} padding={5}>
-              {data.map((post) => (
-                <Card sx={{ minWidth: 425, maxWidth: 425 }} variant="outlined">
-                  <CardMedia sx={{ height: 200 }} image={post.image} />
-                  <CardContent>
-                    <Typography
-                      gutterBottom
-                      variant="h5"
-                      alignItems={"center"}
-                      textAlign={"center"}
-                    >
-                      {post.title}
-                    </Typography>
-                    <Typography variant="body2" maxHeight={400}>
-                      {post.description}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      component={Link}
-                      to={`post/${post.id}`}
-                    >
-                      Read More
-                    </Button>
-                  </CardActions>
-                </Card>
+            <div className="flex flex-wrap justify-center gap-10 px-2 pb-10 lg:px-0">
+              {data.map((card) => (
+                <BlogCard key={card.id} card={card} />
               ))}
-            </Grid>
+            </div>
           )}
         </Suspense>
       </div>
