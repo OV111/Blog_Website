@@ -171,6 +171,9 @@ to-white sm:w-full lg:w-full lg:gap-10 lg:py-4 dark:bg-zinc-950/60"
             {auth ? (
               <React.Fragment>
                 <li className="font-medium text-sm md:text-sm lg:text-base px-1 py-1 hover:text-purple-300 dark:hover:text-purple-300 transition">
+                  <NavLink to="roadmaps">Roadmaps</NavLink>
+                </li>
+                <li className="font-medium text-sm md:text-sm lg:text-base px-1 py-1 hover:text-purple-300 dark:hover:text-purple-300 transition">
                   <NavLink to="my-profile">My Profile</NavLink>
                 </li>
               </React.Fragment>

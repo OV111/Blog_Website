@@ -12,12 +12,44 @@ import { FiShare } from "react-icons/fi";
 import useAuthStore from "../context/useAuthStore";
 
 const FictionalUsers = [
-  { name: "John Doe", userName: "@johndoe" },
-  { name: "Alice Keyes", userName: "@alice_keys" },
-  { name: "Bob Carter", userName: "@bob_carter" },
-  { name: "Ada Byte", userName: "@adabyte" },
-  { name: "Grace Hopper", userName: "@gracehopper" },
-  { name: "Maya Stack", userName: "@maya_stack" },
+  {
+    name: "John Doe",
+    userName: "@johndoe",
+    picture: new URL("../assets/postsProfiles/JohnDoe.png", import.meta.url)
+      .href,
+  },
+  {
+    name: "Ada Byte",
+    userName: "@adabyte",
+    picture: new URL("../assets/postsProfiles/AdaByte.png", import.meta.url)
+      .href,
+  },
+  {
+    name: "Dmitry Petrov",
+    userName: "@dmit_petrov",
+    picture: new URL(
+      "../assets/postsProfiles/DmitryPetrov.png",
+      import.meta.url,
+    ).href,
+  },
+  {
+    name: "Alice Keyes",
+    userName: "@alice_keys",
+    picture: new URL("../assets/postsProfiles/AliceKeyes.png", import.meta.url)
+      .href,
+  },
+  {
+    name: "William Chen",
+    userName: "@will_chen",
+    picture: new URL("../assets/postsProfiles/WilliamChen.png", import.meta.url)
+      .href,
+  },
+  {
+    name: "Grace Hopper",
+    userName: "@gracehopper",
+    picture: new URL("../assets/postsProfiles/GraceHopper.png", import.meta.url)
+      .href,
+  },
 ];
 const BlogCard = ({ card }) => {
   const { auth } = useAuthStore();
@@ -40,38 +72,40 @@ const BlogCard = ({ card }) => {
       : [];
 
   return (
-    <Card className="w-full max-w-[400px] overflow-hidden rounded-2xl border-none bg-violet-50/40">
-      <div className="relative h-56 border-b border-violet-200 bg-violet-200/60">
+    <Card className="w-full max-w-[400px] overflow-hidden rounded-2xl border-none bg-violet-50/40 dark:bg-slate-900">
+      <div className="relative h-56 border-b border-violet-200 bg-violet-200/60 dark:border-slate-700 dark:bg-slate-800">
         <img
           src={card.image}
           alt={card.title}
           className="h-full w-full object-cover"
         />
-        <button className={`absolute right-4 top-4 cursor-pointer rounded-full bg-white/95 p-2 font-medium ${auth ? "cursor-pointer" : "cursor-not-allowed"} text-slate-700 shadow-sm transition-colors duration-200 hover:bg-violet-600 hover:text-white`}>
-          <FaRegBookmark />
+        <button className="absolute right-4 top-4 cursor-pointer rounded-full bg-white/95 p-2 font-medium text-slate-700 shadow-sm transition-colors duration-200 hover:bg-violet-600 hover:text-white dark:bg-slate-800/90 dark:text-slate-200">
+          <FaRegBookmark
+            className={`${auth ? "cursor-pointer" : "cursor-not-allowed"}`}
+          />
         </button>
         <div className="absolute inset-x-4 bottom-4 flex items-end justify-between gap-3">
           <div className="flex max-w-[20rem] flex-wrap gap-1.5 overflow-hidden">
             {tags.map((tag, index) => (
               <span
                 key={`${tag}-${index}`}
-                className="flex min-w-0 items-center justify-center rounded-full bg-violet-950/70 px-3 py-1 text-[9px] font-semibold uppercase tracking-wide text-violet-50 shadow-sm backdrop-blur-sm"
+                className="flex min-w-0 items-center justify-center rounded-full bg-violet-950/70 px-3 py-1 text-[8px] font-semibold uppercase tracking-wide text-violet-50 shadow-sm backdrop-blur-sm"
               >
-                {tag}
+                #{tag}
               </span>
             ))}
           </div>
           <Link
             to={`post/${card.id}`}
             state={{ post: card }}
-            className="shrink-0 rounded-full bg-violet-500/90 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-white shadow-sm transition hover:bg-violet-400"
+            className="shrink-0 rounded-full bg-violet-500/90 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-white shadow-sm transition hover:bg-violet-400 dark:bg-violet-600 dark:hover:bg-violet-500"
           >
             Read More
           </Link>
         </div>
       </div>
       <CardHeader className="space-y-3 px-6 pb-0 pt-4">
-        <div className="flex items-center justify-between text-xs font-medium uppercase text-slate-500">
+        <div className="flex items-center justify-between text-xs font-medium uppercase text-slate-500 dark:text-slate-400">
           <span>
             {new Date(card.createdAt).toLocaleDateString("en-US", {
               month: "short",
@@ -79,33 +113,37 @@ const BlogCard = ({ card }) => {
               year: "numeric",
             })}
           </span>
-          <CardDescription className="text-xs font-medium uppercase tracking-wide text-slate-500">
+          <CardDescription className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
             {card.readTime} read
           </CardDescription>
         </div>
-        <CardTitle className="pb-3 overflow-hidden text-xl leading-tight text-slate-900">
+        <CardTitle className="overflow-hidden pb-3 text-xl leading-tight text-slate-900 dark:text-slate-100">
           {card.title}
         </CardTitle>
       </CardHeader>
       <CardContent className="px-6 pb-2 pt-0">
-        <p className="h-[72px] overflow-hidden text-sm leading-6 text-slate-600">
+        <p className="h-[72px] overflow-hidden text-sm leading-6 text-slate-600 dark:text-slate-300">
           {card.description}
         </p>
       </CardContent>
 
-      <CardFooter className="items-center justify-between border-t border-violet-100 px-6 py-3">
+      <CardFooter className="items-center justify-between border-t border-violet-100 px-6 py-3 dark:border-slate-700">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full bg-slate-300 ring-2 ring-slate-100" />
+          <img
+            src={auth ? card.picture : fallbackUser.picture}
+            alt={auth ? card.name : fallbackUser.name}
+            className="h-10 w-10 rounded-full "
+          />
           <div className="flex flex-col">
-            <span className="text-sm font-semibold text-slate-700 overflow-x-hidden">
+            <span className="h-5 text-sm font-semibold text-slate-700 overflow-x-hidden dark:text-slate-200">
               {authorName}
             </span>
-            <span className="text-xs font-semibold text-gray-400 overflow-x-hidden">
+            <span className="h-4 overflow-x-hidden text-xs font-semibold text-gray-400 dark:text-slate-400">
               {userName}
             </span>
           </div>
         </div>
-        <div className="flex items-center gap-1 text-slate-400">
+        <div className="flex items-center gap-1 text-slate-400 dark:text-slate-500">
           <button
             type="button"
             className={`rounded-full p-2 ${auth ? "cursor-pointer" : "cursor-not-allowed"} transition hover:bg-rose-50 hover:text-rose-500`}
