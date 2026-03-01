@@ -100,179 +100,192 @@ const GetStarted = () => {
   return (
     <React.Fragment>
       <Toaster position="top-center" reverseOrder={false} />
-      <div className="mt-12 w-full  px-4 sm:px-6 md:px-8">
-        <div className="max-w-xl mx-auto mt-4 sm:mt-6 md:mt-8 p-4 sm:p-6 md:p-8 bg-white rounded-2xl shadow-sm mb-4 sm:mb-6 md:mb-8 dark:bg">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-bold text-center mb-4 sm:mb-6 md:mb-8 text-purple-700 dark:text-purple-600">
-            {isSignedUp ? "Sign Up" : "Log In"}
-          </h2>
-          {authUiMessage && (
-            <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-              {authUiMessage}
-            </div>
-          )}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-            {isSignedUp && (
-              <React.Fragment>
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                  <div className="flex-1">
-                    <label className="block mb-1 font-medium text-sm sm:text-base">
-                      First Name
-                    </label>
-                    <input
-                      placeholder="Enter Your First Name"
-                      {...register("firstName", {
-                        required: "First name is required.",
-                      })}
-                      className={`w-full px-3 sm:px-4 py-2 text-sm sm:text-base border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
-                        errors.firstName ? "border-red-500" : "border-gray-300"
-                      }`}
-                    />
-                    {errors.firstName && (
-                      <p className="text-red-500 text-xs sm:text-sm mt-1">
-                        {errors.firstName.message}
-                      </p>
-                    )}
-                  </div>
+      <div className="flex justify-between">
+        <div className="w-[100%]">
 
-                  <div className="flex-1">
-                    <label className="block mb-1 font-medium text-sm sm:text-base">
-                      Last Name
-                    </label>
-                    <input
-                      placeholder="Enter Your Last Name"
-                      {...register("lastName", {
-                        required: "Last name is required.",
-                      })}
-                      className={`w-full px-3 sm:px-4 py-2 text-sm sm:text-base border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
-                        errors.lastName ? "border-red-500" : "border-gray-300"
-                      }`}
-                    />
-                    {errors.lastName && (
-                      <p className="text-red-500 text-xs sm:text-sm mt-1">
-                        {errors.lastName.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </React.Fragment>
+        </div>
+        <div className="mt-0 w-full px-4 sm:px-6 md:px-8">
+          <div className="mx-auto mt-0 mb-0 max-w-xl rounded-2xl border border-violet-100 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-gray-950 dark:shadow-2xl dark:shadow-black/30 sm:mt-6 sm:mb-6 sm:p-6 md:mt-8 md:mb-8 md:p-8">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-bold text-center mb-4 sm:mb-6 md:mb-8 text-purple-700 dark:text-purple-600">
+              {isSignedUp ? "Sign Up" : "Log In"}
+            </h2>
+            {authUiMessage && (
+              <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900 dark:bg-red-950/50 dark:text-red-300">
+                {authUiMessage}
+              </div>
             )}
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+              {isSignedUp && (
+                <React.Fragment>
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                    <div className="flex-1">
+                      <label className="block mb-1 font-medium text-sm text-slate-700 dark:text-zinc-200 sm:text-base">
+                        First Name
+                      </label>
+                      <input
+                        placeholder="Enter Your First Name"
+                        {...register("firstName", {
+                          required: "First name is required.",
+                        })}
+                        className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none  dark:bg-zinc-900 dark:text-white dark:placeholder:text-zinc-500 sm:px-4 sm:text-base ${
+                          errors.firstName
+                            ? "border-red-500"
+                            : "border-gray-300 dark:border-zinc-700"
+                        }`}
+                      />
+                      {errors.firstName && (
+                        <p className="text-red-500 text-xs sm:text-sm mt-1">
+                          {errors.firstName.message}
+                        </p>
+                      )}
+                    </div>
 
-            <div>
-              <label className="block mb-1 font-medium text-sm sm:text-base">
-                Enter Email
-              </label>
-              <input
-                type="email"
-                placeholder="Enter Your Email"
-                {...register("email", { required: "Email is required." })}
-                className={`w-full px-3 sm:px-4 py-2 text-sm sm:text-base border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
-                  errors.email ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.email && (
-                <p className="text-red-500 text-xs sm:text-sm mt-1">
-                  {errors.email.message}
-                </p>
+                    <div className="flex-1">
+                      <label className="block mb-1 font-medium text-sm text-slate-700 dark:text-zinc-200 sm:text-base">
+                        Last Name
+                      </label>
+                      <input
+                        placeholder="Enter Your Last Name"
+                        {...register("lastName", {
+                          required: "Last name is required.",
+                        })}
+                        className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none dark:bg-zinc-900 dark:text-white dark:placeholder:text-zinc-500 sm:px-4 sm:text-base ${
+                          errors.lastName
+                            ? "border-red-500"
+                            : "border-gray-300 dark:border-zinc-700"
+                        }`}
+                      />
+                      {errors.lastName && (
+                        <p className="text-red-500 text-xs sm:text-sm mt-1">
+                          {errors.lastName.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </React.Fragment>
               )}
-            </div>
 
-            <div className="relative">
-              <label className="block mb-1 font-medium text-sm sm:text-base">
-                Enter Password
-              </label>
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter Your Password"
-                {...register("password", {
-                  required: "Password is required!",
-                  minLength: {
-                    value: 6,
-                    message: "Password must contain at least 6 chars!",
-                  },
-                })}
-                className={`w-full px-3 sm:px-4 py-2 text-sm sm:text-base border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
-                  errors.password ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute top-9 sm:top-10 right-3 sm:right-5 text-gray-400 cursor-pointer"
-              >
-                {showPassword ? (
-                  <Eye size={18} className="sm:w-5 sm:h-5" />
-                ) : (
-                  <EyeOff size={18} className="sm:w-5 sm:h-5" />
+              <div>
+                <label className="block mb-1 font-medium text-sm text-slate-700 dark:text-zinc-200 sm:text-base">
+                  Enter Email
+                </label>
+                <input
+                  type="email"
+                  placeholder="Enter Your Email"
+                  {...register("email", { required: "Email is required." })}
+                  className={`w-full rounded-lg border px-3 py-2 text-sm focus:outline-none dark:bg-zinc-900 dark:text-white dark:placeholder:text-zinc-500 sm:px-4 sm:text-base ${
+                    errors.email
+                      ? "border-red-500"
+                      : "border-gray-300 dark:border-zinc-700"
+                  }`}
+                />
+                {errors.email && (
+                  <p className="text-red-500 text-xs sm:text-sm mt-1">
+                    {errors.email.message}
+                  </p>
                 )}
-              </button>
-              {errors.password && (
-                <p className="text-red-500 text-xs sm:text-sm mt-1">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
+              </div>
 
-            {isSignedUp && (
-              <React.Fragment>
-                <div className="relative">
-                  <label className="block mb-1 font-medium text-sm sm:text-base">
-                    Confirm Password
-                  </label>
-                  <input
-                    type={showConfirmPassword ? "text" : "password"}
-                    placeholder="Confirm Password"
-                    {...register("confirmPassword", {
-                      required: "Please confirm your password!",
-                      validate: (value) => {
-                        return (
-                          value === getValues("password") ||
-                          "Password don't match!"
-                        );
-                      },
-                    })}
-                    className={`w-full px-3 sm:px-4 py-2 text-sm sm:text-base border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 ${
-                      errors.confirmPassword
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    }`}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowConfirmPassword(!showConfirmPassword);
-                    }}
-                    className="absolute top-9 sm:top-10 right-3 sm:right-5 text-gray-400 cursor-pointer"
-                  >
-                    {showConfirmPassword ? (
-                      <Eye size={18} className="sm:w-5 sm:h-5" />
-                    ) : (
-                      <EyeOff size={18} className="sm:w-5 sm:h-5" />
-                    )}
-                  </button>
-                  {errors.confirmPassword && (
-                    <p className="text-red-500 text-xs sm:text-sm mt-1">
-                      {errors.confirmPassword.message}
-                    </p>
+              <div className="relative">
+                <label className="block mb-1 font-medium text-sm text-slate-700 dark:text-zinc-200 sm:text-base">
+                  Enter Password
+                </label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter Your Password"
+                  {...register("password", {
+                    required: "Password is required!",
+                    minLength: {
+                      value: 6,
+                      message: "Password must contain at least 6 chars!",
+                    },
+                  })}
+                  className={`w-full rounded-lg border px-3 py-2 pr-10 text-sm focus:outline-none dark:bg-zinc-900 dark:text-white dark:placeholder:text-zinc-500 sm:px-4 sm:pr-12 sm:text-base ${
+                    errors.password
+                      ? "border-red-500"
+                      : "border-gray-300 dark:border-zinc-700"
+                  }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute top-9 right-3 cursor-pointer text-gray-400 dark:text-zinc-500 sm:top-10 sm:right-5"
+                >
+                  {showPassword ? (
+                    <Eye size={18} className="sm:w-5 sm:h-5" />
+                  ) : (
+                    <EyeOff size={18} className="sm:w-5 sm:h-5" />
                   )}
-                </div>
-              </React.Fragment>
-            )}
-            <button
-              type="submit"
-              className="text-base sm:text-lg md:text-xl w-full mt-3 py-2 sm:py-2.5 rounded-lg mx-auto text-white font-bold bg-fuchsia-600 cursor-pointer hover:bg-fuchsia-700 transition-colors"
-            >
-              {isSignedUp ? "Sign Up " : "Login"}
-            </button>
-          </form>
+                </button>
+                {errors.password && (
+                  <p className="text-red-500 text-xs sm:text-sm mt-1">
+                    {errors.password.message}
+                  </p>
+                )}
+              </div>
 
-          <p
-            onClick={ToggleLink}
-            className="text-center text-sm sm:text-base text-blue-500 mt-3 sm:mt-4 items-center cursor-pointer hover:underline"
-          >
-            {isSignedUp
-              ? "Already have an account? Login"
-              : "Don't have an Account? Sign Up"}
-          </p>
+              {isSignedUp && (
+                <React.Fragment>
+                  <div className="relative">
+                    <label className="block mb-1 font-medium text-sm text-slate-700 dark:text-zinc-200 sm:text-base">
+                      Confirm Password
+                    </label>
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="Confirm Password"
+                      {...register("confirmPassword", {
+                        required: "Please confirm your password!",
+                        validate: (value) => {
+                          return (
+                            value === getValues("password") ||
+                            "Password don't match!"
+                          );
+                        },
+                      })}
+                      className={`w-full rounded-lg border px-3 py-2 pr-10 text-sm focus:outline-none  dark:bg-zinc-900 dark:text-white dark:placeholder:text-zinc-500 sm:px-4 sm:pr-12 sm:text-base ${
+                        errors.confirmPassword
+                          ? "border-red-500"
+                          : "border-gray-300 dark:border-zinc-700"
+                      }`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowConfirmPassword(!showConfirmPassword);
+                      }}
+                      className="absolute top-9 right-3 cursor-pointer text-gray-400 dark:text-zinc-500 sm:top-10 sm:right-5"
+                    >
+                      {showConfirmPassword ? (
+                        <Eye size={18} className="sm:w-5 sm:h-5" />
+                      ) : (
+                        <EyeOff size={18} className="sm:w-5 sm:h-5" />
+                      )}
+                    </button>
+                    {errors.confirmPassword && (
+                      <p className="text-red-500 text-xs sm:text-sm mt-1">
+                        {errors.confirmPassword.message}
+                      </p>
+                    )}
+                  </div>
+                </React.Fragment>
+              )}
+              <button
+                type="submit"
+                className="text-base sm:text-lg md:text-xl w-full mt-3 py-2 sm:py-2.5 rounded-lg mx-auto text-white font-bold bg-fuchsia-600 cursor-pointer hover:bg-fuchsia-700 transition-colors"
+              >
+                {isSignedUp ? "Sign Up " : "Login"}
+              </button>
+            </form>
+
+            <p
+              onClick={ToggleLink}
+              className="mt-3 items-center cursor-pointer text-center text-sm text-blue-500 hover:underline dark:text-fuchsia-300 sm:mt-4 sm:text-base"
+            >
+              {isSignedUp
+                ? "Already have an account? Login"
+                : "Don't have an Account? Sign Up"}
+            </p>
+          </div>
         </div>
       </div>
     </React.Fragment>
