@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { fetchCategoryData, fetchUserData } from "./services/SearchApi";
+import useAuthStore from "@/context/useAuthStore";
 
 export default function SearchResults({ query = "", onSelect, boundaryRef }) {
+  const { auth } = useAuthStore();
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -18,13 +20,11 @@ export default function SearchResults({ query = "", onSelect, boundaryRef }) {
       }
 
       setIsLoading(true);
-      const [userResults, categoryResults] = await Promise.all([
-        fetchUserData(normalizedQuery),
-        fetchCategoryData(normalizedQuery),
-      ]);
+      const userResults = auth ? await fetchUserData(normalizedQuery, auth) : [];
+      const categoryResults = await fetchCategoryData(normalizedQuery);
 
       if (!ignore) {
-        const users = Array.isArray(userResults) ? userResults : [];
+        const users = auth && Array.isArray(userResults) ? userResults : [];
         const categories = Array.isArray(categoryResults)
           ? categoryResults
           : [];
@@ -37,7 +37,7 @@ export default function SearchResults({ query = "", onSelect, boundaryRef }) {
     return () => {
       ignore = true;
     };
-  }, [normalizedQuery]);
+  }, [auth, normalizedQuery]);
 
   useEffect(() => {
     setOpen(Boolean(normalizedQuery));

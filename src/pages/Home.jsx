@@ -98,7 +98,7 @@ const Home = () => {
               showBorder={false}
               className="mt-4 ml-2 px-1 py-1 w-[300px] md:w-[200] lg:w-[100%] font-medium text-xl sm:text-xl md:text-2xl lg:text-3xl text-start"
             >
-              A place to read, write and understand topics.
+              A place to read, teach, write and understand topics.
             </GradientText>
             {/* </div> */}
             <div>
