@@ -71,6 +71,14 @@ const router = createBrowserRouter([
             ),
           },
           {
+            path: "following",
+            element: (
+              <ProtectedMyProfile>
+                <Followers />
+              </ProtectedMyProfile>
+            ),
+          },
+          {
             path: "add-blog",
             element: (
               <ProtectedMyProfile>
@@ -78,14 +86,14 @@ const router = createBrowserRouter([
               </ProtectedMyProfile>
             ),
           },
-          {
-            path: "chats",
-            element: (
-              <ProtectedMyProfile>
-                <Chats />
-              </ProtectedMyProfile>
-            ),
-          },
+            {
+              path: "chats",
+              element: (
+                <ProtectedMyProfile>
+                  <Chats />
+                </ProtectedMyProfile>
+              ),
+            },
           {
             path: "notifications",
             element: (

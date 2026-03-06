@@ -5,7 +5,6 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "../context/useAuthStore";
 import useThemeStore from "../context/useThemeStore";
-import toast from "react-hot-toast";
 import SearchBar from "./search/SearchBar";
 
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
@@ -24,7 +23,7 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
   const desktopSearchRef = useRef(null);
   const mobileSearchRef = useRef(null);
-  const { auth, logout } = useAuthStore();
+  const { auth } = useAuthStore();
   const { theme, setTheme } = useThemeStore();
   const [searchValue, setSearchValue] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -48,31 +47,6 @@ const Navbar = () => {
     };
   }, []);
 
-  const handleLogOut = async () => {
-    try {
-      const request = await fetch(`${API_BASE_URL}/log-out`, {
-        method: "DELETE",
-        headers: { "content-type": "application/json" },
-        credentials: "include", // sending cookie
-      });
-      let response = await request.json();
-      if (request.ok) {
-        localStorage.removeItem("JWT");
-        toast.success(response.message, { duration: 1500 });
-        logout();
-        navigate("/get-started");
-        // console.log(response)
-      } else {
-        toast.error("Log Out Failed!");
-        console.error("Log Out failed!");
-        // toast(response.message, {duration:1500});
-      }
-    } catch (err) {
-      console.log(err);
-      toast.error("Log Out Failed", { position: "top-center" });
-    }
-  };
-
   const closeDropdown = () => {
     setShowDropdown(false);
   };
@@ -95,6 +69,8 @@ const Navbar = () => {
       navigate(`/users/${item.username}`);
     } else if (item.type === "post") {
       navigate(`/?search=${encodeURIComponent(item.title)}`);
+    } else if (item.type === "category") {
+      navigate(`/categories/${item.slug}`);
     }
     setSearchValue("");
     setIsOpen(false);
@@ -103,15 +79,22 @@ const Navbar = () => {
   return (
     <React.Fragment>
       <div>
-        <nav className="relative space-x-1 flex items-center justify-between px-5 gap-12 py-2 shadow z-1 w-full sm:w-full lg:w-full bg-linear-to-r from-purple-700 to-purple-900  dark:from-purple-700 dark:to-purple-800 lg:gap-10 lg:py-4">
-          <h2 className="text-base font-bold my-2 lg:my-1 w-[30px] cursor-pointer text-white sm:text-xl md:text-xl lg:text-2xl lg:w-auto lg:ml-3">
-            <NavLink to="/">Devs Blog</NavLink>
+        {/* bg-white/95 backdrop-blur-md  dark:bg-zinc-950/95 dark:border-purple-800/30 */}
+        <nav className="relative space-x-1 flex items-center justify-between px-3 gap-10 py-1 shadow z-1 w-full sm:w-full lg:w-full bg-linear-to-r from-purple-600 to-purple-800  dark:from-purple-700 dark:to-purple-800 lg:gap-10 lg:py-2">
+          {/* <nav
+          className="relative space-x-1 flex items-center border-b border-purple-100 justify-between px-3 gap-10 py-1 shadow z-1 w-full bg-gradient-to-r
+from-purple-50 
+via-purple-200 
+to-white sm:w-full lg:w-full lg:gap-10 lg:py-4 dark:bg-zinc-950/60"
+        > */}
+          <h2 className="text-base font-bold my-1 lg:my-0.5 cursor-pointer sm:text-xl text-gray-100 md:text-xl lg:text-xl lg:w-auto lg:ml-3">
+            <NavLink to="/">DevsFlow</NavLink>
           </h2>
 
           {showSearch && (
             <div
               ref={desktopSearchRef}
-              className="relative hidden flex-1 justify-end text-gray-100 md:flex"
+              className="relative hidden flex-1 justify-end text-purple-600 md:flex"
             >
               <SearchBar
                 value={searchValue}
@@ -127,12 +110,12 @@ const Navbar = () => {
             </div>
           )}
 
-          <ul className="flex items-center justify-between space-x-3 text-gray-100 my-3.5 lg:my-1 lg:space-x-4">
-            <li className="font-medium text-sm hover:text-purple-300 dark:hover:text-purple-300 transition lg:text-lg lg:mx-4">
+          <ul className="flex items-center gap-2 text-gray-100 my-2 lg:my-0.5">
+            <li className="font-medium text-sm md:text-sm lg:text-base px-1 py-1 hover:text-purple-300 dark:hover:text-purple-300 transition">
               <NavLink to="/">Home</NavLink>
             </li>
             <li
-              className="relative text-base  font-medium hover:text-purple-300 transition mr-3 lg:text-lg"
+              className="relative text-sm md:text-sm lg:text-base font-medium px-1 py-1 hover:text-purple-300 transition"
               ref={dropdownRef}
             >
               <button
@@ -185,34 +168,25 @@ const Navbar = () => {
                 </ul>
               )}
             </li>
-
             {auth ? (
               <React.Fragment>
-                <li className="font-medium text-sm w-17 lg:text-lg lg:w-21 hover:text-purple-300 dark:hover:text-purple-300 transition">
-                  <NavLink to="my-profile">My Profile</NavLink>
+                <li className="font-medium text-sm md:text-sm lg:text-base px-1 py-1 hover:text-purple-300 dark:hover:text-purple-300 transition">
+                  <NavLink to="roadmaps">Roadmaps</NavLink>
                 </li>
-                <li className="hidden sm:block font-medium text-base  hover:text-purple-300 dark:hover:text-purple-300 transition cursor-pointer lg:text-lg">
-                  <button
-                    className="cursor-pointer"
-                    onClick={() => {
-                      handleLogOut();
-                    }}
-                  >
-                    Log Out
-                  </button>
+                <li className="font-medium text-sm md:text-sm lg:text-base px-1 py-1 hover:text-purple-300 dark:hover:text-purple-300 transition">
+                  <NavLink to="my-profile">My Profile</NavLink>
                 </li>
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <li className="hidden md:block font-medium text-lg  hover:text-purple-300 dark:hover:text-purple-300 transition">
+                <li className="hidden md:block font-medium text-sm md:text-sm lg:text-base px-1 py-1 hover:text-purple-300 dark:hover:text-purple-300 transition">
                   <NavLink to="about">About</NavLink>
                 </li>
-                <li className="font-medium text-base  hover:text-purple-300 dark:hover:text-purple-300 transition lg:text-lg">
+                <li className="font-medium text-sm md:text-sm lg:text-base px-1 py-1 hover:text-purple-300 dark:hover:text-purple-300 transition">
                   <NavLink to="get-started">Get Started</NavLink>
                 </li>
               </React.Fragment>
             )}
-
             <button
               onClick={setTheme}
               className={" relative inline-flex items-center cursor-pointer"}
@@ -231,7 +205,6 @@ const Navbar = () => {
             >
               {isOpen ? <CloseOutlinedIcon /> : <MenuOutlinedIcon />}
             </button>
-
             {isOpen && (
               <ul className="absolute top-16 left-0 w-full bg-purple-700 flex flex-col gap-4 p-6 md:hidden z-3">
                 {showSearch && (
@@ -331,18 +304,6 @@ const Navbar = () => {
                     Privacy
                   </NavLink>
                 </li>
-                {auth && (
-                  <li className="font-medium text-base  hover:text-purple-300 dark:hover:text-purple-300 transition cursor-pointer lg:text-lg">
-                    <button
-                      className="cursor-pointer"
-                      onClick={() => {
-                        handleLogOut();
-                      }}
-                    >
-                      Log Out
-                    </button>
-                  </li>
-                )}
               </ul>
             )}
           </ul>

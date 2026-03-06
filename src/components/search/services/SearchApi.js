@@ -23,9 +23,9 @@ const filterLocalCategories = (query = "") => {
   }));
 };
 
-export const fetchUserData = async (query) => {
+export const fetchUserData = async (query, isAuthenticated = false) => {
   const trimmedQuery = query?.trim() || "";
-  if (!trimmedQuery) return [];
+  if (!trimmedQuery || !isAuthenticated) return [];
 
   try {
     const request = await fetch(

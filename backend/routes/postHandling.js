@@ -1,6 +1,6 @@
 import connectDB from "../config/db.js";
 
-const postHandling = async (category) => {
+export const postHandling = async (category) => {
   try {
     const db = await connectDB();
     const collectionPosts = db.collection("posts");
@@ -18,5 +18,3 @@ const postHandling = async (category) => {
     };
   }
 };
-
-export default postHandling;

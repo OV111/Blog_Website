@@ -1,7 +1,6 @@
-// import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 import connectDB from "../config/db.js";
 import { createToken } from "../utils/jwtToken.js";
-
 const sanitizeUsername = (value = "") =>
   value
     .toLowerCase()
@@ -13,12 +12,22 @@ const uniqueSuffix = () =>
     .toString()
     .padStart(2, "0")}`;
 
+const hashPassword = async (password) => {
+  const saltRounds = 13;
+  const hashedPasswd = await bcrypt.hash(password, saltRounds);
+  return hashedPasswd;
+};
+const verifyPassword = async (password, hashedPassword) => {
+  const isMatch = await bcrypt.compare(password, hashedPassword);
+  return isMatch;
+};
+
 const signUp = async (data) => {
   try {
     let db = await connectDB();
     const { firstName, lastName, email, password, username } = data;
 
-    const users = db.collection("users"); //initial Line
+    const users = db.collection("users");
     const usersStats = db.collection("usersStats");
 
     const existedUser = await users.findOne({ email });
@@ -45,7 +54,7 @@ const signUp = async (data) => {
       lastName,
       username: finalUsername,
       email,
-      password,
+      password: await hashPassword(password),
       // confirmPassword,
     });
     // here also insert userStats (with default starting values )
@@ -64,7 +73,7 @@ const signUp = async (data) => {
       // badges: [],
       // devs-coins: null || 0,
     });
-    
+
     const token = createToken({ id: result.insertedId });
 
     return {
@@ -78,13 +87,11 @@ const signUp = async (data) => {
   }
 };
 
-
 const login = async (data) => {
   let db = await connectDB();
   const { email, password } = data;
   const users = db.collection("users");
   const user = await users.findOne({ email });
-
   // const decoded = verifyToken(localStorage.getItem("JWT"))
   // if !decoded return 403 forbidden
 
@@ -94,7 +101,8 @@ const login = async (data) => {
       message: "User is not Found!",
     };
   }
-  if (user.password !== password) {
+  const isMatch = await verifyPassword(password, user.password);
+  if (!isMatch) {
     return {
       status: 401,
       message: "Password is incorrect",
@@ -110,6 +118,4 @@ const login = async (data) => {
   };
 };
 
-const deleteAccount = async () => {};
-
-export { signUp, login, deleteAccount };
+export { signUp, login };

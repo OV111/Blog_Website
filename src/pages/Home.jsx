@@ -98,13 +98,24 @@ const Home = () => {
               showBorder={false}
               className="mt-4 ml-2 px-1 py-1 w-[300px] md:w-[200] lg:w-[100%] font-medium text-xl sm:text-xl md:text-2xl lg:text-3xl text-start"
             >
-              A place to read, write and understand topics.
+              A place to read, teach, write and understand topics.
             </GradientText>
             {/* </div> */}
             <div>
               <button className="justify-center items-center bg-fuchsia-700 hover:bg-fuchsia-600 dark:bg-fuchsia-550 hover:shadow-lg mt-2 lg:mt-2 ml-3 px-6 lg:px-10 py-1 lg:py-2 border-none rounded-xl font-medium text-gray-100 text-whitetransition hover:text-white text-lg lg:text-2xl hover:scale-102 cursor-pointer transform">
                 <Link to={auth ? "my-profile" : "get-started"}>
-                  Start Reading
+                  Get Started
+                </Link>
+                {/* <ShinyText
+                text="Start Reading"
+                disabled={false}
+                speed={3}
+                className="font-semibold text-white"
+              /> */}
+              </button>
+              <button className="justify-center items-center bg-fuchsia-700 hover:bg-fuchsia-600 dark:bg-fuchsia-550 hover:shadow-lg mt-2 lg:mt-2 ml-3 px-6 lg:px-6 py-1 lg:py-2 border-none rounded-xl font-medium text-gray-100 text-whitetransition hover:text-white text-lg lg:text-2xl hover:scale-102 cursor-pointer transform">
+                <Link to={auth ? "my-profile" : "get-started"}>
+                  Explore Content
                 </Link>
                 {/* <ShinyText
                 text="Start Reading"

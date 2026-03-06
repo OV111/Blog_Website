@@ -8,19 +8,19 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 
+import BlogCard from "@/components/BlogCard";
 
 import { motion } from "framer-motion";
 
 import { FloatingIcons } from "../../components/FloatingIcons";
 import useAuthStore from "../../context/useAuthStore";
 
-
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const LoadingSuspense = lazy(() => import("../../components/LoadingSuspense"));
 
 const Mobile = () => {
-  const [categoryPage,setCategoryPage] = useState("mobile")
+  const [categoryPage, setCategoryPage] = useState("mobile");
   const { auth } = useAuthStore();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -42,7 +42,6 @@ const Mobile = () => {
   }, []);
   return (
     <React.Fragment>
-
       <header className="min-h-screen mt-40">
         <FloatingIcons category={categoryPage} />
 
@@ -64,53 +63,30 @@ const Mobile = () => {
           </motion.h1>
         </h1>
 
-         <motion.p
+        <motion.p
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.4 }}
           className="mt-6 max-w-3xl text-lg font-semibold sm:text-xl text-muted-foreground mx-auto"
         >
           <span className="bg-gradient-to-r from-slate-400 via-purple-600 to-indigo-400 text-center block max-w-3xl mx-auto bg-clip-text text-transparent">
-              Explore modern mobile development from end to end — craft responsive, user-friendly interfaces, handle data and APIs, and connect your apps to scalable, cloud-powered backends.
-
+            Explore modern mobile development from end to end — craft
+            responsive, user-friendly interfaces, handle data and APIs, and
+            connect your apps to scalable, cloud-powered backends.
           </span>
         </motion.p>
       </header>
-      
+
       <div>
         <Suspense fallback={LoadingSuspense}>
           {loading ? (
             <LoadingSuspense></LoadingSuspense>
           ) : (
-            <Grid container spacing={4} padding={5}>
-              {data.map((post) => (
-                <Card sx={{ minWidth: 425, maxWidth: 425 }} variant="outlined">
-                  <CardMedia sx={{ height: 200 }} image={post.image} />
-                  <CardContent>
-                    <Typography
-                      gutterBottom
-                      variant="h5"
-                      alignItems={"center"}
-                      textAlign={"center"}
-                    >
-                      {post.title}
-                    </Typography>
-                    <Typography variant="body2" maxHeight={400}>
-                      {post.description}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      component={Link}
-                      to={`post/${post.id}`}
-                    >
-                      Read More
-                    </Button>
-                  </CardActions>
-                </Card>
+            <div className="flex flex-wrap justify-center gap-10 px-2 pb-10 lg:px-0">
+              {data.map((card) => (
+                <BlogCard key={card.id} card={card} />
               ))}
-            </Grid>
+            </div>
           )}
         </Suspense>
       </div>

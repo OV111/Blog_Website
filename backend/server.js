@@ -3,18 +3,29 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import process from "process";
 import cookie from "cookie";
+import bcrypt from "bcrypt";
+import busboy from "busboy";
+import fs from "fs";
+import path from "path";
 
-import postHandling from "./routes/postHandling.js";
+import { postHandling } from "./routes/postHandling.js";
 import { defaultPostsHandling } from "./routes/handleDefPosts.js";
-// import { postsHandling } from "./routes/postHandling.js";
-// import {bcrypt} from "bcrypt"
-import { signUp, login, deleteAccount } from "./controllers/authController.js";
+
+import { signUp, login } from "./controllers/authController.js";
 import { verifyToken } from "./utils/jwtToken.js";
-import { ObjectId, ReturnDocument } from "mongodb";
+import { ObjectId } from "mongodb";
+import { CATEGORY_OPTIONS } from "../constants/Categories.js";
+import {
+  getAuthToken,
+  getFollowersData,
+  getFollowingData,
+} from "./services/followService.js";
 
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
+const escapeRegex = (value = "") =>
+  value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 let db;
 // (async () => {
@@ -25,6 +36,17 @@ let db;
 //     process.exit(1);
 //   }
 // })();
+const failedLoginByIp = new Map();
+const MAX_FAILED_LOGINS = 5;
+const getClientIp = (req) => {
+  return (req.headers["x-forwarded-for"] || req.socket.remoteAddress || "")
+    .toString()
+    .split(",")[0]
+    .trim();
+};
+
+const DEFAULT_FOLLOWERS_LIMIT = 25;
+const MAX_FOLLOWERS_LIMIT = 50;
 
 const StartServer = async () => {
   try {
@@ -41,11 +63,11 @@ const StartServer = async () => {
       res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
       res.setHeader(
         "Access-Control-Allow-Methods",
-        "GET, POST, PUT, OPTIONS, DELETE"
+        "GET, POST, PUT, OPTIONS, DELETE",
       );
       res.setHeader(
         "Access-Control-Allow-Headers",
-        "Content-Type, Authorization"
+        "Content-Type, Authorization",
       );
       res.setHeader("Access-Control-Allow-Credentials", "true");
 
@@ -57,7 +79,10 @@ const StartServer = async () => {
       // const cookies = cookie.parse(req.headers.cookie || "");
       // console.log("Incoming cookies ", cookies);
 
-      if (req.method === "POST") {
+      if (
+        req.method === "POST" &&
+        ["/accept-cookies", "/get-started", "/login"].includes(req.url)
+      ) {
         let body = "";
         req.on("data", (chunk) => {
           body += chunk;
@@ -75,13 +100,12 @@ const StartServer = async () => {
                 res.setHeader("Set-Cookie", serialized);
                 res.writeHead(200, { "content-type": "application/json" });
                 return res.end(
-                  JSON.stringify({ message: "Cookies Accepted", code: 200 })
+                  JSON.stringify({ message: "Cookies Accepted", code: 200 }),
                 );
               }
             } else if (req.url === "/get-started") {
               const result = await signUp(data);
 
-              // !console.log(result)
               if (result.status === 409) {
                 res.writeHead(result.status, {
                   "content-type": "application/json",
@@ -94,9 +118,20 @@ const StartServer = async () => {
               });
               return res.end(JSON.stringify(result));
             } else if (req.url === "/login") {
+              const ip = getClientIp(req);
+              const failedCount = failedLoginByIp.get(ip) || 0;
+              if (failedCount >= MAX_FAILED_LOGINS) {
+                res.writeHead(429, { "content-type": "application/json" });
+                return res.end(
+                  JSON.stringify({
+                    message: "Too many login attempts. Please try again later.",
+                    code: 429,
+                  }),
+                );
+              }
               const result = await login(data);
-              // console.log(result);
               if (result.status === 200) {
+                failedLoginByIp.delete(ip);
                 const serialized = cookie.serialize("session", result.userId, {
                   httpOnly: true,
                   secure: false,
@@ -105,6 +140,8 @@ const StartServer = async () => {
                   path: "/",
                 });
                 res.setHeader("Set-Cookie", serialized);
+              } else if ([401, 404].includes(result.status)) {
+                failedLoginByIp.set(ip, failedCount + 1);
               }
 
               res.writeHead(result.status, {
@@ -122,7 +159,7 @@ const StartServer = async () => {
                 message: "Server Error.",
                 code: 500,
                 error: err.message,
-              })
+              }),
             );
           }
         });
@@ -153,7 +190,7 @@ const StartServer = async () => {
             JSON.stringify({
               message: "Server Error!",
               code: 500,
-            })
+            }),
           );
         }
       }
@@ -175,10 +212,9 @@ const StartServer = async () => {
           };
           const result = await blogs.insertOne(newBlog);
 
-          console.log(result);
           res.writeHead(201, { "content-type": "application/json" });
           return res.end(
-            JSON.stringify({ code: 201, message: "Created Blog" })
+            JSON.stringify({ code: 201, message: "Created Blog" }),
           );
         });
       } else if (req.url === "/log-out" && req.method === "DELETE") {
@@ -193,7 +229,7 @@ const StartServer = async () => {
           res.setHeader("Set-Cookie", serialized);
           res.writeHead(200, { "content-type": "application/json" });
           return res.end(
-            JSON.stringify({ message: "Logged out succesfully", code: 200 })
+            JSON.stringify({ message: "Logged out succesfully", code: 200 }),
           );
         } catch (err) {
           res.writeHead(500, { "content-type": "application/json" });
@@ -202,7 +238,7 @@ const StartServer = async () => {
               message: "Logout Error",
               code: 500,
               error: err.message,
-            })
+            }),
           );
         }
       } else if (req.url === "/my-profile" && req.method === "GET") {
@@ -211,10 +247,9 @@ const StartServer = async () => {
           if (!token) {
             res.writeHead(403, { "content-type": "application/json" });
             return res.end(
-              JSON.stringify({ message: "Forbidden: Invalid Token" })
+              JSON.stringify({ message: "Forbidden: Invalid Token" }),
             );
           }
-          // 696229a232472b55252e3b5c
           const verified = verifyToken(token);
           const users = db.collection("users");
           const usersStats = db.collection("usersStats");
@@ -237,7 +272,7 @@ const StartServer = async () => {
 
           await usersStats.updateOne(
             { userId },
-            { $set: { lastActive: new Date() } }
+            { $set: { lastActive: new Date() } },
           );
           const { password, ...userWithoutPassword } = user;
 
@@ -246,7 +281,7 @@ const StartServer = async () => {
         } catch (err) {
           res.writeHead(500, { "content-type": "application/json" });
           return res.end(
-            JSON.stringify({ message: "Server Error", error: err })
+            JSON.stringify({ message: "Server Error", error: err }),
           );
         }
       } else if (req.url === "/my-profile" && req.method === "PUT") {
@@ -257,7 +292,7 @@ const StartServer = async () => {
           const usersStats = db.collection("usersStats");
           const result = await usersStats.findOneAndUpdate(
             { userId: new ObjectId(parsedData.id) },
-            { $set: { lastActive: parsedData.lastActive } }
+            { $set: { lastActive: parsedData.lastActive } },
           );
           res.writeHead(200, { "content-type": "application/json" });
           return res.end(JSON.stringify({ message: "stat", result }));
@@ -268,63 +303,451 @@ const StartServer = async () => {
           res.writeHead(401, { "Content-Type": "application/json" });
           return res.end(JSON.stringify("Unauthorized: Invalid Token!"));
         }
+        const bb = busboy({ headers: req.headers });
 
+        const fields = {};
+        const files = {};
+        bb.on("file", (fieldname, file, filename) => {
+          const uploadDir = path.join(process.cwd(), "uploads");
+          if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
+
+          const uniqueFilename = `${Date.now()}-${filename}`;
+          const savePath = path.join(uploadDir, uniqueFilename);
+          files[fieldname] = uniqueFilename;
+
+          const writeStream = fs.createWriteStream(savePath);
+          file.pipe(writeStream);
+        });
+
+        bb.on("field", (fieldname, val) => {
+          fields[fieldname] = val;
+        });
+        bb.on("finish", async () => {
+          try {
+            const users = db.collection("users");
+            const usersStats = db.collection("usersStats");
+            const userUpdate = {};
+            if (fields.fname !== undefined) userUpdate.firstName = fields.fname;
+            if (fields.lname !== undefined) userUpdate.lastName = fields.lname;
+
+            const statsUpdate = {
+              lastActive: new Date(),
+            };
+            if (fields.bio !== undefined) statsUpdate.bio = fields.bio;
+            if (fields.postsCount !== undefined)
+              statsUpdate.postsCount = Number(fields.postsCount);
+            if (fields.githubLink !== undefined)
+              statsUpdate.githubLink = fields.githubLink;
+            if (fields.linkedinLink !== undefined)
+              statsUpdate.linkedinLink = fields.linkedinLink;
+            if (fields.twitterLink !== undefined)
+              statsUpdate.twitterLink = fields.twitterLink;
+            if (fields.location !== undefined)
+              statsUpdate.location = fields.location;
+            if (files.profileImage)
+              statsUpdate.profileImage = files.profileImage;
+            if (files.bannerImage) statsUpdate.bannerImage = files.bannerImage;
+
+            const userId = new ObjectId(verifyToken(token).id);
+
+            // ✅ Only update if there are changes
+            let updatedUser;
+            if (Object.keys(userUpdate).length > 0) {
+              const result = await users.findOneAndUpdate(
+                { _id: userId },
+                { $set: userUpdate },
+                { returnDocument: "after" },
+              );
+              updatedUser = result.value || result;
+            } else {
+              updatedUser = await users.findOne({ _id: userId });
+            }
+
+            const statsResult = await usersStats.findOneAndUpdate(
+              { userId },
+              { $set: statsUpdate },
+              { returnDocument: "after", upsert: true },
+            );
+            const updatedStats = statsResult.value || statsResult;
+
+            res.writeHead(200, { "Content-Type": "application/json" });
+            return res.end(
+              JSON.stringify({
+                message: "Changes Saved",
+                user: updatedUser,
+                stats: updatedStats,
+              }),
+            );
+          } catch (err) {
+            res.writeHead(500, { "Content-Type": "application/json" });
+            return res.end(
+              JSON.stringify({
+                message: "Error updating profile",
+                error: err.message,
+              }),
+            );
+          }
+        });
+        req.pipe(bb);
+      }
+
+      if (req.method === "GET" && req.url.startsWith("/my-profile/following")) {
+        const reqUrl = new URL(req.url, `http://${req.headers.host}`);
+        const rawPage = Number(reqUrl.searchParams.get("page"));
+        const rawLimit = Number(reqUrl.searchParams.get("limit"));
+        const page = Number.isFinite(rawPage) && rawPage > 0 ? rawPage : 1;
+        const limit =
+          Number.isFinite(rawLimit) && rawLimit > 0
+            ? Math.min(rawLimit, DEFAULT_FOLLOWERS_LIMIT)
+            : DEFAULT_FOLLOWERS_LIMIT;
+        const auth = getAuthToken(req.headers.authorization);
+        if (!auth.ok) {
+          res.writeHead(auth.status, { "content-type": "application/json" });
+          return res.end(JSON.stringify({ message: auth.message }));
+        }
+        const userId = auth.userObjectId;
+        const data = await getFollowingData({ userId, db, page, limit });
+        res.writeHead(200, { "content-type": "application/json" });
+        return res.end(JSON.stringify(data));
+      } else if (
+        req.method === "GET" &&
+        req.url.startsWith("/my-profile/followers")
+      ) {
+        const reqUrl = new URL(req.url, `http://${req.headers.host}`);
+        const rawPage = Number(reqUrl.searchParams.get("page"));
+        const rawLimit = Number(reqUrl.searchParams.get("limit"));
+        const page = Number.isFinite(rawPage) && rawPage > 0 ? rawPage : 1;
+        const limit =
+          Number.isFinite(rawLimit) && rawLimit > 0
+            ? Math.min(rawLimit, DEFAULT_FOLLOWERS_LIMIT)
+            : DEFAULT_FOLLOWERS_LIMIT;
+        const auth = getAuthToken(req.headers.authorization);
+        if (!auth.ok) {
+          res.writeHead(auth.status, { "content-type": "application/json" });
+          return res.end(JSON.stringify({ message: auth.message }));
+        }
+        const userId = auth.userObjectId;
+        const data = await getFollowersData({ userId, db, page, limit });
+        res.writeHead(200, { "content-type": "application/json" });
+        return res.end(JSON.stringify(data));
+      }
+
+      if (req.method === "GET" && req.url.startsWith("/search/users")) {
+        try {
+          const reqUrl = new URL(req.url, `http://${req.headers.host}`);
+          const query = reqUrl.searchParams.get("q")?.trim() || "";
+          if (!query) {
+            res.writeHead(200, { "content-type": "application/json" });
+            return res.end(JSON.stringify({ results: [] }));
+          }
+          const users = db.collection("users");
+          const regex = new RegExp(escapeRegex(query), "i");
+          const foundUsers = await users
+            .find(
+              {
+                $or: [
+                  { username: { $regex: regex } },
+                  { firstName: { $regex: regex } },
+                  { lastName: { $regex: regex } },
+                ],
+              },
+              {
+                projection: {
+                  password: 0,
+                },
+              },
+            )
+            .limit(10)
+            .toArray();
+
+          const results = foundUsers.map((user) => ({
+            id: user._id,
+            type: "user",
+            title:
+              `${user.firstName || ""} ${user.lastName || ""}`.trim() ||
+              user.username,
+            username: user.username,
+          }));
+          res.writeHead(200, { "content-type": "application/json" });
+          return res.end(JSON.stringify({ results }));
+        } catch (err) {
+          res.writeHead(500, { "content-type": "application/json" });
+          return res.end(
+            JSON.stringify({
+              message: "Search failed",
+              code: 500,
+              error: err.message,
+            }),
+          );
+        }
+      } else if (
+        req.method === "GET" &&
+        req.url.startsWith("/search/categories")
+      ) {
+        try {
+          const reqUrl = new URL(req.url, `http://${req.headers.host}`);
+          const query = reqUrl.searchParams.get("q")?.trim() || "";
+          if (!query) {
+            res.writeHead(200, { "content-type": "application/json" });
+            return res.end(JSON.stringify({ results: [] }));
+          }
+          const categories = CATEGORY_OPTIONS.filter((category) => {
+            const regex = new RegExp(escapeRegex(query), "i");
+            return regex.test(category.title) || regex.test(category.slug);
+          }).map((category) => ({
+            id: category.id,
+            type: "category",
+            title: category.title,
+            slug: category.slug,
+          }));
+          res.writeHead(200, { "content-type": "application/json" });
+          return res.end(JSON.stringify({ results: categories }));
+        } catch (err) {
+          res.writeHead(500, { "content-type": "application/json" });
+          return res.end(
+            JSON.stringify({
+              message: "Search failed",
+              code: 500,
+              error: err.message,
+            }),
+          );
+        }
+      } else if (req.method === "GET" && req.url.startsWith("/users/")) {
+        const userName = decodeURIComponent(req.url.split("/")[2] || "").trim();
+        if (!userName) {
+          res.writeHead(400, { "content-type": "application/json" });
+          return res.end(
+            JSON.stringify({ message: "Username is required", code: 400 }),
+          );
+        }
+        const verifyTokenResult = verifyToken(
+          req.headers.authorization?.replace("Bearer ", ""),
+        );
+        if (!verifyTokenResult) {
+          res.writeHead(401, { "content-type": "application/json" });
+          return res.end(
+            JSON.stringify({ message: "Unauthorized", code: 401 }),
+          );
+        }
+        let isFollowing = false;
+        let isFollower = false;
+        const currentUserId = new ObjectId(verifyTokenResult?.id);
+        const users = db.collection("users");
+        const targetUser = await users.findOne({ username: userName });
+        const userStats = db.collection("usersStats");
+        const follows = db.collection("follows");
+        const [followDoc, reverseDoc] = await Promise.all([
+          follows.findOne({
+            followerId: currentUserId,
+            followingId: targetUser._id,
+          }),
+          follows.findOne({
+            followerId: targetUser._id,
+            followingId: currentUserId,
+          }),
+        ]);
+        if (followDoc) isFollowing = true;
+        if (reverseDoc) isFollower = true;
+
+        if (!targetUser) {
+          res.writeHead(404, { "content-type": "application/json" });
+          return res.end(JSON.stringify({ message: "Not Found", code: 404 }));
+        }
+
+        const stats = await userStats.findOne({ userId: targetUser._id });
+
+        res.writeHead(200, { "content-type": "application/json" });
+        return res.end(
+          JSON.stringify({ targetUser, stats, isFollowing, isFollower }),
+        );
+      }
+
+      const followMatch = new URL(
+        req.url,
+        `http://${req.headers.host}`,
+      ).pathname.match(/^\/users\/([^/]+)\/follow$/);
+      if (followMatch) {
+        const userName = decodeURIComponent(followMatch[1] || "").trim();
+        const verifyTokenResult = verifyToken(
+          req.headers.authorization?.replace("Bearer ", ""),
+        );
+        if (!verifyTokenResult) {
+          res.writeHead(403, { "content-type": "application/json" });
+          return res.end(JSON.stringify({ message: "Forbidden", code: 403 }));
+        }
+        const currentUserId = new ObjectId(verifyTokenResult.id);
+        const users = db.collection("users");
+        const userStats = db.collection("usersStats");
+        const follows = db.collection("follows");
+        const targetUser = await users.findOne({ username: userName });
+
+        if (!targetUser) {
+          res.writeHead(404, { "content-type": "application/json" });
+          return res.end(
+            JSON.stringify({ message: "User Not Found!", code: 404 }),
+          );
+        }
+        if (req.method === "POST") {
+          await follows.insertOne({
+            followerId: currentUserId,
+            followingId: targetUser._id,
+            createdAt: new Date(),
+          });
+          await userStats.updateOne(
+            { userId: targetUser._id },
+            { $inc: { followersCount: 1 } },
+            { upsert: true },
+          );
+          await userStats.updateOne(
+            { userId: currentUserId },
+            { $inc: { followingsCount: 1 } },
+            { upsert: true },
+          );
+
+          res.writeHead(200, { "content-type": "application/json" });
+          return res.end(
+            JSON.stringify({
+              message: "Successfully followed user",
+              code: 200,
+            }),
+          );
+        } else if (req.method === "DELETE") {
+          const targetStats = await userStats.findOne({
+            userId: targetUser._id,
+          });
+
+          if ((targetStats?.followersCount ?? 0) > 0) {
+            await follows.deleteOne({
+              followerId: currentUserId,
+              followingId: targetUser._id,
+            });
+            await userStats.updateOne(
+              { userId: targetUser._id },
+              { $inc: { followersCount: -1 } },
+              { upsert: true },
+            );
+            await userStats.updateOne(
+              { userId: currentUserId },
+              { $inc: { followingsCount: -1 } },
+              { upsert: true },
+            );
+          }
+
+          res.writeHead(200, { "content-type": "application/json" });
+          return res.end(
+            JSON.stringify({
+              message: "Successfully unfollowed user",
+              code: 200,
+            }),
+          );
+        } else {
+          res.writeHead(405, { "content-type": "application/json" });
+          return res.end(
+            JSON.stringify({
+              message: "Method Not Allowed",
+              code: 405,
+            }),
+          );
+        }
+      }
+
+      if (req.url === "/deleteAccount" && req.method === "DELETE") {
         let body = "";
         req.on("data", (chunk) => {
           body += chunk;
         });
         req.on("end", async () => {
-          const verified = verifyToken(token);
-          if (!verified) {
-            res.writeHead(403, { "Content-Type": "application/json" });
-            return res.end(JSON.stringify("Forbidden: Invalid Token"));
+          try {
+            const token = req.headers.authorization?.replace("Bearer ", "");
+            const verifyTokenResult = verifyToken(token);
+            if (!verifyTokenResult) {
+              res.writeHead(401, { "content-type": "application/json" });
+              return res.end(
+                JSON.stringify({
+                  message: "Unauthorized: Invalid Token",
+                  status: 401,
+                }),
+              );
+            }
+
+            let data = JSON.parse(body);
+            const email = data.email?.trim();
+            const password = data.password?.trim();
+            if (!email || !password) {
+              res.writeHead(400, { "content-type": "application/json" });
+              return res.end(
+                JSON.stringify({
+                  message: "Email and password are required",
+                  status: 400,
+                }),
+              );
+            }
+
+            const users = db.collection("users");
+            const userStats = db.collection("usersStats");
+            const follows = db.collection("follows");
+            const currentUserId = new ObjectId(verifyTokenResult.id);
+            const currentUser = await users.findOne({ _id: currentUserId });
+
+            if (!currentUser) {
+              res.writeHead(404, { "content-type": "application/json" });
+              return res.end(
+                JSON.stringify({
+                  message: "Current user not found",
+                  status: 404,
+                }),
+              );
+            }
+
+            if (currentUser.email !== email) {
+              res.writeHead(403, { "content-type": "application/json" });
+              return res.end(
+                JSON.stringify({
+                  message: "Forbidden: Email does not match current user",
+                  status: 403,
+                }),
+              );
+            }
+
+            const isMatch = await bcrypt.compare(
+              password,
+              currentUser.password,
+            );
+            if (!isMatch) {
+              res.writeHead(401, { "content-type": "application/json" });
+              return res.end(
+                JSON.stringify({
+                  message: "Unauthorized: Incorrect password",
+                  status: 401,
+                }),
+              );
+            }
+            await Promise.all([
+              follows.deleteMany({ followerId: currentUserId }),
+              follows.deleteMany({ followingId: currentUserId }),
+              userStats.deleteOne({ userId: currentUserId }),
+              users.deleteOne({ _id: currentUserId }),
+            ]);
+
+            res.writeHead(200, { "content-type": "application/json" });
+            return res.end(
+              JSON.stringify({
+                message: "Account deleted successfully",
+                status: 200,
+              }),
+            );
+          } catch (err) {
+            res.writeHead(500, { "content-type": "application/json" });
+            return res.end(
+              JSON.stringify({
+                message: "Server Error",
+                status: 500,
+                error: err.message,
+              }),
+            );
           }
-
-          const data = JSON.parse(body);
-          const users = db.collection("users");
-          const usersStats = db.collection("usersStats");
-
-          const updatedUser = await users.findOneAndUpdate(
-            { _id: new ObjectId(verified.id) },
-            { $set: { firstName: data.fname, lastName: data.lname } },
-            { returnDocument: "after" }
-          );
-
-          const updatedStats = await usersStats.findOneAndUpdate(
-            { userId: new ObjectId(verified.id) },
-            {
-              $set: {
-                bio: data.bio || "",
-                postsCount: data.postsCount || 0,
-                profileImage: data.profileImage || "",
-                bannerImage: data.bannerImage || "",
-                githubLink: data.githubLink || "",
-                linkedinLink: data.linkedinLink || "",
-                twitterLink: data.twitterLink || "",
-                lastActive: new Date(),
-              },
-            },
-            { returnDocument: "after" }
-          );
-
-          res.writeHead(200, { "Content-Type": "application/json" });
-          return res.end(
-            JSON.stringify({
-              message: "Account Updated Successfully!",
-              user: updatedUser,
-              stats: updatedStats,
-            })
-          );
         });
       }
-      //  else {
-      //   res.writeHead(404, { "content-type": "application/json" });
-      //   return res.end(JSON.stringify({ message: "Not Found", code: 404 }));
-      // }
-      // if(req.method === "GET" && req.url === "/about") {
-      //   res.writeHead(200,{"content-type" : "text/plain"})
-      //   res.end("VAhe")
-      // }
     });
     server.listen(PORT, () => {
       console.log(`Server is Running at http://localhost:${PORT}`);

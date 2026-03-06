@@ -15,9 +15,9 @@ export default function SearchBar({
       onSubmit={handleSubmit}
       role="search"
       aria-label="Site search"
-      className="w-full max-w-[620px] "
+      className="w-full max-w-[620px]"
     >
-      <div className="relative flex w-full items-center gap-2 rounded-2xl border border-white/10 bg-white/10 px-3 py-1.5 text-white backdrop-blur">
+      <div className="relative flex w-full items-center gap-2 rounded-2xl border border-white/10 bg-white/10 px-3 py-1 text-white backdrop-blur">
         <SearchIcon className="text-white/75" />
 
         <input
