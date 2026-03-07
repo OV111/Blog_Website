@@ -152,6 +152,7 @@ const StartServer = async () => {
               res.writeHead(404, { "content-type": "application/json" });
               return res.end(JSON.stringify({ message: "Not Found!" }));
             }
+            
           } catch (err) {
             res.writeHead(500, { "content-type": "application/json" });
             return res.end(
@@ -389,6 +390,42 @@ const StartServer = async () => {
           }
         });
         req.pipe(bb);
+      }
+
+      if (
+        req.method === "GET" &&
+        req.url.startsWith("/my-profile/chats/mutual-followers")
+      ) {
+        const auth = getAuthToken(req.headers.authorization);
+        if (!auth.ok) {
+          res.writeHead(auth.status, { "content-type": "application/json" });
+          return res.end(JSON.stringify({ message: auth.message }));
+        }
+        const userId = auth.userObjectId;
+        const follows = db.collection("follows");
+        const followingDocs = await follows
+          .find({ followerId: new ObjectId(userId) })
+          .toArray();
+        const followersDocs = await follows
+          .find({ followingId: new ObjectId(userId) })
+          .toArray();
+        const followingIds = followingDocs.map((doc) => doc.followingId);
+        const followersIds = followersDocs.map((doc) => doc.followerId);
+        const mutualFollowerIds = followingIds.filter((id) =>
+          followersIds.some((fid) => fid.equals(id)),
+        );
+        const users = db.collection("users");
+        const mutualFollowers = await users
+          .find(
+            { _id: { $in: mutualFollowerIds } },
+            { projection: { password: 0 } },
+          )
+          .toArray();
+        console.log(mutualFollowers);
+        res.writeHead(200, {
+          "content-type": "application/json",
+        });
+        return res.end(JSON.stringify({ mutualFollowers }));
       }
 
       if (req.method === "GET" && req.url.startsWith("/my-profile/following")) {
@@ -650,7 +687,6 @@ const StartServer = async () => {
           );
         }
       }
-
       if (req.url === "/deleteAccount" && req.method === "DELETE") {
         let body = "";
         req.on("data", (chunk) => {
@@ -750,7 +786,7 @@ const StartServer = async () => {
       }
     });
     server.listen(PORT, () => {
-      console.log(`Server is Running at http://localhost:${PORT}`);
+      console.log(`Main Server is Running at http://localhost:${PORT}`);
     });
   } catch (err) {
     console.log("Failed to Connect!", err);

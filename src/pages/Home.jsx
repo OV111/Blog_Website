@@ -62,8 +62,7 @@ const Home = () => {
   // }, []);
 
   return (
-    <React.Fragment>
-      <div className="flex gap-30 lg:min-h-screen">
+      <div className="flex gap-30 lg:min-h-screen justify-between mr-16">
         <div>
           <Toaster
             position="right-bottom"
@@ -129,13 +128,12 @@ const Home = () => {
         </div>
         <div>
           <img
-            src="src/assets/Gemini_Generated_Image_sx3kfzsx3kfzsx3k.png"
+            src="../../src/assets/Code typing-bro (1).svg"
             alt="image"
-            className="w-120 h-120"
+            className="mt-10 w-120 h-120"
           />
         </div>
       </div>
-    </React.Fragment>
   );
 };
 
