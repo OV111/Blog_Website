@@ -210,7 +210,6 @@ export default function AddBlog() {
               ))}
             </select>
           </div>
-
           {/* Cover Image */}
           <div>
             <FormLabel>Cover image</FormLabel>

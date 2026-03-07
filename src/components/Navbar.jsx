@@ -7,6 +7,7 @@ import useAuthStore from "../context/useAuthStore";
 import useThemeStore from "../context/useThemeStore";
 import SearchBar from "./search/SearchBar";
 
+import { ChevronDown } from "lucide-react";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
@@ -120,9 +121,15 @@ to-white sm:w-full lg:w-full lg:gap-10 lg:py-4 dark:bg-zinc-950/60"
             >
               <button
                 onClick={() => setShowDropdown(!showDropdown)}
-                className="hidden sm:flex justify-center items-center cursor-pointer"
+                className="hidden sm:flex lg:gap-1 justify-center items-center cursor-pointer"
               >
-                Categories <IoMdArrowDropdown />
+                Categories{" "}
+                <ChevronDown
+                  size={16}
+                  className={`transition-transform duration-200 ${
+                    showDropdown ? "rotate-180" : ""
+                  }`}
+                />
               </button>
 
               {showDropdown && (

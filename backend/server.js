@@ -152,6 +152,7 @@ const StartServer = async () => {
               res.writeHead(404, { "content-type": "application/json" });
               return res.end(JSON.stringify({ message: "Not Found!" }));
             }
+            
           } catch (err) {
             res.writeHead(500, { "content-type": "application/json" });
             return res.end(
@@ -686,7 +687,6 @@ const StartServer = async () => {
           );
         }
       }
-
       if (req.url === "/deleteAccount" && req.method === "DELETE") {
         let body = "";
         req.on("data", (chunk) => {
@@ -786,7 +786,7 @@ const StartServer = async () => {
       }
     });
     server.listen(PORT, () => {
-      console.log(`Server is Running at http://localhost:${PORT}`);
+      console.log(`Main Server is Running at http://localhost:${PORT}`);
     });
   } catch (err) {
     console.log("Failed to Connect!", err);
