@@ -26,7 +26,7 @@ export default function SideBar({ isOpen, onClose }) {
         credentials: "include", // sending cookie
       });
       let response = await request.json();
-      console.log(response)
+      // console.log(response)
       if (request.ok) {
         localStorage.removeItem("JWT");
         toast.success(response.message, { duration: 1500 });
@@ -64,7 +64,7 @@ export default function SideBar({ isOpen, onClose }) {
         }
       }
       const response = await request.json();
-      console.log(response);
+      // console.log(response);
       setUserInfo({
         ...(response.userWithoutPassword ?? {}),
         profileImage: response?.stats?.profileImage ?? "",
@@ -127,12 +127,12 @@ export default function SideBar({ isOpen, onClose }) {
             />
           </button>
           <div className="hidden lg:block">
-              <p className="text-sm font-medium text-gray-800 overflow-x-auto dark:text-gray-100">
-                {fullName}
-              </p>
-              <p className="text-xs text-gray-500 overflow-x-auto dark:text-gray-400">
-                {email}
-              </p>
+            <p className="text-sm font-medium text-gray-800 overflow-x-auto dark:text-gray-100">
+              {fullName}
+            </p>
+            <p className="text-xs text-gray-500 overflow-x-auto dark:text-gray-400">
+              {email}
+            </p>
           </div>
         </div>
         {openImage && (

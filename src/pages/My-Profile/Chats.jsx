@@ -5,6 +5,7 @@ import { ChevronDown, SquarePen } from "lucide-react";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { ArrowUpDown } from "lucide-react";
 import { Send, CirclePlus, AudioLines } from "lucide-react";
+
 const Chats = () => {
   const [userSelected, setUserSelected] = useState(null);
   const [filter, setFilter] = useState("");
@@ -24,10 +25,58 @@ const Chats = () => {
     return fullName.includes(filter.trim().toLowerCase());
   });
 
+  // ws implementation
+  const [socket, setSocket] = useState(null);
+  const senderId = localStorage.getItem("JWT");
+  const receiverId = userSelected?._id;
+  const roomId = [senderId, receiverId].sort().join("_");
+  useEffect(() => {
+    const ws = new WebSocket("ws://localhost:5000");
+
+    ws.onopen = () => {
+      console.log("WebSocket connection opened");
+      setSocket(ws);
+    };
+
+    ws.onmessage = (event) => {
+      console.log("WebSocket message:", event.data);
+    };
+
+    ws.onerror = (err) => {
+      console.log("WebSocket error:", err);
+    };
+
+    ws.onclose = () => {
+      return () => ws.close();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!socket || !userSelected || !roomId) return;
+    if (socket.readyState !== WebSocket.OPEN) return;
+
+    socket.send(
+      JSON.stringify({
+        type: "join_room",
+        roomId,
+        receiverId,
+        text: "Creating Room",
+      }),
+    );
+  }, [socket, userSelected, roomId, receiverId]);
+
   const handleSendMessage = () => {
     if (!message.trim()) return;
-
-    // /
+    socket.send(
+      JSON.stringify({
+        type: "send_message",
+        roomId,
+        senderId,
+        receiverId,
+        text: message,
+      }),
+    );
+    ///
     setMessage("");
   };
   const handleKeyDown = (e) => {
@@ -36,6 +85,7 @@ const Chats = () => {
       handleSendMessage();
     }
   };
+
   const fetchUsers = async () => {
     const request = await fetch(
       `${API_BASE_URL}/my-profile/chats/mutual-followers`,
@@ -49,12 +99,14 @@ const Chats = () => {
     );
 
     const response = await request.json();
-    console.log(response);
+    // console.log(response);
     setMutualFollowers(response.mutualFollowers);
   };
+
   useEffect(() => {
     fetchUsers();
   }, []);
+
   return (
     <div className="flex min-h-screen">
       <Sidebar />
@@ -200,7 +252,10 @@ const Chats = () => {
                 className="border border-gray-200 bg-transparent placeholder:text-gray-400 text-sm w-full rounded-xl duration-300 px-4 py-2 outline-none focus:placeholder:opacity-0 "
               />
               <AudioLines className="cursor-pointer text-gray-600 transition-colors hover:text-fuchsia-600 duration-400 " />
-              <Send className="cursor-pointer text-fuchsia-600 transition-colors hover:text-fuchsia-700 duration-400" />
+              <Send
+                onClick={handleSendMessage}
+                className="cursor-pointer text-fuchsia-600 transition-colors hover:text-fuchsia-700 duration-400"
+              />
             </div>
           </div>
         ) : (

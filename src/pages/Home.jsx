@@ -62,78 +62,76 @@ const Home = () => {
   // }, []);
 
   return (
-      <div className="flex gap-30 lg:min-h-screen justify-between mr-16">
-        <div>
-          <Toaster
-            position="right-bottom"
-            reverseOrder={false}
-            className="wide-toast-container"
-          ></Toaster>
+    <div className="flex gap-30 lg:min-h-screen justify-between mr-16">
+      <div>
+        <Toaster
+          position="right-bottom"
+          reverseOrder={false}
+          className="wide-toast-container"
+        ></Toaster>
 
-          <Suspense fallback={<LoadingSuspense />}>
-            {/* <SplashCursor/> */}
-          </Suspense>
-          {/* 94 for width*/}
-          <section className="flex flex-col gap-2 sm:gap-8 lg:gap-10 mt-[100px] mb-[350px] ml-8 sm:ml-[40px] md:ml-[60px] lg:ml-[80px] max-w-4xl">
-            <div className="max-w-43 lg:max-w-143 h-20 lg:h-35">
-              <h1 className="ml-2 lg:ml-0 lg:pl-4 font-medium text-purple-800 dark:text-purple-600 text-xl sm:text-5xl lg:text-5xl md:text-6xl lg:text-7xl">
-                <TextType
-                  text={[
-                    "Welcome to Developers blog.",
-                    "Level up your dev skills,",
-                    "Created by Devs for Devs!",
-                  ]}
-                  typingSpeed={109}
-                  pauseDuration={1700}
-                  showCursor={true}
-                  cursorCharacter="|"
-                />
-              </h1>
-            </div>
-            {/* <div className=""> */}
-            <GradientText
-              colors={["#8A2BE2", "#FF1493", "#FF00FF", "#9c40ff", "#00FF00"]}
-              animationSpeed={8}
-              showBorder={false}
-              className="mt-4 ml-2 px-1 py-1 w-[300px] md:w-[200] lg:w-[100%] font-medium text-xl sm:text-xl md:text-2xl lg:text-3xl text-start"
-            >
-              A place to read, teach, write and understand topics.
-            </GradientText>
-            {/* </div> */}
-            <div>
-              <button className="justify-center items-center bg-fuchsia-700 hover:bg-fuchsia-600 dark:bg-fuchsia-550 hover:shadow-lg mt-2 lg:mt-2 ml-3 px-6 lg:px-10 py-1 lg:py-2 border-none rounded-xl font-medium text-gray-100 text-whitetransition hover:text-white text-lg lg:text-2xl hover:scale-102 cursor-pointer transform">
-                <Link to={auth ? "my-profile" : "get-started"}>
-                  Get Started
-                </Link>
-                {/* <ShinyText
+        <Suspense fallback={<LoadingSuspense />}>
+          {/* <SplashCursor/> */}
+        </Suspense>
+        {/* 94 for width*/}
+        <section className="flex flex-col gap-2 sm:gap-8 lg:gap-10 mt-[100px] mb-[350px] ml-8 sm:ml-[40px] md:ml-[60px] lg:ml-[80px] max-w-4xl">
+          <div className="max-w-43 lg:max-w-163 h-20 lg:h-35">
+            <h1 className="ml-2 lg:ml-0 lg:pl-4 font-medium text-purple-800 dark:text-purple-600 text-xl sm:text-5xl lg:text-5xl md:text-6xl lg:text-7xl">
+              <TextType
+                text={[
+                  "Welcome to Developers Platform.",
+                  "Level up your dev skills,",
+                  "Created by Devs for Devs!",
+                ]}
+                typingSpeed={109}
+                pauseDuration={1700}
+                showCursor={true}
+                cursorCharacter="|"
+              />
+            </h1>
+          </div>
+          {/* <div className=""> */}
+          <GradientText
+            colors={["#8A2BE2", "#FF1493", "#FF00FF", "#9c40ff", "#00FF00"]}
+            animationSpeed={8}
+            showBorder={false}
+            className="mt-4 ml-2 px-1 py-1 w-[300px] md:w-[200] lg:w-[100%] font-medium text-xl sm:text-xl md:text-2xl lg:text-3xl text-start"
+          >
+            A place to read, teach, write and understand topics.
+          </GradientText>
+          {/* </div> */}
+          <div>
+            <button className="justify-center items-center bg-fuchsia-700 hover:bg-fuchsia-600 dark:bg-fuchsia-550 hover:shadow-lg mt-2 lg:mt-2 ml-3 px-6 lg:px-10 py-1 lg:py-2 border-none rounded-xl font-medium text-gray-100 text-whitetransition hover:text-white text-lg lg:text-2xl hover:scale-102 cursor-pointer transform">
+              <Link to={auth ? "my-profile" : "get-started"}>Get Started</Link>
+              {/* <ShinyText
                 text="Start Reading"
                 disabled={false}
                 speed={3}
                 className="font-semibold text-white"
               /> */}
-              </button>
-              <button className="justify-center items-center bg-fuchsia-700 hover:bg-fuchsia-600 dark:bg-fuchsia-550 hover:shadow-lg mt-2 lg:mt-2 ml-3 px-6 lg:px-6 py-1 lg:py-2 border-none rounded-xl font-medium text-gray-100 text-whitetransition hover:text-white text-lg lg:text-2xl hover:scale-102 cursor-pointer transform">
-                <Link to={auth ? "my-profile" : "get-started"}>
-                  Explore Content
-                </Link>
-                {/* <ShinyText
+            </button>
+            <button className="justify-center items-center bg-fuchsia-700 hover:bg-fuchsia-600 dark:bg-fuchsia-550 hover:shadow-lg mt-2 lg:mt-2 ml-3 px-6 lg:px-6 py-1 lg:py-2 border-none rounded-xl font-medium text-gray-100 text-whitetransition hover:text-white text-lg lg:text-2xl hover:scale-102 cursor-pointer transform">
+              <Link to={auth ? "my-profile" : "get-started"}>
+                Explore Content
+              </Link>
+              {/* <ShinyText
                 text="Start Reading"
                 disabled={false}
                 speed={3}
                 className="font-semibold text-white"
               /> */}
-              </button>
-            </div>
-          </section>
-        </div>
-        <div>
-          <img
-            src="../../src/assets/Code typing-bro (1).svg"
-            alt="image"
-            className="mt-10 w-120 h-120"
-          />
-        </div>
+            </button>
+          </div>
+        </section>
       </div>
+      <div>
+        <img
+          src="../../src/assets/Code typing-bro (1).svg"
+          alt="image"
+          className="mt-10 w-120 h-120"
+        />
+      </div>
+    </div>
   );
 };
 

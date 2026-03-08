@@ -171,7 +171,6 @@ const StartServer = async () => {
         try {
           const categoryName = req.url.split("/")[2];
           const isDefault = req.url.split("/")[3] === "default";
-          console.log(isDefault);
 
           let result;
           if (isDefault) {
@@ -422,7 +421,6 @@ const StartServer = async () => {
             { projection: { password: 0 } },
           )
           .toArray();
-        console.log(mutualFollowers);
         res.writeHead(200, {
           "content-type": "application/json",
         });
