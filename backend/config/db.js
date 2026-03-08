@@ -1,17 +1,18 @@
 import { MongoClient } from "mongodb";
-import dotenv from "dotenv";
 import process from "process";
-dotenv.config({path:"./backend/.env"});
-
-const MONGO_URI = process.env.MONGO_URI;
-export const client = new MongoClient(MONGO_URI);
-
 let db;
+let client;
 
 const connectDB = async () => {
   if (db) return db; // reuse existing connection
 
   try {
+    const mongoUri = process.env.MONGO_URI;
+    if (!mongoUri) {
+      throw new Error("MONGO_URI is missing");
+    }
+
+    client = new MongoClient(mongoUri);
     await client.connect();
     console.log("MongoDB connected successfully!");
     db = client.db("DevsBlog"); // store reference to DB

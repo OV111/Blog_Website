@@ -8,6 +8,8 @@ import busboy from "busboy";
 import fs from "fs";
 import path from "path";
 
+import initWebSocketServer from "./websocket/index.js";
+
 import { postHandling } from "./routes/postHandling.js";
 import { defaultPostsHandling } from "./routes/handleDefPosts.js";
 
@@ -21,7 +23,7 @@ import {
   getFollowingData,
 } from "./services/followService.js";
 
-dotenv.config();
+dotenv.config({ path: "./backend/.env" });
 
 const PORT = process.env.PORT || 5000;
 const escapeRegex = (value = "") =>
@@ -152,7 +154,6 @@ const StartServer = async () => {
               res.writeHead(404, { "content-type": "application/json" });
               return res.end(JSON.stringify({ message: "Not Found!" }));
             }
-            
           } catch (err) {
             res.writeHead(500, { "content-type": "application/json" });
             return res.end(
@@ -785,6 +786,10 @@ const StartServer = async () => {
         });
       }
     });
+
+    // Initialize WebSocket server
+    initWebSocketServer(server);
+    // ///////////////////////////////////////////////////
     server.listen(PORT, () => {
       console.log(`Main Server is Running at http://localhost:${PORT}`);
     });
