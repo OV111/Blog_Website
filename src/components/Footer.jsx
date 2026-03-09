@@ -1,94 +1,103 @@
 import React from "react";
-import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import X_logo from "../assets/X_logo.png";
-import { FaGithub, FaTwitter, FaMailBulk, FaEnvelope } from "react-icons/fa";
 import { Send } from "lucide-react";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import XIcon from "@mui/icons-material/X";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
+
+const QuickLinks = [
+  { title: "Home", href: "/" },
+  { title: "About", href: "/about" },
+  { title: "Contact", href: "/contact" },
+  { title: "Privacy Policy", href: "/privacy" },
+];
+const Categories = [
+  { title: "Full Stack", href: "/categories/fullstack" },
+  { title: "Backend", href: "/categories/backend" },
+  { title: "AI & ML", href: "/categories/ai&ml" },
+  { title: "Mobile", href: "/categories/mobile" },
+  { title: "Game Dev", href: "/categories/gamedev" },
+  { title: "Quality Assurance", href: "/categories/qa" },
+  { title: "DevOps", href: "/categories/devops" },
+];
+
 const Footer = () => {
   const { pathname } = useLocation();
 
-  // const pathname = location.pathname
   return (
     <React.Fragment>
-      <footer className="relative z-1 min-h-[1070px] bg-gradient-to-r from-purple-800 to-purple-950  text-white pt-10 dark:from-purple-700 dark:to-purple-800 lg:min-h-[100px]">
-        <div className="grid lg:flex justify-start items-start gap-4 lg:gap-30 mb-0 pl-8 lg:pl-30 dark:bg-from-violet-700 dark:bg-to-violet-950">
-          <div className="lg:col-span-2 flex flex-col items-start">
+      <footer className="relative z-1 bg-linear-to-r from-purple-600 to-purple-800 px-5 pt-10 text-white dark:from-purple-700 dark:to-purple-800 sm:px-8 lg:px-12">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,0.95fr)] lg:gap-12">
+          <div className="flex flex-col items-start">
             <Link to="/" className="flex items-center gap-2 mb-4">
               <img src="" alt="Logo" />
               <h1 className="text-3xl font-extrabold  tracking-wide">
                 Devs Blog
               </h1>
             </Link>
-            <p className="text-purple-400 max-w-sm mb-6">
+            <p className="mb-6 max-w-sm text-sm leading-6 text-purple-200 sm:text-base">
               A blog dedicated to modern web development, AI trends, and quality
               assurance — insights, tutorials, and real-world guides for
               developers and tech enthusiasts.
             </p>
 
             {/* Social Links */}
-            <div className="flex items-center justify-center space-x-5 mt-0 mb-12 ">
-              <Link to="/">
+            <div className="mb-2">
+              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.22em] text-purple-200/80">
+                Follow Us
+              </p>
+              <div className="flex flex-wrap items-center gap-3">
+                <Link
+                  to="/"
+                  aria-label="Visit our GitHub"
+                  className="group flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 backdrop-blur-sm transition duration-200 hover:-translate-y-1 hover:border-white/40 hover:bg-white/20"
+                >
                 <GitHubIcon
-                  className="text-black hover:text-white"
+                  className="text-lg text-white/85 transition group-hover:text-white"
                   fontSize="medium"
                 />
-              </Link>
-              <Link to="/">
+                </Link>
+                <Link
+                  to="/"
+                  aria-label="Visit our X profile"
+                  className="group flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 backdrop-blur-sm transition duration-200 hover:-translate-y-1 hover:border-white/40 hover:bg-white/20"
+                >
                 <XIcon
-                  className="text-black hover:text-white"
-                  fontSize="medium"
-                ></XIcon>
-              </Link>
-              <Link to="/">
-                <MailOutlineIcon
-                  className="text-black hover:text-white"
+                  className="text-lg text-white/85 transition group-hover:text-white"
                   fontSize="medium"
                 />
-              </Link>
+                </Link>
+                <Link
+                  to="/"
+                  aria-label="Send us an email"
+                  className="group flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 backdrop-blur-sm transition duration-200 hover:-translate-y-1 hover:border-white/40 hover:bg-white/20"
+                >
+                <MailOutlineIcon
+                  className="text-lg text-white/85 transition group-hover:text-white"
+                  fontSize="medium"
+                />
+                </Link>
+              </div>
             </div>
           </div>
 
           {/* Quick Links */}
-          <div className="flex lg:flex gap-20 lg:gap-25">
+          <div className="grid grid-cols-1 gap-8 min-[480px]:grid-cols-2 sm:gap-10">
             <div className="grid gap-1">
               <h3 className="text-xl font-bold mb-2  text-purple-400">
                 Quick Links
               </h3>
-              <Link
-                to="/"
-                className={`text-lg hover:text-purple-500 transition ${
-                  pathname === "/" ? "text-purple-400" : ""
-                }`}
-              >
-                Home
-              </Link>
-              <Link
-                to="/about"
-                className={`text-lg  hover:text-purple-500 transition ${
-                  pathname === "/about" ? "text-purple-500" : ""
-                }`}
-              >
-                About
-              </Link>
-              <Link
-                to="/contact"
-                className={`text-lg  hover:text-purple-500 transition ${
-                  pathname === "/contact" ? "text-purple-500" : ""
-                }`}
-              >
-                Contact
-              </Link>
-              <Link
-                to="/privacy"
-                className={`text-lg  hover:text-purple-500 transition ${
-                  pathname === "/privacy" ? "text-purple-500" : ""
-                }`}
-              >
-                Privacy Policy
-              </Link>
+              {QuickLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className={`text-base hover:text-purple-300 transition sm:text-lg ${
+                    pathname === link.href ? "text-purple-400" : ""
+                  }`}
+                >
+                  {link.title}
+                </Link>
+              ))}
             </div>
 
             {/* Categories Part */}
@@ -96,96 +105,47 @@ const Footer = () => {
               <h3 className="text-xl font-bold mb-2  text-purple-400">
                 Categories
               </h3>
-              <Link
-                to="/categories/fullstack"
-                className={`text-lg  hover:text-purple-500 transition ${
-                  pathname === "/categories/fullstack" ? "text-purple-500" : ""
-                }`}
-              >
-                Full Stack
-              </Link>
-              <Link
-                to="/categories/backend"
-                className={`text-lg  hover:text-purple-500 transition ${
-                  pathname === "/categories/backend" ? "text-purple-500" : ""
-                }`}
-              >
-                Backend
-              </Link>
-              <Link
-                to="/categories/mobile"
-                className={`text-lg  hover:text-purple-500 transition ${
-                  pathname === "/categories/mobile" ? "text-purple-500" : ""
-                }`}
-              >
-                Mobile
-              </Link>
-              <Link
-                to="/categories/ai&ml"
-                className={`text-lg  hover:text-purple-500 transition ${
-                  pathname === "/categories/ai&ml" ? "text-purple-500" : ""
-                }`}
-              >
-                AI & ML
-              </Link>
-              <Link
-                to="/categories/qa"
-                className={`text-lg  hover:text-purple-500 transition ${
-                  pathname === "/categories/qa" ? "text-purple-500" : ""
-                }`}
-              >
-                Quality Assurance
-              </Link>
-              <Link
-                to="/categories/devops"
-                className={`text-lg  hover:text-purple-500 transition ${
-                  pathname === "/categories/devops" ? "text-purple-500" : ""
-                }`}
-              >
-                DevOps
-              </Link>
+              {Categories.map((category) => (
+                <Link
+                  key={category.href}
+                  to={category.href}
+                  className={`text-base hover:text-purple-300 transition sm:text-lg ${
+                    pathname === category.href
+                      ? "text-purple-500"
+                      : "text-white"
+                  }`}
+                >
+                  {category.title}
+                </Link>
+              ))}
             </div>
           </div>
           {/* Email Part */}
-          <div className="grid gap-1 mt-5 lg:mt-0">
-            <h3 className="text-2xl font-bold mb-2 w-50 text-purple-400">
+          <div className="flex flex-col gap-4 mt-5 lg:mt-0 ">
+            <h3 className="text-2xl font-bold mb-0 w-50 text-purple-400">
               Stay Updated!
             </h3>
-            <p className="text-purple-200 mb-4 w-60">
-              {" "}
+            <p className="text-purple-200 mb-4 lg:mb-0 w-60">
               Subscribe to our newsletter for the latest articles and updates.
             </p>
-            <form className="flex gap-2">
+            <form className="flex gap-2 lg:h-10">
               <input
                 type="email"
                 placeholder="Enter Your Email."
-                className="flex-grow rounded-md pl-2 outline-none bg-purple-700 border-purple-600 text-white placeholder-purple-300 focus:ring-purple-500 focus:border-purple-500"
+                className="p-2 flex-grow rounded-md pl-2 outline-none bg-purple-700 border-purple-600 text-white placeholder-purple-300 focus:ring-purple-500 focus:border-purple-500"
               />
               <button
                 type="submit"
-                className="bg-purple-600 cursor-pointer  hover:bg-purple-700 text-white py-2 px-2  rounded-md shadow-sm transition-colors duration-200"
+                className="p-2 bg-purple-600 cursor-pointer   hover:bg-purple-700 text-white  rounded-md shadow-sm transition-colors duration-200"
               >
-                <Send className="w-5 h-5"></Send>
+                <Send className="w-6 h-6 lg:mx-4 my-0 "></Send>
               </button>
             </form>
           </div>
-
-          {/* <div className="grid gap-1">
-              <h3 className="text-xl font-bold mb-2 w-30 text-purple-400">Legal</h3>
-              <Link to="" className="text-lg hover:text-purple-500 transition">
-                Privacy Policy
-              </Link>
-              <Link to="" className="text-lg hover:text-purple-500 transition">
-                Terms of Service
-              </Link>
-              <Link to="" className="text-lg hover:text-purple-500 transition">
-                Cookie Policy
-              </Link>
-            </div> */}
         </div>
         {/* <hr className="border-purple-800 my-6" /> */}
 
-        <div className="text-center  py-8 text-m text-purple-300">
+        <div className="mx-auto mt-8 max-w-7xl py-8 text-center text-sm text-purple-300 sm:text-base">
           © {new Date().getFullYear()} Devs Blog. All rights reserved!
         </div>
       </footer>
