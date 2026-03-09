@@ -26,6 +26,7 @@ export default function SideBar({ isOpen, onClose }) {
         credentials: "include", // sending cookie
       });
       let response = await request.json();
+      // console.log(response)
       if (request.ok) {
         localStorage.removeItem("JWT");
         toast.success(response.message, { duration: 1500 });
@@ -63,7 +64,7 @@ export default function SideBar({ isOpen, onClose }) {
         }
       }
       const response = await request.json();
-      console.log(response);
+      // console.log(response);
       setUserInfo({
         ...(response.userWithoutPassword ?? {}),
         profileImage: response?.stats?.profileImage ?? "",
@@ -112,7 +113,7 @@ export default function SideBar({ isOpen, onClose }) {
       )}
       {/* Need to correct the height for responsive */}
       <aside className="flex h-dvh w-10 flex-col overflow-hidden border-r border-gray-200 bg-white transition-all duration-300 dark:border-gray-800 dark:bg-gray-950 lg:h-screen lg:w-56 lg:static lg:sticky lg:top-0">
-        <div className=" flex items-center gap-3 border-b border-gray-100 pt-4 pb-2 px-0 dark:border-gray-800 lg:px-3 ">
+        <div className="flex items-center gap-3 border-b border-gray-100 pt-4 pb-2 px-0 dark:border-gray-800 lg:px-3">
           <button
             onClick={() => {
               if (avatarSrc) setOpenImage(true);
@@ -152,11 +153,8 @@ export default function SideBar({ isOpen, onClose }) {
 
         <nav className="flex min-h-0 flex-1 flex-col overflow-y-auto px-0 py-0 lg:px-2 lg:py-2">
           {sidebarArr.map((group) => (
-            <div
-              key={group.section}
-              className="grid font-normal py-0 lg:pt-2 first:lg:pt-0"
-            >
-              <p className="hidden px-2 py-0 text-[10px] uppercase tracking-wider text-gray-400 font-semibold dark:text-gray-500 lg:block">
+            <div key={group.section} className="grid text-lg py-0 lg:pt-2">
+              <p className="hidden px-2 py-0 text-[9px] uppercase tracking-wider text-gray-400 font-semibold dark:text-gray-500 lg:block lg:py-0.5">
                 {group.section}
               </p>
 
