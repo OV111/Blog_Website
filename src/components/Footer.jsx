@@ -32,7 +32,7 @@ const Footer = () => {
             <Link to="/" className="flex items-center gap-2 mb-4">
               <img src="" alt="Logo" />
               <h1 className="text-3xl font-extrabold  tracking-wide">
-                Devs Blog
+                Devs Platfo
               </h1>
             </Link>
             <p className="mb-6 max-w-sm text-sm leading-6 text-purple-200 sm:text-base">
@@ -52,30 +52,30 @@ const Footer = () => {
                   aria-label="Visit our GitHub"
                   className="group flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 backdrop-blur-sm transition duration-200 hover:-translate-y-1 hover:border-white/40 hover:bg-white/20"
                 >
-                <GitHubIcon
-                  className="text-lg text-white/85 transition group-hover:text-white"
-                  fontSize="medium"
-                />
+                  <GitHubIcon
+                    className="text-lg text-white/85 transition group-hover:text-white"
+                    fontSize="medium"
+                  />
                 </Link>
                 <Link
                   to="/"
                   aria-label="Visit our X profile"
                   className="group flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 backdrop-blur-sm transition duration-200 hover:-translate-y-1 hover:border-white/40 hover:bg-white/20"
                 >
-                <XIcon
-                  className="text-lg text-white/85 transition group-hover:text-white"
-                  fontSize="medium"
-                />
+                  <XIcon
+                    className="text-lg text-white/85 transition group-hover:text-white"
+                    fontSize="medium"
+                  />
                 </Link>
                 <Link
                   to="/"
                   aria-label="Send us an email"
                   className="group flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 backdrop-blur-sm transition duration-200 hover:-translate-y-1 hover:border-white/40 hover:bg-white/20"
                 >
-                <MailOutlineIcon
-                  className="text-lg text-white/85 transition group-hover:text-white"
-                  fontSize="medium"
-                />
+                  <MailOutlineIcon
+                    className="text-lg text-white/85 transition group-hover:text-white"
+                    fontSize="medium"
+                  />
                 </Link>
               </div>
             </div>

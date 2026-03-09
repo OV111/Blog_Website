@@ -111,7 +111,7 @@ to-white sm:w-full lg:w-full lg:gap-10 lg:py-4 dark:bg-zinc-950/60"
             </div>
           )}
 
-          <ul className="flex items-center gap-2 text-gray-100 my-2 lg:my-0.5">
+          <ul className="flex items-center gap-1 text-gray-100 my-2 lg:my-0.5">
             <li className="font-medium text-sm md:text-sm lg:text-base px-1 py-1 hover:text-purple-300 dark:hover:text-purple-300 transition">
               <NavLink to="/">Home</NavLink>
             </li>
@@ -123,7 +123,7 @@ to-white sm:w-full lg:w-full lg:gap-10 lg:py-4 dark:bg-zinc-950/60"
                 onClick={() => setShowDropdown(!showDropdown)}
                 className="hidden sm:flex lg:gap-1 justify-center items-center cursor-pointer"
               >
-                Categories{" "}
+                Categories
                 <ChevronDown
                   size={16}
                   className={`transition-transform duration-200 ${
@@ -177,14 +177,14 @@ to-white sm:w-full lg:w-full lg:gap-10 lg:py-4 dark:bg-zinc-950/60"
             </li>
             {auth ? (
               <React.Fragment>
-                <li className="font-medium text-sm md:text-sm lg:text-base px-1 py-1 hover:text-purple-300 dark:hover:text-purple-300 transition">
+                <li className="hidden md:block font-medium text-sm md:text-sm lg:text-base px-1 hover:text-purple-300 dark:hover:text-purple-300 transition">
                   <NavLink to="roadmaps">Roadmaps</NavLink>
                 </li>
-                <li className="font-medium text-sm md:text-sm lg:text-base px-1 py-1 hover:text-purple-300 dark:hover:text-purple-300 transition">
+                <li className="hidden md:block font-medium text-sm md:text-sm lg:text-base px-1 hover:text-purple-300 dark:hover:text-purple-300 transition">
                   <NavLink to="roadmaps">Coding Libs</NavLink>
                 </li>
                 {/* Video Tutorials, Artciles & Blogs, E-Books, Coding Sessions, Practic Challneges, Creating Projects, Collobarations */}
-                <li className="font-medium text-sm md:text-sm lg:text-base px-1 py-1 hover:text-purple-300 dark:hover:text-purple-300 transition">
+                <li className="hidden md:block font-medium text-sm md:text-sm lg:text-base px-1  hover:text-purple-300 dark:hover:text-purple-300 transition">
                   <NavLink to="my-profile">My Profile</NavLink>
                 </li>
               </React.Fragment>
@@ -217,7 +217,7 @@ to-white sm:w-full lg:w-full lg:gap-10 lg:py-4 dark:bg-zinc-950/60"
               {isOpen ? <CloseOutlinedIcon /> : <MenuOutlinedIcon />}
             </button>
             {isOpen && (
-              <ul className="absolute top-16 left-0 w-full bg-purple-700 flex flex-col gap-4 p-6 md:hidden z-3">
+              <ul className="flex flex-col gap-2 p-4 border-t-[0.1px] border-gray-100 absolute top-full left-0 w-full bg-linear-to-r from-purple-600 to-purple-800  dark:from-purple-700 dark:to-purple-800  md:hidden z-3">
                 {showSearch && (
                   <li>
                     <div ref={mobileSearchRef} className="relative">
@@ -305,16 +305,31 @@ to-white sm:w-full lg:w-full lg:gap-10 lg:py-4 dark:bg-zinc-950/60"
                     </ul>
                   )}
                 </li>
-                <li className="font-medium text-base  hover:text-purple-300 dark:hover:text-purple-300 transition">
-                  <NavLink to="about" onClick={() => setIsOpen(false)}>
-                    About
-                  </NavLink>
-                </li>
-                <li className="font-medium text-base  hover:text-purple-300 dark:hover:text-purple-300 transition">
-                  <NavLink to="privacy" onClick={() => setIsOpen(false)}>
-                    Privacy
-                  </NavLink>
-                </li>
+
+                {auth && (
+                  <React.Fragment>
+                    {/* Video Tutorials, Artciles & Blogs, E-Books, Coding Sessions, Practic Challneges, Creating Projects, Collobarations */}
+                    <li className="font-medium text-base md:text-sm lg:text-base hover:text-purple-300 dark:hover:text-purple-300 transition">
+                      <NavLink to="roadmaps">Roadmaps</NavLink>
+                    </li>
+                    <li className="font-medium text-base md:text-sm lg:text-base  hover:text-purple-300 dark:hover:text-purple-300 transition">
+                      <NavLink to="roadmaps">Coding Libs</NavLink>
+                    </li>
+                    <li className="font-medium text-base md:text-sm lg:text-base  hover:text-purple-300 dark:hover:text-purple-300 transition">
+                      <NavLink to="my-profile">My Profile</NavLink>
+                    </li>
+                    <li className="font-medium text-base md:text-sm lg:text-base hover:text-purple-300 dark:hover:text-purple-300 transition">
+                      <NavLink to="about" onClick={() => setIsOpen(false)}>
+                        About
+                      </NavLink>
+                    </li>
+                    <li className="font-medium text-base md:text-sm lg:text-base hover:text-purple-300 dark:hover:text-purple-300 transition">
+                      <NavLink to="privacy" onClick={() => setIsOpen(false)}>
+                        Privacy
+                      </NavLink>
+                    </li>
+                  </React.Fragment>
+                )}
               </ul>
             )}
           </ul>
