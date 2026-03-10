@@ -7,6 +7,23 @@ import { ArrowUpDown } from "lucide-react";
 import { Send, CirclePlus, AudioLines } from "lucide-react";
 import LoadingChatSuspense from "@/components/LoadingChatSuspense";
 
+const getUserIdFromJWT = (token) => {
+  if (!token) return null;
+  try {
+    const [, payload] = token.split(".");
+    if (!payload) return null;
+    const normalized = payload.replace(/-/g, "+").replace(/_/g, "/");
+    const padded = normalized.padEnd(
+      normalized.length + ((4 - (normalized.length % 4)) % 4),
+      "=",
+    );
+    const decodedPayload = JSON.parse(atob(padded));
+    return decodedPayload?.id ? String(decodedPayload.id) : null;
+  } catch {
+    return null;
+  }
+};
+
 const Chats = () => {
   const [userSelected, setUserSelected] = useState(null);
   const [filter, setFilter] = useState("");
@@ -30,9 +47,13 @@ const Chats = () => {
 
   // ws implementation //////////////////////////////////////////////
   const [socket, setSocket] = useState(null);
-  const senderId = localStorage.getItem("JWT");
+  const token = localStorage.getItem("JWT");
+  const senderId = getUserIdFromJWT(token);
   const receiverId = userSelected?._id;
-  const roomId = [senderId, receiverId].sort().join("_");
+  const roomId =
+    senderId && receiverId
+      ? [String(senderId), String(receiverId)].sort().join("_")
+      : null;
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:5000");
 
@@ -40,15 +61,12 @@ const Chats = () => {
       console.log("WebSocket connection opened");
       setSocket(ws);
     };
-
     ws.onmessage = (event) => {
-      console.log("WebSocket message:", event.data);
+      console.log("WebSocket message:", event);
     };
-
     ws.onerror = (err) => {
       console.log("WebSocket error:", err);
     };
-
     ws.onclose = () => {
       return () => ws.close();
     };
@@ -62,11 +80,12 @@ const Chats = () => {
       JSON.stringify({
         type: "join_room",
         roomId,
+        senderId,
         receiverId,
-        text: "Creating Room",
+        message: "Creating Room",
       }),
     );
-  }, [socket, userSelected, roomId, receiverId]);
+  }, [socket, userSelected, roomId, senderId, receiverId]);
 
   const handleSendMessage = () => {
     if (!message.trim()) return;
@@ -265,7 +284,7 @@ const Chats = () => {
               {/* React Loading Skeleton for chat the library donwloaded */}
             </div>
 
-            <div className="flex items-center gap-2 border-t border-gray-100 p-4">
+            <div className="flex items-center gap-2 border-t border-gray-100 p-2">
               <CirclePlus className="cursor-pointer text-gray-600 transition-colors hover:text-fuchsia-600" />
               <input
                 type="text"

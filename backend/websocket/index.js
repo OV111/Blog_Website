@@ -6,15 +6,15 @@ export default function initWebSocketServer(server) {
   wss.on("connection", (ws) => {
     console.log("Client Connected!");
 
-    ws.on("message", (message) => {
+    ws.on("message", async (message) => {
       try {
         const data = JSON.parse(message.toString());
-        console.log("Receiving from client: ", message.toString());
+        // console.log("Receiving from client: ", message.toString());
         if (data.type === "join_room") {
           // calling the joinRoom funciton
-          joinRoom(ws, data);
+          await joinRoom(ws, data);
         } else if (data.type === "send_message") {
-          sendMessage(ws, data);
+          await sendMessage(ws, data);
         }
         //   else if (data.type === "leave_room") {}
       } catch (err) {

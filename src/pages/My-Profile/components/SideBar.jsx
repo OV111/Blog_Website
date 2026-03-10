@@ -143,10 +143,10 @@ export default function SideBar({ isOpen, onClose }) {
               </div>
             ) : (
               <>
-                <p className="text-sm font-medium text-gray-800 overflow-x-auto dark:text-gray-100">
+                <p className="truncate text-sm font-medium text-gray-800 overflow-x-auto dark:text-gray-100">
                   {fullName}
                 </p>
-                <p className="text-xs text-gray-500 overflow-x-auto dark:text-gray-400">
+                <p className="truncate text-xs text-gray-500 overflow-x-auto dark:text-gray-400">
                   {email}
                 </p>
               </>
