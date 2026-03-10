@@ -15,6 +15,7 @@ export default function initWebSocketServer(server) {
           await joinRoom(ws, data);
         } else if (data.type === "send_message") {
           await sendMessage(ws, data);
+          console.log(ws,data)
         }
         //   else if (data.type === "leave_room") {}
       } catch (err) {

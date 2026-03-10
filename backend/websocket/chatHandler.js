@@ -60,13 +60,62 @@ export const joinRoom = async (ws, data) => {
 export const sendMessage = async (ws, data) => {
   const { roomId, senderId, receiverId, text } = data;
   if (!roomId || !senderId || !receiverId || !text) {
-    ws.send(
+    return ws.send(
       JSON.stringify({ type: "error", message: "Missing required fields" }),
     );
   }
   if (!rooms.has(roomId)) {
-    ws.send(JSON.stringify({ type: "error", message: "Room does not exist" }));
+    return ws.send(
+      JSON.stringify({ type: "error", message: "Room does not exist" }),
+    );
   }
-  const room = rooms.get(roomId);
-  // chat gpt chat for ws flow
+  try {
+    let db = await connectDB();
+    const roomsCollection = db.collection("rooms");
+    const messagesCollection = db.collection("messages");
+    const messageDoc = {
+      roomId: roomId.toString(),
+      senderId: senderId.toString(),
+      receiverId: receiverId.toString(),
+      text: text.trim(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    const insertedMessage = await messagesCollection.insertOne(messageDoc);
+    await roomsCollection.updateOne(
+      { _id: roomId.toString() },
+      {
+        $set: {
+          lastMessage: {
+            text: messageDoc.text,
+            senderId: messageDoc.senderId,
+            createdAt: new Date(),
+          },
+          updatedAt: new Date(),
+        },
+      },
+    );
+    // Broadcast to all clients currently joined to this room.
+    const room = rooms.get(roomId);
+    room.forEach((clientSocket) => {
+      if (clientSocket.readyState === 1) {
+        clientSocket.send(
+          JSON.stringify({
+            type: "sended_message",
+            message: {
+              _id: insertedMessage.insertedId,
+              ...messageDoc,
+            },
+          }),
+        );
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    ws.send(
+      JSON.stringify({ type: "error", message: "Failed to send message" }),
+    );
+    return;
+  }
 };

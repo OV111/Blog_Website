@@ -4,7 +4,7 @@ import Sidebar from "./components/SideBar";
 import { ChevronDown, SquarePen } from "lucide-react";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { ArrowUpDown } from "lucide-react";
-import { Send, CirclePlus, AudioLines } from "lucide-react";
+import { Send, CirclePlus, AudioLines, Ellipsis } from "lucide-react";
 import LoadingChatSuspense from "@/components/LoadingChatSuspense";
 
 const getUserIdFromJWT = (token) => {
@@ -29,6 +29,7 @@ const Chats = () => {
   const [filter, setFilter] = useState("");
   const [isLoadingChats, setIsLoadingChats] = useState(false);
   const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
   const [mutualFollowers, setMutualFollowers] = useState([]);
   const [sortOrder, setSortOrder] = useState("Newest");
   const [isSortOpen, setIsSortOpen] = useState(false);
@@ -62,8 +63,14 @@ const Chats = () => {
       setSocket(ws);
     };
     ws.onmessage = (event) => {
-      console.log("WebSocket message:", event);
+      const payload = JSON.parse(event.data)
+      console.log(payload)
+      console.log("WebSocket message:", JSON.parse(event.data));
+      if (payload.type === "sended_message") {
+        setMessages(payload.message);
+      }
     };
+
     ws.onerror = (err) => {
       console.log("WebSocket error:", err);
     };
@@ -138,7 +145,6 @@ const Chats = () => {
   return (
     <div className="flex min-h-screen">
       <Sidebar />
-
       <div className="border-r border-gray-200 bg-white dark:border-gray-800 lg:w-70 lg:pt-4 lg:text-lg">
         <div className="flex items-center justify-between px-3">
           <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
@@ -256,32 +262,51 @@ const Chats = () => {
       <div className="min-w-0 flex-1 bg-white">
         {userSelected ? (
           <div className="flex h-screen flex-col justify-between overflow-hidden">
-            <div className="flex items-center gap-3 border-b border-gray-100 pt-4 pb-2  dark:border-gray-800 lg:px-3">
-              <button
-                // onClick={() => {
-                //   if (avatarSrc) setOpenImage(true);
-                // }}
-                className="cursor-pointer"
-              >
-                <img
-                  // src={avatarSrc}
-                  alt="Profile"
-                  className="lg:mx-0 mx-auto w-8 h-8 rounded-full bg-purple-100"
-                />
-              </button>
-              <div className="hidden lg:block">
-                <p className="text-sm font-medium text-gray-800 overflow-x-auto dark:text-gray-100">
-                  {clickedUser}
-                </p>
-
-                <div className="flex items-center gap-2 text-xs text-gray-500 overflow-x-auto dark:text-gray-400">
-                  <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Online
+            <div className="flex justify-between items-center mx-1 border-b border-gray-100 pt-4 pb-2  dark:border-gray-800 lg:px-3">
+              <div className="flex items-center gap-3">
+                <button
+                  // onClick={() => {
+                  //   if (avatarSrc) setOpenImage(true);
+                  // }}
+                  className="cursor-pointer"
+                >
+                  <img
+                    // src={avatarSrc}
+                    alt="Profile"
+                    className="lg:mx-0 mx-auto w-8 h-8 rounded-full bg-purple-100"
+                  />
+                </button>
+                <div className="hidden lg:block">
+                  <p className="text-sm font-medium text-gray-800 overflow-x-auto dark:text-gray-100">
+                    {clickedUser}
                   </p>
+
+                  <div className="flex items-center gap-2 text-xs text-gray-500 overflow-x-auto dark:text-gray-400">
+                    <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      Online
+                    </p>
+                  </div>
                 </div>
               </div>
               {/* React Loading Skeleton for chat the library donwloaded */}
+
+              <div>
+                <Ellipsis className="text-sm font-medium text-gray-800 dark:text-gray-100 cursor-pointer" />
+              </div>
+            </div>
+
+            <div className="flex column ">
+              {messages.length > 0 ? (
+                messages.map((msg) => (
+                  // if msg type is sender justify-end else justify-start
+                  <>{msg}</>
+                ))
+              ) : (
+                <div>
+                  <p>No messages Yet</p>
+                </div>
+              )}
             </div>
 
             <div className="flex items-center gap-2 border-t border-gray-100 p-2">
@@ -293,7 +318,7 @@ const Chats = () => {
                   setMessage(e.target.value);
                 }}
                 onKeyDown={handleKeyDown}
-                className="border border-gray-200 bg-transparent placeholder:text-gray-400 text-sm w-full rounded-xl duration-300 px-4 py-2 outline-none focus:placeholder:opacity-0 "
+                className="border border-gray-200 bg-transparent placeholder:text-gray-400 text-sm w-full rounded-3xl duration-300 px-4 py-2 outline-none focus:placeholder:opacity-0 "
               />
               <AudioLines className="cursor-pointer text-gray-600 transition-colors hover:text-fuchsia-600 duration-400 " />
               <Send
