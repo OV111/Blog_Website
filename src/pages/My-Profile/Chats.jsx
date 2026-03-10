@@ -5,14 +5,17 @@ import { ChevronDown, SquarePen } from "lucide-react";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { ArrowUpDown } from "lucide-react";
 import { Send, CirclePlus, AudioLines } from "lucide-react";
+import LoadingChatSuspense from "@/components/LoadingChatSuspense";
 
 const Chats = () => {
   const [userSelected, setUserSelected] = useState(null);
   const [filter, setFilter] = useState("");
+  const [isLoadingChats, setIsLoadingChats] = useState(false);
   const [message, setMessage] = useState("");
   const [mutualFollowers, setMutualFollowers] = useState([]);
   const [sortOrder, setSortOrder] = useState("Newest");
   const [isSortOpen, setIsSortOpen] = useState(false);
+
   const clickedUser =
     `${userSelected?.firstName ?? ""} ${userSelected?.lastName ?? ""}`.trim() ||
     "Name Surname";
@@ -25,7 +28,7 @@ const Chats = () => {
     return fullName.includes(filter.trim().toLowerCase());
   });
 
-  // ws implementation
+  // ws implementation //////////////////////////////////////////////
   const [socket, setSocket] = useState(null);
   const senderId = localStorage.getItem("JWT");
   const receiverId = userSelected?._id;
@@ -87,20 +90,26 @@ const Chats = () => {
   };
 
   const fetchUsers = async () => {
-    const request = await fetch(
-      `${API_BASE_URL}/my-profile/chats/mutual-followers`,
-      {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("JWT")}`,
+    setIsLoadingChats(true);
+    try {
+      const request = await fetch(
+        `${API_BASE_URL}/my-profile/chats/mutual-followers`,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("JWT")}`,
+          },
         },
-      },
-    );
-
-    const response = await request.json();
-    // console.log(response);
-    setMutualFollowers(response.mutualFollowers);
+      );
+      const response = await request.json();
+      // console.log(response);
+      setMutualFollowers(response.mutualFollowers);
+      setIsLoadingChats(false);
+    } catch (err) {
+      console.log(err);
+      setMutualFollowers([]);
+    }
   };
 
   useEffect(() => {
@@ -181,30 +190,45 @@ const Chats = () => {
           </div>
         </div>
 
-        <div>
-          {filteredFollowers.length > 0 ? (
+        <div className="mt-1 max-h-[calc(100vh-180px)] overflow-y-auto">
+          {isLoadingChats ? (
+            <p className="flex justify-center items-center px-3 py-6 text-sm text-gray-500 dark:text-gray-400">
+              <LoadingChatSuspense />
+            </p>
+          ) : filteredFollowers.length > 0 ? (
             filteredFollowers.map((user) => (
-              <div
+              <button
                 key={user._id}
+                type="button"
                 onClick={() => setUserSelected(user)}
-                className="flex w-full cursor-pointer items-center gap-3 border-b border-gray-100 px-3 py-3 transition-colors first:border-t hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-900/70"
+                className={`flex w-full items-center gap-3 border-b border-gray-100 px-3 py-3 text-left transition-colors first:border-t dark:border-gray-800 ${
+                  userSelected?._id === user._id
+                    ? "bg-fuchsia-50/70 dark:bg-gray-800/80"
+                    : "hover:bg-gray-50 dark:hover:bg-gray-900/70"
+                }`}
               >
                 <img
                   // src={avatarSrc}
                   alt="Profile"
-                  className="lg:mx-0 mx-auto w-8 h-8 rounded-full bg-purple-100"
+                  className="h-10 w-10 shrink-0 rounded-full bg-purple-100 object-cover"
                 />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-gray-900 dark:text-gray-100">
+                  <p className="truncate text-sm font-semibold text-gray-900 dark:text-gray-100">
                     {user.firstName} {user.lastName}
                   </p>
-                  <p className="text-sm text-gray-400">last messages</p>
+                  <p className="truncate text-xs text-gray-500 dark:text-gray-400">
+                    Last message preview
+                  </p>
                 </div>
-              </div>
+              </button>
             ))
+          ) : mutualFollowers.length > 0 ? (
+            <p className="flex justify-center items-center px-3 py-6 text-sm text-gray-500 dark:text-gray-400">
+              No conversations found
+            </p>
           ) : (
             <p className="flex justify-center items-center px-3 py-6 text-sm text-gray-500 dark:text-gray-400">
-              No Conversation Found
+              No users found
             </p>
           )}
         </div>
@@ -238,6 +262,7 @@ const Chats = () => {
                   </p>
                 </div>
               </div>
+              {/* React Loading Skeleton for chat the library donwloaded */}
             </div>
 
             <div className="flex items-center gap-2 border-t border-gray-100 p-4">

@@ -4,6 +4,7 @@ export const joinRoom = (ws, data) => {
   if (!roomId) {
     ws.send(JSON.stringify({ type: "error", message: "Room ID is missing" }));
   }
+  // if the room is missing create it like ({roomId: Set[user1,user2]})
   if (!rooms.has(roomId)) {
     rooms.set(roomId, new Set());
   }
