@@ -11,6 +11,7 @@ export default function SideBar({ isOpen, onClose }) {
   const location = useLocation();
   const { logout } = useAuthStore();
   const [userInfo, setUserInfo] = useState(null);
+  const [isUserInfoLoading, setIsUserInfoLoading] = useState(true);
   const [openImage, setOpenImage] = useState(false);
   const fullName =
     `${userInfo?.firstName ?? ""} ${userInfo?.lastName ?? ""}`.trim() ||
@@ -43,6 +44,7 @@ export default function SideBar({ isOpen, onClose }) {
   };
 
   const fetchUserInfo = async () => {
+    setIsUserInfoLoading(true);
     try {
       const token = localStorage.getItem("JWT");
       if (!token) {
@@ -71,6 +73,8 @@ export default function SideBar({ isOpen, onClose }) {
       });
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsUserInfoLoading(false);
     }
   };
   useEffect(() => {
@@ -118,21 +122,35 @@ export default function SideBar({ isOpen, onClose }) {
             onClick={() => {
               if (avatarSrc) setOpenImage(true);
             }}
-            className="cursor-pointer"
+            className={isUserInfoLoading ? "cursor-default" : "cursor-pointer"}
+            disabled={isUserInfoLoading}
           >
-            <img
-              src={avatarSrc}
-              alt="Profile"
-              className="lg:mx-0 mx-auto w-8 h-8 rounded-full bg-purple-100"
-            />
+            {isUserInfoLoading ? (
+              <div className="lg:mx-0 mx-auto w-8 h-8 rounded-full bg-gray-200 animate-pulse dark:bg-gray-700" />
+            ) : (
+              <img
+                src={avatarSrc}
+                alt="Profile"
+                className="lg:mx-0 mx-auto w-8 h-8 rounded-full bg-purple-100"
+              />
+            )}
           </button>
           <div className="hidden lg:block">
-            <p className="text-sm font-medium text-gray-800 overflow-x-auto dark:text-gray-100">
-              {fullName}
-            </p>
-            <p className="text-xs text-gray-500 overflow-x-auto dark:text-gray-400">
-              {email}
-            </p>
+            {isUserInfoLoading ? (
+              <div className="space-y-1">
+                <div className="h-4 w-28 rounded bg-gray-200 animate-pulse dark:bg-gray-700" />
+                <div className="h-3 w-36 rounded bg-gray-200 animate-pulse dark:bg-gray-700" />
+              </div>
+            ) : (
+              <>
+                <p className="text-sm font-medium text-gray-800 overflow-x-auto dark:text-gray-100">
+                  {fullName}
+                </p>
+                <p className="text-xs text-gray-500 overflow-x-auto dark:text-gray-400">
+                  {email}
+                </p>
+              </>
+            )}
           </div>
         </div>
         {openImage && (
