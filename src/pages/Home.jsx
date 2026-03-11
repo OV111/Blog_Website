@@ -22,9 +22,9 @@ const Home = () => {
         ></Toaster>
 
         {/* 94 for width*/}
-        <section className="relative z-10 flex flex-col gap-2 sm:gap-8 lg:gap-8 mt-[100px] mb-20 lg:mb-[350px] ml-8 sm:ml-[40px] md:ml-[60px] lg:ml-[80px] max-w-4xl">
+        <section className="relative z-10 flex flex-col gap-2 sm:gap-8 lg:gap-8 mt-[100px] mb-20 lg:mb-[350px] ml-8 sm:ml-[40px] md:ml-[60px] max-w-4xl">
           <div className="max-w-[280px] sm:max-w-[760px] h-20 lg:h-36">
-            <h1 className="ml-2 lg:ml-0 lg:pl-4 font-medium text-purple-800 dark:text-purple-600 text-xl sm:text-5xl lg:text-5xl md:text-6xl lg:text-7xl drop-shadow-[0_6px_24px_rgba(126,34,206,0.15)]">
+            <h1 className="lg:ml-0  font-medium text-purple-800 dark:text-purple-600 text-xl sm:text-5xl lg:text-5xl md:text-6xl lg:text-7xl drop-shadow-[0_6px_24px_rgba(126,34,206,0.15)]">
               <TextType
                 text={[
                   "Welcome to Developers Platform.",
