@@ -1,10 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import Sidebar from "./components/SideBar";
 import { ChevronDown, SquarePen } from "lucide-react";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-import { ArrowUpDown } from "lucide-react";
-import { Send, CirclePlus, AudioLines, Ellipsis } from "lucide-react";
+import {
+  ArrowUpDown,
+  Send,
+  CirclePlus,
+  AudioLines,
+  Ellipsis,
+} from "lucide-react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import LoadingChatSuspense from "@/components/LoadingChatSuspense";
 
 const getUserIdFromJWT = (token) => {
@@ -28,8 +35,9 @@ const Chats = () => {
   const [userSelected, setUserSelected] = useState(null);
   const [filter, setFilter] = useState("");
   const [isLoadingChats, setIsLoadingChats] = useState(false);
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [draftMessage, setDraftMessage] = useState("");
+  const [chatMessages, setChatMessages] = useState([]);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
   const [mutualFollowers, setMutualFollowers] = useState([]);
   const [sortOrder, setSortOrder] = useState("Newest");
   const [isSortOpen, setIsSortOpen] = useState(false);
@@ -63,11 +71,12 @@ const Chats = () => {
       setSocket(ws);
     };
     ws.onmessage = (event) => {
-      const payload = JSON.parse(event.data)
-      console.log(payload)
-      console.log("WebSocket message:", JSON.parse(event.data));
+      const payload = JSON.parse(event.data);
       if (payload.type === "sended_message") {
-        setMessages(payload.message);
+        setChatMessages((prev) => [...prev, payload.message]);
+      } else if (payload.type === "message_history") {
+        setChatMessages(payload.messageHistory || []);
+        setIsLoadingHistory(false);
       }
     };
 
@@ -82,6 +91,8 @@ const Chats = () => {
   useEffect(() => {
     if (!socket || !userSelected || !roomId) return;
     if (socket.readyState !== WebSocket.OPEN) return;
+    setIsLoadingHistory(true);
+    setChatMessages([]);
 
     socket.send(
       JSON.stringify({
@@ -95,18 +106,17 @@ const Chats = () => {
   }, [socket, userSelected, roomId, senderId, receiverId]);
 
   const handleSendMessage = () => {
-    if (!message.trim()) return;
+    if (!draftMessage.trim()) return;
     socket.send(
       JSON.stringify({
         type: "send_message",
         roomId,
         senderId,
         receiverId,
-        text: message,
+        text: draftMessage,
       }),
     );
-    ///
-    setMessage("");
+    setDraftMessage("");
   };
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -115,7 +125,7 @@ const Chats = () => {
     }
   };
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     setIsLoadingChats(true);
     try {
       const request = await fetch(
@@ -131,16 +141,17 @@ const Chats = () => {
       const response = await request.json();
       // console.log(response);
       setMutualFollowers(response.mutualFollowers);
-      setIsLoadingChats(false);
     } catch (err) {
       console.log(err);
       setMutualFollowers([]);
+    } finally {
+      setIsLoadingChats(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [fetchUsers]);
 
   return (
     <div className="flex min-h-screen">
@@ -149,8 +160,8 @@ const Chats = () => {
         <div className="flex items-center justify-between px-3">
           <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
             Messages
-            {/* Add new chat */}
           </h1>
+            {/* Add new chat */}
           <SquarePen
             size={18}
             className="cursor-pointer text-gray-400 transition-colors hover:text-gray-600"
@@ -262,7 +273,7 @@ const Chats = () => {
       <div className="min-w-0 flex-1 bg-white">
         {userSelected ? (
           <div className="flex h-screen flex-col justify-between overflow-hidden">
-            <div className="flex justify-between items-center mx-1 border-b border-gray-100 pt-4 pb-2  dark:border-gray-800 lg:px-3">
+            <div className="flex justify-between items-center px-10 border-b border-gray-100 pt-4 pb-2  dark:border-gray-800 lg:px-3">
               <div className="flex items-center gap-3">
                 <button
                   // onClick={() => {
@@ -296,33 +307,98 @@ const Chats = () => {
               </div>
             </div>
 
-            <div className="flex column ">
-              {messages.length > 0 ? (
-                messages.map((msg) => (
-                  // if msg type is sender justify-end else justify-start
-                  <>{msg}</>
-                ))
-              ) : (
-                <div>
-                  <p>No messages Yet</p>
-                </div>
-              )}
+            <div className="grid flex-1 items-end overflow-y-auto p-4 bg-zinc-300/10">
+              <div className="flex max-w-4xl flex-col gap-2">
+                {isLoadingHistory ? (
+                  <div className="space-y-3">
+                    {[...Array(12)].map((_, idx) => (
+                      <div
+                        key={idx}
+                        className={`flex ${idx % 2 === 0 ? "justify-start" : "justify-end"}`}
+                      >
+                        <Skeleton
+                          width={idx % 2 === 0 ? 170 : 210}
+                          height={34}
+                          borderRadius={18}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                ) : chatMessages.length > 0 ? (
+                  chatMessages.map((msg) => {
+                    const isMine = String(msg.senderId) === String(senderId);
+                    return (
+                      <div
+                        key={msg._id}
+                        className={`flex ${isMine ? "justify-end" : "justify-start"}`}
+                      >
+                        <div
+                          className={`w-auto max-w-[75%] ${isMine ? "items-end" : "items-start"} flex flex-col`}
+                        >
+                          <p
+                            className={`inline-block w-fit  max-w-full word-break text-gray-800 rounded-3xl px-3 py-2 text-sm ${
+                              isMine
+                                ? "rounded-br-sm bg-fuchsia-500 text-gray-200"
+                                : "rounded-bl-sm bg-gray-100 "
+                            }`}
+                          >
+                            {msg.text}
+                          </p>
+                          <span className="mt-1 px-2 text-[10px] text-gray-400">
+                            {msg.createdAt
+                              ? new Date(msg.createdAt).toLocaleTimeString([], {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })
+                              : ""}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="flex h-full items-center justify-center py-16">
+                    <div className="rounded-3xl bg-transparent px-6 py-8 text-center">
+                      <img
+                        src="../../src/assets/StartChat.svg"
+                        alt="no messages"
+                      />
+                      <p className="text-sm font-medium text-gray-700">
+                        No messages yet
+                      </p>
+                      <p className="mt-1 text-xs text-gray-400">
+                        Start the conversation with your first message.
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
-            <div className="flex items-center gap-2 border-t border-gray-100 p-2">
-              <CirclePlus className="cursor-pointer text-gray-600 transition-colors hover:text-fuchsia-600" />
+            <div className="flex mr-4  items-center gap-2 border-t border-gray-100 p-2">
+              <CirclePlus
+                size={30}
+                className="text-xl cursor-pointer text-gray-600 transition-colors hover:text-fuchsia-600"
+              />
               <input
                 type="text"
+                value={draftMessage}
                 placeholder="Write your message..."
                 onChange={(e) => {
-                  setMessage(e.target.value);
+                  setDraftMessage(e.target.value);
                 }}
                 onKeyDown={handleKeyDown}
                 className="border border-gray-200 bg-transparent placeholder:text-gray-400 text-sm w-full rounded-3xl duration-300 px-4 py-2 outline-none focus:placeholder:opacity-0 "
               />
-              <AudioLines className="cursor-pointer text-gray-600 transition-colors hover:text-fuchsia-600 duration-400 " />
+              <AudioLines
+                size={34}
+                className="cursor-pointer mr-2 text-gray-600 transition-colors hover:text-fuchsia-600 duration-400 "
+              />
               <Send
-                onClick={handleSendMessage}
+                onClick={() => {
+                  handleSendMessage();
+                }}
+                size={34}
                 className="cursor-pointer text-fuchsia-600 transition-colors hover:text-fuchsia-700 duration-400"
               />
             </div>
@@ -330,7 +406,10 @@ const Chats = () => {
         ) : (
           <div className="m-4 flex items-center gap-3 pt-6">
             <div className="grid text-center justify-center items-center mx-auto text-gray-500">
-              <img src="../../src/assets/Voice chat-amico.svg" alt="" />
+              <img
+                src="../../src/assets/Voice chat-amico.svg"
+                alt="select a chat"
+              />
               <h2 className="text-xl font-semibold text-gray-800 pt-2">
                 Select a chat
               </h2>

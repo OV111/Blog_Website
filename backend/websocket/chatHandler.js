@@ -27,8 +27,8 @@ export const joinRoom = async (ws, data) => {
       await roomCollection.insertOne({
         _id: roomId.toString(),
         members: [receiverId, senderId],
-        type: "direct", // for future will be added to group,channel
-        createdBy: "", // this also about channel/group-owner,creator
+        type: "direct", // for future will be added to group | channel
+        createdBy: "", // this also about channel/group-owner | creator
         createdAt: new Date(),
         lastMessage: {
           text: "Last Message to show", // changable $set
@@ -54,6 +54,8 @@ export const joinRoom = async (ws, data) => {
   }
   // WebSocket memory room
   rooms.get(roomId).add(ws);
+  const messageHistory = await loadMessages(roomId);
+  ws.send(JSON.stringify({ type: "message_history", roomId, messageHistory }));
   ws.send(JSON.stringify({ type: "joined_room", roomId }));
 };
 
@@ -99,7 +101,7 @@ export const sendMessage = async (ws, data) => {
     // Broadcast to all clients currently joined to this room.
     const room = rooms.get(roomId);
     room.forEach((clientSocket) => {
-      if (clientSocket.readyState === 1) {
+      if (clientSocket.readyState === WebSocket.OPEN) {
         clientSocket.send(
           JSON.stringify({
             type: "sended_message",
@@ -118,4 +120,19 @@ export const sendMessage = async (ws, data) => {
     );
     return;
   }
+};
+
+const loadMessages = async (roomId, limitNum = 50, cursor = null) => {
+  let db = await connectDB();
+  const messagesCollection = db.collection("messages");
+  if (!roomId.trim()) {
+    console.error("Invalid or missing roomId");
+  }
+  const roomMessages = await messagesCollection
+    .find({ roomId: roomId.toString() })
+    .sort({ createdAt: -1, _id: -1 })
+    .limit(limitNum)
+    .toArray();
+  console.log(roomMessages);
+  return roomMessages.reverse(); // Initial logic
 };
