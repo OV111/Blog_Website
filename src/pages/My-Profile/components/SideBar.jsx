@@ -1,13 +1,14 @@
 import { sidebarArr } from "../../../../constants/Sidebars.jsx";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "../../../context/useAuthStore";
-import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import Skeleton from "react-loading-skeleton";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { LogOut } from "lucide-react";
 
 export default function SideBar({ isOpen, onClose }) {
+  const isDarkMode = localStorage.getItem("theme") === "dark";
   const navigate = useNavigate();
   const location = useLocation();
   const { logout } = useAuthStore();
@@ -28,7 +29,6 @@ export default function SideBar({ isOpen, onClose }) {
         credentials: "include", // sending cookie
       });
       let response = await request.json();
-      // console.log(response)
       if (request.ok) {
         localStorage.removeItem("JWT");
         toast.success(response.message, { duration: 1500 });
@@ -67,7 +67,6 @@ export default function SideBar({ isOpen, onClose }) {
         }
       }
       const response = await request.json();
-      // console.log(response);
       setUserInfo({
         ...(response.userWithoutPassword ?? {}),
         profileImage: response?.stats?.profileImage ?? "",
@@ -139,8 +138,20 @@ export default function SideBar({ isOpen, onClose }) {
           <div className="hidden lg:block">
             {isUserInfoLoading ? (
               <div className="space-y-1">
-                <div className="h-4 w-28 rounded bg-gray-200 animate-pulse dark:bg-gray-700" />
-                <div className="h-3 w-36 rounded bg-gray-200 animate-pulse dark:bg-gray-700" />
+                <Skeleton
+                  width={112}
+                  height={14}
+                  borderRadius={6}
+                  baseColor={isDarkMode ? "#1f2937" : "#ebebeb"}
+                  highlightColor={isDarkMode ? "#374151" : "#f5f5f5"}
+                />
+                <Skeleton
+                  width={144}
+                  height={12}
+                  borderRadius={6}
+                  baseColor={isDarkMode ? "#1f2937" : "#ebebeb"}
+                  highlightColor={isDarkMode ? "#374151" : "#f5f5f5"}
+                />
               </div>
             ) : (
               <>
@@ -172,8 +183,11 @@ export default function SideBar({ isOpen, onClose }) {
 
         <nav className="flex min-h-0 flex-1 flex-col overflow-y-auto px-0 py-0 lg:px-2 lg:py-2">
           {sidebarArr.map((group) => (
-            <div key={group.section} className="grid text-lg py-0 lg:pt-2">
-              <p className="hidden px-2 py-0 text-[9px] uppercase tracking-wider text-gray-400 font-semibold dark:text-gray-500 lg:block lg:py-0.5">
+            <div
+              key={group.section}
+              className="grid text-lg py-0 lg:pt-2 gap-1"
+            >
+              <p className="hidden px-2 py-0 text-[9px] uppercase tracking-wider text-gray-400 font-semibold dark:text-gray-400 lg:block lg:py-0.5">
                 {group.section}
               </p>
 
@@ -188,8 +202,10 @@ export default function SideBar({ isOpen, onClose }) {
                         location.pathname,
                       );
                       const active = isActive || isAliasActive;
-                      return `flex w-10 items-center justify-center gap-0 rounded-none py-0 px-0 text-gray-700 transition-colors hover:bg-purple-50 lg:mx-auto lg:w-full lg:justify-start lg:gap-2 lg:rounded-lg lg:py-2 lg:px-3 ${
-                        active ? "lg:bg-purple-50 text-purple-600" : ""
+                      return `flex w-10 items-center justify-center gap-0 rounded-none py-0 px-0 text-gray-700 transition-colors hover:bg-purple-100 dark:text-gray-100 dark:hover:bg-fuchsia-950/30  lg:mx-auto lg:w-full lg:justify-start lg:gap-2 lg:rounded-lg lg:py-2 lg:px-3 ${
+                        active
+                          ? "lg:bg-purple-50 text-purple-600 dark:bg-fuchsia-950/30 dark:text-purple-600 "
+                          : ""
                       }`;
                     })()
                   }
@@ -206,7 +222,7 @@ export default function SideBar({ isOpen, onClose }) {
           onClick={() => {
             handleLogOut();
           }}
-          className="group mt-auto flex cursor-pointer items-center justify-center border-t border-gray-100 py-3.5 text-gray-700 transition-colors hover:bg-red-50 hover:text-red-600 dark:border-gray-800 dark:text-gray-300 dark:hover:bg-red-950/40 dark:hover:text-red-400 lg:justify-between lg:px-4"
+          className="group mt-auto flex cursor-pointer items-center justify-center border-t border-gray-100 py-3.5 text-gray-700 transition-colors hover:bg-red-50 hover:text-red-600 dark:border-gray-800 dark:text-gray-100 dark:hover:bg-red-950/40 dark:hover:text-red-400 lg:justify-between lg:px-4"
         >
           <p className="hidden text-[18px] font-medium lg:block">Logout</p>
           <LogOut />
