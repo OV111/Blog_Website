@@ -133,6 +133,5 @@ const loadMessages = async (roomId, limitNum = 50, cursor = null) => {
     .sort({ createdAt: -1, _id: -1 })
     .limit(limitNum)
     .toArray();
-  console.log(roomMessages);
   return roomMessages.reverse(); // Initial logic
 };

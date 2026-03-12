@@ -32,6 +32,7 @@ const getUserIdFromJWT = (token) => {
 };
 
 const Chats = () => {
+  const [userStats, setUserStats] = useState(null);
   const [userSelected, setUserSelected] = useState(null);
   const [filter, setFilter] = useState("");
   const [isLoadingChats, setIsLoadingChats] = useState(false);
@@ -118,11 +119,44 @@ const Chats = () => {
     );
     setDraftMessage("");
   };
+  
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
       handleSendMessage();
     }
+  };
+
+  function formatTimeAgo(dateString) {
+    if (!dateString) return "recently";
+    const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) return "recently";
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
+    const intervals = {
+      year: 31536000,
+      month: 2592000,
+      day: 86400,
+      hour: 3600,
+      minute: 60,
+      second: 1,
+    };
+    const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+    for (const unit in intervals) {
+      const value = Math.floor(seconds / intervals[unit]);
+      if (value >= 1) {
+        return rtf.format(-value, unit);
+      }
+    }
+    return "just now";
+  }
+
+  const isOnlineByLastActive = (dateString) => {
+    if (!dateString) return false;
+    const lastActive = new Date(dateString);
+    if (Number.isNaN(lastActive.getTime())) return false;
+    const diff = Date.now() - lastActive.getTime();
+    return diff >= 0 && diff < 60 * 1000;
   };
 
   const fetchUsers = useCallback(async () => {
@@ -150,6 +184,31 @@ const Chats = () => {
   }, []);
 
   useEffect(() => {
+    if (!receiverId) return;
+    const fetchReceiverStats = async () => {
+      try {
+        const request = await fetch(
+          `${API_BASE_URL}/my-profile/chats/${receiverId}/stats`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("JWT")}`,
+            },
+          },
+        );
+
+        const response = await request.json();
+        setUserStats(response.stats);
+        console.log(response.stats);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchReceiverStats();
+  }, [receiverId]);
+
+  useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
 
@@ -161,7 +220,7 @@ const Chats = () => {
           <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
             Messages
           </h1>
-            {/* Add new chat */}
+          {/* Add new chat */}
           <SquarePen
             size={18}
             className="cursor-pointer text-gray-400 transition-colors hover:text-gray-600"
@@ -275,28 +334,29 @@ const Chats = () => {
           <div className="flex h-screen flex-col justify-between overflow-hidden">
             <div className="flex justify-between items-center px-10 border-b border-gray-100 pt-4 pb-2  dark:border-gray-800 lg:px-3">
               <div className="flex items-center gap-3">
-                <button
-                  // onClick={() => {
-                  //   if (avatarSrc) setOpenImage(true);
-                  // }}
-                  className="cursor-pointer"
-                >
-                  <img
-                    // src={avatarSrc}
-                    alt="Profile"
-                    className="lg:mx-0 mx-auto w-8 h-8 rounded-full bg-purple-100"
-                  />
-                </button>
+                <img
+                  src={userStats?.profileImage}
+                  alt="Profile"
+                  className="lg:mx-0 mx-auto w-8 h-8 rounded-full bg-purple-100"
+                />
                 <div className="hidden lg:block">
                   <p className="text-sm font-medium text-gray-800 overflow-x-auto dark:text-gray-100">
                     {clickedUser}
                   </p>
 
                   <div className="flex items-center gap-2 text-xs text-gray-500 overflow-x-auto dark:text-gray-400">
-                    <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      Online
-                    </p>
+                    {isOnlineByLastActive(userStats?.lastActive) ? (
+                      <>
+                        <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          Online
+                        </p>
+                      </>
+                    ) : (
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {formatTimeAgo(userStats?.lastActive)}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -336,10 +396,10 @@ const Chats = () => {
                           className={`w-auto max-w-[75%] ${isMine ? "items-end" : "items-start"} flex flex-col`}
                         >
                           <p
-                            className={`inline-block w-fit  max-w-full word-break text-gray-800 rounded-3xl px-3 py-2 text-sm ${
+                            className={`inline-block w-fit  max-w-full word-break  rounded-3xl px-3 py-2 text-sm ${
                               isMine
-                                ? "rounded-br-sm bg-fuchsia-500 text-gray-200"
-                                : "rounded-bl-sm bg-gray-100 "
+                                ? "rounded-br-sm bg-fuchsia-500 text-gray-100"
+                                : "rounded-bl-sm bg-gray-100 text-gray-800"
                             }`}
                           >
                             {msg.text}

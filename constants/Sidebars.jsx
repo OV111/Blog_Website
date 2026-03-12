@@ -7,6 +7,8 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import GroupOffOutlinedIcon from "@mui/icons-material/GroupOffOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LinkIcon from "@mui/icons-material/Link";
+
+// Maybe change to lucide-icons
 export const sidebarArr = [
   {
     section: "General",

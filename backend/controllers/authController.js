@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import connectDB from "../config/db.js";
 import { createToken } from "../utils/jwtToken.js";
+
 const sanitizeUsername = (value = "") =>
   value
     .toLowerCase()
@@ -21,6 +22,25 @@ const verifyPassword = async (password, hashedPassword) => {
   const isMatch = await bcrypt.compare(password, hashedPassword);
   return isMatch;
 };
+
+const buildDefaultUserStats = (userId) => ({
+  userId,
+  followersCount: 0,
+  followingsCount: 0,
+  postsCount: 0,
+  bio: "",
+  githubLink: "",
+  linkedinLink: "",
+  twitterLink: "",
+  location: "",
+  profileImage: "",
+  bannerImage: "",
+  lastActive: new Date(),
+  // likesReceived: 0,
+  // commentsCount: 0,
+  // badges: [],
+  // devs-coins: null || 0,
+});
 
 const signUp = async (data) => {
   try {
@@ -58,21 +78,7 @@ const signUp = async (data) => {
       // confirmPassword,
     });
     // here also insert userStats (with default starting values )
-    await usersStats.insertOne({
-      userId: result.insertedId,
-      followersCount: 0,
-      followingsCount: 0,
-      postsCount: 0,
-      bio: "",
-      githubLink: "",
-      linkedinLink: "",
-      twitterLink: "",
-      lastActive: new Date(),
-      // likesReceived: 0,
-      // commentsCount: 0,
-      // badges: [],
-      // devs-coins: null || 0,
-    });
+    await usersStats.insertOne(buildDefaultUserStats(result.insertedId));
 
     const token = createToken({ id: result.insertedId });
 
@@ -91,6 +97,7 @@ const login = async (data) => {
   let db = await connectDB();
   const { email, password } = data;
   const users = db.collection("users");
+  const usersStats = db.collection("usersStats");
   const user = await users.findOne({ email });
   // const decoded = verifyToken(localStorage.getItem("JWT"))
   // if !decoded return 403 forbidden
@@ -108,6 +115,16 @@ const login = async (data) => {
       message: "Password is incorrect",
     };
   }
+  const defaultStatsOnInsert = buildDefaultUserStats(user._id);
+  delete defaultStatsOnInsert.lastActive;
+  await usersStats.updateOne(
+    { userId: user._id },
+    {
+      $setOnInsert: defaultStatsOnInsert,
+      $set: { lastActive: new Date() },
+    },
+    { upsert: true },
+  );
   // localStorage.setItem("user", user);
   const token = createToken({ id: user._id });
   return {

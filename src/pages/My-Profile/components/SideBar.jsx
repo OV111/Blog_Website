@@ -5,6 +5,7 @@ import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { LogOut } from "lucide-react";
 
 export default function SideBar({ isOpen, onClose }) {
   const navigate = useNavigate();
@@ -207,12 +208,12 @@ export default function SideBar({ isOpen, onClose }) {
           }}
           className="group mt-auto flex cursor-pointer items-center justify-center border-t border-gray-100 py-3.5 text-gray-700 transition-colors hover:bg-red-50 hover:text-red-600 dark:border-gray-800 dark:text-gray-300 dark:hover:bg-red-950/40 dark:hover:text-red-400 lg:justify-between lg:px-4"
         >
-          <p className="hidden text-sm font-medium lg:block">Logout</p>
-          <LogoutRoundedIcon
-            fontSize="small"
+          <p className="hidden text-[18px] font-medium lg:block">Logout</p>
+          <LogOut />
+          {/* fontSize="small"
             className="mx-auto transition-colors group-hover:text-red-600 lg:mx-0"
             sx={{ color: "currentColor" }}
-          />
+          /> */}
         </div>
       </aside>
     </>

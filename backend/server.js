@@ -392,7 +392,54 @@ const StartServer = async () => {
         req.pipe(bb);
       }
 
-      if (
+      const chatStatsMatch = new URL(
+        req.url,
+        `http://${req.headers.host}`,
+      ).pathname.match(/^\/my-profile\/chats\/([^/]+)\/stats$/);
+      if (req.method === "GET" && chatStatsMatch) {
+        try {
+          const auth = getAuthToken(req.headers.authorization);
+          if (!auth.ok) {
+            res.writeHead(auth.status, { "content-type": "application/json" });
+            return res.end(JSON.stringify({ message: auth.message }));
+          }
+          const receiverId = decodeURIComponent(chatStatsMatch[1] || "");
+          if (!receiverId) {
+            res.writeHead(400, { "content-type": "application/json" });
+            return res.end(
+              JSON.stringify({
+                message: "Bad Request, missing receiver id",
+                code: 400,
+              }),
+            );
+          }
+          if (!ObjectId.isValid(receiverId)) {
+            res.writeHead(400, { "content-type": "application/json" });
+            return res.end(
+              JSON.stringify({ message: "Bad Request, invalid receiver id" }),
+            );
+          }
+          const usersStats = db.collection("usersStats");
+
+          const stats = await usersStats.findOne({
+            userId: new ObjectId(receiverId),
+          });
+          res.writeHead(200, { "content-type": "application/json" });
+          return res.end(
+            JSON.stringify({ message: "Success", code: 200, stats }),
+          );
+        } catch (err) {
+          console.log(err);
+          res.writeHead(500, { "content-type": "application/json" });
+          return res.end(
+            JSON.stringify({
+              message: "Server Error",
+              code: 500,
+              error: err.message,
+            }),
+          );
+        }
+      } else if (
         req.method === "GET" &&
         req.url.startsWith("/my-profile/chats/mutual-followers")
       ) {
