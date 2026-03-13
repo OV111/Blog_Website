@@ -1,14 +1,16 @@
 import { sidebarArr } from "../../../../constants/Sidebars.jsx";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import useAuthStore from "../../../context/useAuthStore";
+import useAuthStore from "../../../context/useAuthStore.js";
 import Skeleton from "react-loading-skeleton";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import useThemeStore from "../../../context/useThemeStore.js";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { LogOut } from "lucide-react";
 
 export default function SideBar({ isOpen, onClose }) {
-  const isDarkMode = localStorage.getItem("theme") === "dark";
+  const { theme } = useThemeStore();
+  const isDarkMode = theme === "dark";
   const navigate = useNavigate();
   const location = useLocation();
   const { logout } = useAuthStore();
@@ -158,7 +160,7 @@ export default function SideBar({ isOpen, onClose }) {
                 <p className="truncate text-sm font-medium text-gray-800 overflow-x-auto dark:text-gray-100">
                   {fullName}
                 </p>
-                <p className="truncate text-xs text-gray-500 overflow-x-auto dark:text-gray-400">
+                <p className="truncate text-xs font-medium text-gray-500 overflow-x-auto dark:text-gray-400">
                   {email}
                 </p>
               </>

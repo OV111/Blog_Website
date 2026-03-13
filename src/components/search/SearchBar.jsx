@@ -19,7 +19,6 @@ export default function SearchBar({
     >
       <div className="relative flex w-full items-center gap-2 rounded-2xl border border-white/10 bg-white/10 px-3 py-1 text-white backdrop-blur">
         <SearchIcon className="text-white/75" />
-
         <input
           type="search"
           value={value}

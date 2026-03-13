@@ -4,6 +4,7 @@ import { TextField, FormLabel, Chip } from "@mui/material";
 import SaveAsOutlinedIcon from "@mui/icons-material/SaveAsOutlined";
 import { Toaster, toast } from "react-hot-toast";
 import SideBar from "./components/SideBar";
+import useThemeStore from "../../context/useThemeStore";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -33,6 +34,8 @@ let category = [
 ];
 
 export default function AddBlog() {
+  const { theme } = useThemeStore();
+  const isDarkMode = theme === "dark";
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
@@ -92,50 +95,69 @@ export default function AddBlog() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
       <SideBar />
       <Toaster position="top-center" />
 
-      <main className="flex-1 max-w-5xl m-8 w-full">
-        {/* Header */}
-        <header className="lg:flex justify-between grid items-start mb-10">
+      <main className="m-8 w-full max-w-5xl flex-1">
+        <header className="mb-10 grid items-start justify-between lg:flex">
           <div>
-            <h1 className="text-xl lg:text-3xl font-bold">Write a new blog</h1>
-            <p className="text-base lg:text-xl text-gray-600 mt-1">
+            <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100 lg:text-3xl">
+              Write a new blog
+            </h1>
+            <p className="mt-1 text-base text-gray-600 dark:text-gray-300 lg:text-xl">
               Share knowledge with the developer community
             </p>
           </div>
 
-          <div className="flex gap-3 ">
+          <div className="flex gap-3">
             <button
               onClick={() => handleSubmit("draft")}
               disabled={isSubmitting}
-              className="flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium hover:bg-gray-100"
+              className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-800 transition-colors hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-800"
             >
               <SaveAsOutlinedIcon fontSize="small" /> Save draft
             </button>
             <button
               onClick={() => handleSubmit("published")}
               disabled={isSubmitting}
-              className="flex items-center gap-2 rounded-lg bg-fuchsia-600 px-4 py-2 text-sm font-semibold text-white hover:bg-fuchsia-700"
+              className="flex items-center gap-2 rounded-lg bg-fuchsia-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-fuchsia-700 dark:bg-fuchsia-500 dark:hover:bg-fuchsia-600"
             >
-              <Send className="w-4 h-4" /> Publish
+              <Send className="h-4 w-4" /> Publish
             </button>
           </div>
         </header>
 
-        {/* Form */}
-        <section className="grid space-y-6 gap-5">
+        <section className="grid gap-5 space-y-6">
           <TextField
             label="Title"
             required
             value={title}
-            className="border border-gray-300 rounded-lg outline-none w-100 lg:max-w-100 text-base"
+            className="w-100 rounded-lg border border-gray-300 text-base outline-none lg:max-w-100"
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter a compelling title for your post..."
             fullWidth
             size="small"
             sx={{
+              "& .MuiInputLabel-root": {
+                color: isDarkMode ? "#9ca3af" : "#6b7280",
+              },
+              "& .MuiInputLabel-root.Mui-focused": {
+                color: isDarkMode ? "#d1d5db" : "#374151",
+              },
+              "& .MuiOutlinedInput-root": {
+                color: isDarkMode ? "#f3f4f6" : "#111827",
+                backgroundColor: isDarkMode ? "#111827" : "#ffffff",
+                "& fieldset": {
+                  borderColor: isDarkMode ? "#374151" : "#d1d5db",
+                },
+                "&:hover fieldset": {
+                  borderColor: isDarkMode ? "#4b5563" : "#9ca3af",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#6b7280",
+                },
+              },
               "& .MuiInputBase-root": { height: 40 },
               "& .MuiInputBase-input": {
                 padding: "2px 12px",
@@ -151,6 +173,28 @@ export default function AddBlog() {
             placeholder="Write a brief summary that will appear in blog listings..."
             multiline
             sx={{
+              "& .MuiInputLabel-root": {
+                color: isDarkMode ? "#9ca3af" : "#6b7280",
+              },
+              "& .MuiInputLabel-root.Mui-focused": {
+                color: isDarkMode ? "#d1d5db" : "#374151",
+              },
+              "& .MuiOutlinedInput-root": {
+                color: isDarkMode ? "#f3f4f6" : "#111827",
+                backgroundColor: isDarkMode ? "#111827" : "#ffffff",
+                "& fieldset": {
+                  borderColor: isDarkMode ? "#374151" : "#d1d5db",
+                },
+                "&:hover fieldset": {
+                  borderColor: isDarkMode ? "#4b5563" : "#9ca3af",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#6b7280",
+                },
+              },
+              "& .MuiFormHelperText-root": {
+                color: isDarkMode ? "#9ca3af" : "#6b7280",
+              },
               "& .MuiInputBase-root": { height: 90 },
               "& .MuiInputBase-input": {
                 padding: "4px 8px",
@@ -162,8 +206,8 @@ export default function AddBlog() {
             helperText={`${description.length}/100 characters recommended`}
           />
           <div>
-            <div className="flex justify-between  text-sm text-gray-500 mb-1">
-              <span className="">Content (Markdown supported)</span>
+            <div className="mb-1 flex justify-between text-sm text-gray-500 dark:text-gray-400">
+              <span>Content (Markdown supported)</span>
               <span>{readTime} min read</span>
             </div>
             <TextField
@@ -173,25 +217,49 @@ export default function AddBlog() {
               minRows={10}
               fullWidth
               placeholder="Write your post content here…"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  color: isDarkMode ? "#f3f4f6" : "#111827",
+                  backgroundColor: isDarkMode ? "#111827" : "#ffffff",
+                  "& fieldset": {
+                    borderColor: isDarkMode ? "#374151" : "#d1d5db",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: isDarkMode ? "#4b5563" : "#9ca3af",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#6b7280",
+                  },
+                },
+              }}
             />
           </div>
 
-          {/* Tags  & Categories */}
           <div>
-            <FormLabel>Tags:</FormLabel>
-            <div className="flex flex-wrap gap-2 mt-2">
+            <FormLabel sx={{ color: isDarkMode ? "#d1d5db" : "#374151" }}>
+              Tags:
+            </FormLabel>
+            <div className="mt-2 flex flex-wrap gap-2">
               {tags.map((tag) => (
-                <Chip key={tag} label={tag} onDelete={() => removeTag(tag)} />
+                <Chip
+                  key={tag}
+                  label={tag}
+                  onDelete={() => removeTag(tag)}
+                  sx={{
+                    color: isDarkMode ? "#e5e7eb" : "#374151",
+                    backgroundColor: isDarkMode ? "#1f2937" : "#f3f4f6",
+                  }}
+                />
               ))}
             </div>
             {suggestedTags.length > 0 && (
-              <div className="mt-3 text-sm text-gray-500">
+              <div className="mt-3 text-sm text-gray-500 dark:text-gray-400">
                 Suggested:
                 {suggestedTags.map((t) => (
                   <button
                     key={t}
                     onClick={() => addTag(t)}
-                    className="ml-2 text-fuchsia-600 hover:underline"
+                    className="ml-2 text-fuchsia-600 hover:underline dark:text-fuchsia-400"
                   >
                     #{t}
                   </button>
@@ -201,7 +269,7 @@ export default function AddBlog() {
           </div>
 
           <div>
-            <select className="ml-2 border border-gray-300 rounded-lg px-2 py-1 text-sm">
+            <select className="ml-2 rounded-lg border border-gray-300 bg-white px-2 py-1 text-sm text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100">
               <option value="">Select category</option>
               {category.map((cat) => (
                 <option key={cat} value={cat}>
@@ -210,11 +278,12 @@ export default function AddBlog() {
               ))}
             </select>
           </div>
-          {/* Cover Image */}
+
           <div>
-            <FormLabel>Cover image</FormLabel>
-            {/* this need to be sized for posts */}
-            <label className="mt-2 block h-40 cursor-pointer rounded-lg border border-gray-300 border-dashed bg-white p-6 text-center transition duration-300 hover:border-purple-500">
+            <FormLabel sx={{ color: isDarkMode ? "#d1d5db" : "#374151" }}>
+              Cover image
+            </FormLabel>
+            <label className="mt-2 block h-40 cursor-pointer rounded-lg border border-dashed border-gray-300 bg-white p-6 text-center transition duration-300 hover:border-purple-500 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-purple-400">
               {preview ? (
                 <div className="relative">
                   <img
@@ -228,16 +297,18 @@ export default function AddBlog() {
                       setCover(null);
                       setPreview(null);
                     }}
-                    className="absolute top-2 right-2 rounded-full bg-black/60 p-1 text-white"
+                    className="absolute right-2 top-2 rounded-full bg-black/60 p-1 text-white"
                   >
                     <X className="h-4 w-4" />
                   </button>
                 </div>
               ) : (
-                <div className="flex flex-col items-center gap-2 text-gray-700">
+                <div className="flex flex-col items-center gap-2 text-gray-700 dark:text-gray-300">
                   <ImagePlus className="h-8 w-8" />
                   <p>Click to upload cover image</p>
-                  <p className="text-xs">PNG / JPG • up to 5MB</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    PNG / JPG • up to 10MB
+                  </p>
                 </div>
               )}
               <input

@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AudioLines, CirclePlus, Ellipsis, Send } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
-function formatTimeAgo(dateString) {
+import useThemeStore from "../../../context/useThemeStore";
+export function formatTimeAgo(dateString) {
   if (!dateString) return "recently";
   const date = new Date(dateString);
   if (Number.isNaN(date.getTime())) return "recently";
@@ -46,8 +47,11 @@ const ChatInterface = ({
   handleKeyDown,
   handleSendMessage,
 }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const messagesContainerRef = useRef(null);
-  const isDarkMode = localStorage.getItem("theme") === "dark";
+  const menuRef = useRef(null);
+  const { theme } = useThemeStore();
+  const isDarkMode = theme === "dark";
   const skeletonBaseColor = isDarkMode ? "#1f2937" : "#ebebeb";
   const skeletonHighlightColor = isDarkMode ? "#374151" : "#f5f5f5";
 
@@ -61,11 +65,34 @@ const ChatInterface = ({
     });
   }, [chatMessages, userSelected, isLoadingHistory]);
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+    const handleEsc = (e) => {
+      if (e.key === "Escape") {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEsc);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEsc);
+    };
+  }, []);
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [userSelected?._id]);
+
   return (
     <div className="min-w-0 flex-1 bg-white dark:bg-gray-950">
       {userSelected ? (
         <div className="flex h-screen flex-col justify-between overflow-hidden">
-          <div className="flex items-center justify-between border-b border-gray-100 bg-white px-10 pt-4 pb-2 dark:border-gray-800 dark:bg-gray-900 lg:px-3">
+          <div className="flex items-center justify-between border-b border-gray-100 bg-white px-8 pt-3 pb-3 dark:border-gray-800 dark:bg-gray-900 lg:px-3">
             <div className="flex items-center gap-3">
               {isLoadingUserStats ? (
                 <Skeleton
@@ -125,8 +152,57 @@ const ChatInterface = ({
               </div>
             </div>
 
-            <div>
-              <Ellipsis className="cursor-pointer text-sm font-medium text-gray-800 dark:text-gray-100" />
+            <div className="relative" ref={menuRef}>
+              <button
+                type="button"
+                aria-label="Open chat actions"
+                aria-expanded={isMenuOpen}
+                onClick={() => setIsMenuOpen((prev) => !prev)}
+                className="cursor-pointer rounded-2xl bg-gray-200 p-1 text-gray-700 transition-colors hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+              >
+                <Ellipsis size={20} />
+              </button>
+
+              {isMenuOpen && (
+                <ul className="absolute right-0 z-30 mt-2 grid w-52 gap-1 overflow-hidden rounded-2xl border border-gray-200 bg-white/95 p-2 shadow-xl shadow-black/10 backdrop-blur-sm dark:border-gray-700 dark:bg-gray-900/95 dark:shadow-black/40">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full cursor-pointer rounded-lg border border-transparent bg-gray-50 px-3 py-2 text-left text-xs font-medium text-gray-800 transition-all duration-200 hover:border-gray-200 hover:bg-gray-100 dark:bg-gray-800/70 dark:text-gray-200 dark:hover:border-gray-600 dark:hover:bg-gray-800"
+                  >
+                    <li>View Profile</li>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full cursor-pointer rounded-lg border border-transparent bg-gray-50 px-3 py-2 text-left text-xs font-medium text-gray-800 transition-all duration-200 hover:border-gray-200 hover:bg-gray-100 dark:bg-gray-800/70 dark:text-gray-200 dark:hover:border-gray-600 dark:hover:bg-gray-800"
+                  >
+                    <li>Mute Notifications</li>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full cursor-pointer rounded-lg border border-transparent bg-gray-50 px-3 py-2 text-left text-xs font-medium text-gray-800 transition-all duration-200  hover:border-gray-200 hover:bg-gray-100 dark:bg-gray-800/70 dark:text-gray-200 dark:hover:border-gray-600 dark:hover:bg-gray-800"
+                  >
+                    <li>Clear Chat</li>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full cursor-pointer rounded-lg border border-transparent bg-red-50 px-3 py-2 text-left text-xs font-medium text-red-700 transition-all duration-200 hover:border-red-200 hover:bg-red-100 dark:bg-red-950/30 dark:text-red-300 dark:hover:border-red-900/70 dark:hover:bg-red-950/50"
+                  >
+                    <li>Block User</li>
+                  </button>
+                </ul>
+              )}
             </div>
           </div>
 

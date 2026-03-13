@@ -104,42 +104,44 @@ const Settings = () => {
 
   return (
     <React.Fragment>
-      <div className="flex min-h-screen bg-gray-50">
+      <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
         <Toaster position="top-center" reverseOrder />
 
         <SideBar />
 
         <div className="flex-1 p-4 sm:p-6 lg:p-8">
-          <h1 className="mb-2 font-semibold text-xl lg:text-2xl">Settings</h1>
+          <h1 className="mb-2 font-semibold text-xl text-gray-900 dark:text-gray-100 lg:text-2xl">
+            Settings
+          </h1>
 
-          <p className="pb-8 text-sm lg:text-lg text-gray-700 max-w-xl">
+          <p className="max-w-xl pb-8 text-sm text-gray-700 dark:text-gray-300 lg:text-lg">
             Manage your account settings and preferences
           </p>
 
           <div className="grid gap-8" id="general">
             <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
               <div className="grid gap-2 w-full lg:max-w-[400px]">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Full Name
                 </label>
                 <input
                   type="text"
                   value={formData.fname}
                   placeholder="Full Name"
-                  className="p-2 border border-gray-300 rounded-lg outline-none w-full"
+                  className="w-full rounded-lg border border-gray-300 bg-white p-2 text-gray-900 outline-none placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
                   onChange={(e) => handleChange("fname", e.target.value)}
                 />
               </div>
 
               <div className="grid gap-2 w-full lg:max-w-[400px]">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Last Name
                 </label>
                 <input
                   type="text"
                   value={formData.lname}
                   placeholder="Last Name"
-                  className="p-2 border border-gray-300 rounded-lg outline-none w-full"
+                  className="w-full rounded-lg border border-gray-300 bg-white p-2 text-gray-900 outline-none placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
                   onChange={(e) => handleChange("lname", e.target.value)}
                 />
               </div>
@@ -147,14 +149,14 @@ const Settings = () => {
 
             <div className="grid gap-6 max-w-sm">
               <div className="grid gap-2">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Profile Image
                 </label>
-                <label className="flex justify-between items-center px-4 py-3 border border-dashed border-gray-300 rounded-lg cursor-pointer transition duration-300 hover:border-purple-500">
-                  <span className="text-sm text-gray-500">
+                <label className="flex cursor-pointer items-center justify-between rounded-lg border border-dashed border-gray-300 px-4 py-3 transition duration-300 hover:border-purple-500 dark:border-gray-700 dark:hover:border-purple-400">
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
                     {profileImage ? profileImage.name : "Choose an image"}
                   </span>
-                  <span className="text-sm font-medium text-purple-600">
+                  <span className="text-sm font-medium text-purple-600 dark:text-purple-400">
                     Browse
                   </span>
                   <input
@@ -167,14 +169,14 @@ const Settings = () => {
               </div>
 
               <div className="grid gap-2">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Banner Image
                 </label>
-                <label className="flex justify-between items-center px-4 py-3 border border-dashed transition duration-300 border-gray-300 rounded-lg cursor-pointer hover:border-purple-500">
-                  <span className="text-sm text-gray-500">
+                <label className="flex cursor-pointer items-center justify-between rounded-lg border border-dashed border-gray-300 px-4 py-3 transition duration-300 hover:border-purple-500 dark:border-gray-700 dark:hover:border-purple-400">
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
                     {bannerImage ? bannerImage.name : "Choose an image"}
                   </span>
-                  <span className="text-sm font-medium text-purple-600">
+                  <span className="text-sm font-medium text-purple-600 dark:text-purple-400">
                     Browse
                   </span>
                   <input
@@ -190,29 +192,31 @@ const Settings = () => {
             <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
               {/* Change to textarea */}
               <div className="grid gap-2 w-full lg:max-w-[400px]">
-                <label className="text-sm font-medium text-gray-700">Bio</label>
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Bio
+                </label>
                 <input
                   type="text"
                   value={formData.bio}
                   placeholder="Tell others a bit about yourself and what you're passionate about..."
-                  className="px-3 py-2 border border-gray-300 rounded-lg w-full"
+                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
                   onChange={(e) => handleChange("bio", e.target.value)}
                 />
               </div>
             </div>
             <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
               <div className="grid gap-2 w-full lg:max-w-[400px]">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Time Zone
                 </label>
                 <input
                   type="text"
                   placeholder="e.g. UTC +4"
-                  className="px-3 py-2 border border-gray-300 rounded-lg w-full"
+                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
                 />
               </div>
               <div className="grid gap-2 w-full lg:max-w-[400px]">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Location
                 </label>
                 <input
@@ -220,7 +224,7 @@ const Settings = () => {
                   name="location"
                   value={formData.location}
                   placeholder="City, Country"
-                  className="px-3 py-2 border border-gray-300 rounded-lg w-full"
+                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
                   onChange={(e) => {
                     handleChange("location", e.target.value);
                   }}
@@ -230,27 +234,27 @@ const Settings = () => {
 
             <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
               <div className="grid gap-2 w-full lg:max-w-[400px]">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Github
                 </label>
                 <input
                   type="text"
                   value={formData.githubLink}
                   placeholder="Enter URL"
-                  className="px-3 py-2 border border-gray-300 rounded-lg w-full"
+                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
                   onChange={(e) => handleChange("githubLink", e.target.value)}
                 />
               </div>
 
               <div className="grid gap-2 w-full lg:max-w-[400px]">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Linkedin
                 </label>
                 <input
                   type="text"
                   value={formData.linkedinLink}
                   placeholder="Enter URL"
-                  className="px-3 py-2 border border-gray-300 rounded-lg w-full"
+                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
                   onChange={(e) => handleChange("linkedinLink", e.target.value)}
                 />
               </div>
@@ -258,14 +262,14 @@ const Settings = () => {
 
             <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
               <div className="grid gap-2 w-full lg:max-w-[400px]">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Twitter
                 </label>
                 <input
                   type="text"
                   value={formData.twitterLink}
                   placeholder="Enter URL"
-                  className="px-3 py-2 border border-gray-300 rounded-lg w-full"
+                  className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
                   onChange={(e) => handleChange("twitterLink", e.target.value)}
                 />
               </div>
@@ -273,7 +277,7 @@ const Settings = () => {
 
             <button
               onClick={SaveChanges}
-              className="w-full transition duration-300 lg:w-full sm:w-fit bg-fuchsia-600 hover:bg-fuchsia-700 px-6 py-3 font-semibold rounded-lg text-white text-lg cursor-pointer"
+              className="w-full cursor-pointer rounded-lg bg-fuchsia-600 px-6 py-3 text-lg font-semibold text-white transition duration-300 hover:bg-fuchsia-700 dark:bg-fuchsia-500 dark:hover:bg-fuchsia-600 lg:w-full sm:w-fit"
             >
               Save Changes
             </button>

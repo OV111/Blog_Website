@@ -7,7 +7,9 @@ import { ArrowUpDown } from "lucide-react";
 import "react-loading-skeleton/dist/skeleton.css";
 import LoadingChatSuspense from "@/components/LoadingChatSuspense";
 import ChatInterface from "./ChatInterface";
-
+import { formatTimeAgo } from "./ChatInterface";
+import Skeleton from "react-loading-skeleton";
+import useThemeStore from "../../../context/useThemeStore";
 const getUserIdFromJWT = (token) => {
   if (!token) return null;
   try {
@@ -28,6 +30,10 @@ const getUserIdFromJWT = (token) => {
 const MIN_USER_STATS_SKELETON_MS = 350;
 
 const Chats = () => {
+  const { theme } = useThemeStore();
+  const isDarkMode = theme === "dark";
+  const [lastMessagesByRoom, setLastMessagesByRoom] = useState({});
+  const [isLoadingLastMessages, setIsLoadingLastMessages] = useState(true);
   const [userStats, setUserStats] = useState(null);
   const [userSelected, setUserSelected] = useState(null);
   const [filter, setFilter] = useState("");
@@ -52,6 +58,9 @@ const Chats = () => {
     return fullName.includes(filter.trim().toLowerCase());
   });
 
+  const skeletonBaseColor = isDarkMode ? "#1f2937" : "#ebebeb";
+  const skeletonHighlightColor = isDarkMode ? "#374151" : "#f5f5f5";
+
   // ws implementation //////////////////////////////////////////////
   const [socket, setSocket] = useState(null);
   const token = localStorage.getItem("JWT");
@@ -61,12 +70,19 @@ const Chats = () => {
     senderId && receiverId
       ? [String(senderId), String(receiverId)].sort().join("_")
       : null;
+
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:5000");
 
     ws.onopen = () => {
       console.log("WebSocket connection opened");
       setSocket(ws);
+      ws.send(
+        JSON.stringify({
+          type: "load_last_messages",
+          userId: senderId,
+        }),
+      );
     };
     ws.onmessage = (event) => {
       const payload = JSON.parse(event.data);
@@ -75,10 +91,23 @@ const Chats = () => {
       } else if (payload.type === "message_history") {
         setChatMessages(payload.messageHistory || []);
         setIsLoadingHistory(false);
+      } else if (payload.type === "load_last_messages") {
+        const map = {};
+        for (const room of payload.roomsData) {
+          map[room._id] = {
+            text: room?.lastMessage?.text || "last message",
+            updatedAt: room?.updatedAt || room?.createdAt || null,
+          };
+        }
+        setLastMessagesByRoom(map);
+        setIsLoadingLastMessages(false);
       }
+      // else if (payload.type === "room_last_message_updated") {
+      // }
     };
     ws.onerror = (err) => {
       console.log("WebSocket error:", err);
+      setIsLoadingLastMessages(false);
     };
     ws.onclose = () => {
       return () => ws.close();
@@ -189,7 +218,6 @@ const Chats = () => {
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
-
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
       <Sidebar />
@@ -269,34 +297,72 @@ const Chats = () => {
               <LoadingChatSuspense />
             </p>
           ) : filteredFollowers.length > 0 ? (
-            filteredFollowers.map((user) => (
-              <button
-                key={user._id}
-                type="button"
-                onClick={() => setUserSelected(user)}
-                className={`flex w-full items-center gap-3 border-b text-purple-600 border-gray-100 px-3 py-3 text-left transition-colors first:border-t dark:border-gray-800
+            filteredFollowers.map((user) => {
+              const roomIdForUser =
+                senderId && user._id
+                  ? [String(senderId), String(user._id)].sort().join("_")
+                  : "";
+              const roomPreview = lastMessagesByRoom[roomIdForUser];
+              const shouldShowLastMessageSkeleton =
+                isLoadingLastMessages && !roomPreview;
+              return (
+                <button
+                  key={user._id}
+                  type="button"
+                  onClick={() => setUserSelected(user)}
+                  className={`flex w-full items-center gap-3 border-b text-purple-600 border-gray-100 px-3 py-3 text-left transition-colors first:border-t dark:border-gray-800
                   ${
                     userSelected?._id === user._id
                       ? "lg:bg-purple-50 dark:bg-fuchsia-950/30 "
                       : "hover:bg-gray-50 dark:hover:bg-gray-900/70"
                   }
-                  `}
-              >
-                <img
-                  src={userStats?.profileImage}
-                  alt="Profile"
-                  className="h-10 w-10 shrink-0 rounded-full bg-purple-100 object-cover"
-                />
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-gray-900 dark:text-gray-100">
-                    {user.firstName} {user.lastName}
-                  </p>
-                  <p className="truncate text-xs text-gray-500 dark:text-gray-400">
-                    Last message preview
-                  </p>
-                </div>
-              </button>
-            ))
+                    `}
+                >
+                  <img
+                    src={user?.profileImage}
+                    alt="Profile"
+                    className="h-8 w-8 shrink-0 rounded-full bg-purple-100 object-cover"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium text-gray-900 dark:text-gray-100">
+                      {user.firstName} {user.lastName}
+                    </p>
+                    <div className="flex justify-between items-center">
+                      {shouldShowLastMessageSkeleton ? (
+                        <>
+                          <Skeleton
+                            width={120}
+                            height={12}
+                            borderRadius={6}
+                            baseColor={skeletonBaseColor}
+                            highlightColor={skeletonHighlightColor}
+                            className="opacity-80"
+                          />
+                          <Skeleton
+                            width={44}
+                            height={12}
+                            borderRadius={6}
+                            baseColor={skeletonBaseColor}
+                            highlightColor={skeletonHighlightColor}
+                            className="opacity-80"
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <p className="truncate text-xs font-medium text-gray-500 dark:text-gray-400">
+                            {roomPreview?.text || "Last message"}
+                          </p>
+                          <p className="truncate text-[14px] font-medium text-gray-500 dark:text-gray-400">
+                            {formatTimeAgo(roomPreview?.updatedAt) ||
+                              "Last Time"}
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </button>
+              );
+            })
           ) : mutualFollowers.length > 0 ? (
             <p className="flex justify-center items-center px-3 py-6 text-sm text-gray-500 dark:text-gray-400">
               No conversations found
