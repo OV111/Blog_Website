@@ -2,17 +2,11 @@ import { create } from "zustand";
 
 const useThemeStore = create((set, get) => ({
   theme: localStorage.getItem("theme") || "dark",
-//   setTheme: () => {
-//     const newTheme = get().theme === "dark" ? "light" : "dark";
-//     set({ theme: newTheme });
-//     localStorage.setItem("theme", newTheme);
-//   }, 
-// 
-// it works but in localstorage i seted incorrect value!
-  setTheme : () => {
-    set({theme: get().theme === "dark" ? "light" : "dark"})
-    localStorage.setItem("theme",get().theme)
-  }
+  setTheme: () => {
+    const newTheme = get().theme === "dark" ? "light" : "dark";
+    set({ theme: newTheme });
+    localStorage.setItem("theme", newTheme);
+  },
 }));
 
 export default useThemeStore;

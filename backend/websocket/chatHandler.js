@@ -30,19 +30,15 @@ export const joinRoom = async (ws, data) => {
         type: "direct", // for future will be added to group | channel
         createdBy: "", // this also about channel/group-owner | creator
         createdAt: new Date(),
-        lastMessage: {
-          text: "Last Message to show", // changable $set
-          senderId: senderId,
-        },
+        updatedAt: new Date(),
       });
     } else {
-      // if exist just updating
+      // Keep membership in sync, but do not update updatedAt on room open.
       await roomCollection.updateOne(
         { _id: roomId.toString() },
         {
           $set: {
             members: [receiverId, senderId],
-            updatedAt: new Date(),
           },
         },
       );
@@ -134,4 +130,24 @@ const loadMessages = async (roomId, limitNum = 50, cursor = null) => {
     .limit(limitNum)
     .toArray();
   return roomMessages.reverse(); // Initial logic
+};
+
+export const loadLastMessages = async (ws, data) => {
+  const { userId } = data;
+  if (!userId) {
+    return ws.send(
+      JSON.stringify({ type: "error", message: "userId is not defined" }),
+    );
+  }
+  let db = await connectDB();
+  const roomsCollection = db.collection("rooms");
+
+  const roomsData = await roomsCollection
+    .find({
+      members: userId.toString(),
+    })
+    .project({ _id: 1, lastMessage: 1, members: 1, updatedAt: 1 })
+    .toArray();
+
+  return ws.send(JSON.stringify({ type: "load_last_messages", roomsData }));
 };

@@ -101,9 +101,7 @@ const GetStarted = () => {
     <React.Fragment>
       <Toaster position="top-center" reverseOrder={false} />
       <div className="flex justify-between">
-        <div className="w-[100%]">
-
-        </div>
+        <div className="w-[100%]"></div>
         <div className="mt-0 w-full px-4 sm:px-6 md:px-8">
           <div className="mx-auto mt-0 mb-0 max-w-xl rounded-2xl border border-violet-100 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-gray-950 dark:shadow-2xl dark:shadow-black/30 sm:mt-6 sm:mb-6 sm:p-6 md:mt-8 md:mb-8 md:p-8">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-bold text-center mb-4 sm:mb-6 md:mb-8 text-purple-700 dark:text-purple-600">

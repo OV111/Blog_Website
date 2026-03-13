@@ -98,13 +98,13 @@ const MyProfile = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50 ">
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
       <SideBar
         isOpen={isSideBarOpened}
         onClose={() => setIsSideBarOpened(false)}
       />
 
-      <main className="flex-1">
+      <main className="flex-1 dark:bg-gray-950">
         <div className="relative">
           <img
             src={
@@ -126,19 +126,19 @@ const MyProfile = () => {
           </div>
         </div>
 
-        <div className="pt-16 lg:pt-20 px-4 sm:px-6 lg:px-10">
+        <div className="px-4 pt-16 sm:px-6 lg:px-10 lg:pt-20">
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
             <div className="space-y-1 max-w-2xl">
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                 {user?.firstName} {user?.lastName}
               </h1>
 
-              <p className="text-gray-700">
+              <p className="text-gray-700 dark:text-gray-300">
                 {stats?.bio ||
                   "Tell others a bit about yourself - add a bio in settings."}
               </p>
 
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 Last active:{" "}
                 {stats?.lastActive
                   ? new Date(stats.lastActive).toLocaleString()
@@ -154,24 +154,33 @@ const MyProfile = () => {
                   { label: "Posts", value: stats?.postsCount ?? 0 },
                 ].map((item) => (
                   <div key={item.label} className="text-center">
-                    <p className="text-base lg:text-xl font-bold">
+                    <p className="text-base font-bold text-gray-900 dark:text-gray-100 lg:text-xl">
                       {item.value}
                     </p>
-                    <p className="text-gray-600 text-base lg:text-sm">
+                    <p className="text-base text-gray-600 dark:text-gray-400 lg:text-sm">
                       {item.label}
                     </p>
                   </div>
                 ))}
               </div>
 
-              <div className="flex items-center gap-6 text-2xl text-gray-600">
-                <Link to="#" className="hover:text-black">
+              <div className="flex items-center gap-6 text-2xl text-gray-600 dark:text-gray-400">
+                <Link
+                  to="#"
+                  className="hover:text-black dark:hover:text-gray-100"
+                >
                   <FaGithub />
                 </Link>
-                <Link to="#" className="hover:text-blue-600">
+                <Link
+                  to="#"
+                  className="hover:text-blue-600 dark:hover:text-blue-400"
+                >
                   <FaLinkedin />
                 </Link>
-                <Link to="#" className="hover:text-gray-900">
+                <Link
+                  to="#"
+                  className="hover:text-gray-900 dark:hover:text-gray-100"
+                >
                   <XIcon />
                 </Link>
               </div>
@@ -182,7 +191,7 @@ const MyProfile = () => {
             {[1, 2, 3, 4].map((i) => (
               <div
                 key={i}
-                className="h-40 bg-gray-300 rounded-xl animate-pulse"
+                className="h-40 rounded-xl bg-gray-300 animate-pulse dark:bg-gray-800"
               />
             ))}
           </div>

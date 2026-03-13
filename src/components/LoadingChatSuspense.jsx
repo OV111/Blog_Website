@@ -10,7 +10,7 @@ const LoadingChatSuspense = () => {
           ></div>
         </div>
         <div className="text-center">
-          <h3 className="justify-center items-center text-lg font-semibold text-gray-800 mb-1">
+          <h3 className="justify-center items-center text-lg font-semibold text-gray-800 mb-1 dark:text-gray-100">
             Loading Chats. . .
           </h3>
         </div>
