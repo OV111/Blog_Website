@@ -72,7 +72,7 @@ const Chats = () => {
       : null;
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:5000");
+    const ws = new WebSocket("wss://devswebsite-production.up.railway.app");
 
     ws.onopen = () => {
       console.log("WebSocket connection opened");
