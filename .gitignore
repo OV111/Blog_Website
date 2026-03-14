@@ -36,7 +36,6 @@ uploads/
 
 # Deployment
 .vercel
-.netlify
 
 # Playwright
 /test-results/

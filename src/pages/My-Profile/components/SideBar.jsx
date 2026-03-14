@@ -226,8 +226,8 @@ export default function SideBar({ isOpen, onClose }) {
           }}
           className="group mt-auto flex cursor-pointer items-center justify-center border-t border-gray-100 py-3.5 text-gray-700 transition-colors hover:bg-red-50 hover:text-red-600 dark:border-gray-800 dark:text-gray-100 dark:hover:bg-red-950/40 dark:hover:text-red-400 lg:justify-between lg:px-4"
         >
-          <p className="hidden text-[18px] font-medium lg:block">Logout</p>
-          <LogOut />
+          <p className="hidden text-[16px] font-medium lg:block">Logout</p>
+          <LogOut size={16}/>
           {/* fontSize="small"
             className="mx-auto transition-colors group-hover:text-red-600 lg:mx-0"
             sx={{ color: "currentColor" }}
