@@ -147,7 +147,7 @@ export default function UserProfile() {
           />
 
           {/* Avatar */}
-          <div className="absolute -bottom-10 sm:-bottom-13 lg:-bottom-14 left-14 sm:left-16 lg:left-10 -translate-x-1/2  lg:translate-x-0">
+          <div className="absolute -bottom-10 sm:-bottom-12 lg:-bottom-14 left-1/2 lg:left-10 -translate-x-1/2 lg:translate-x-0">
             <img
               src={
                 stats?.profileImage ||
@@ -160,10 +160,10 @@ export default function UserProfile() {
         </div>
 
         {/* Profile Content */}
-        <div className="pt-16 lg:pt-20 px-4 sm:px-6 lg:px-10">
-          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
+        <div className="pt-14 sm:pt-16 lg:pt-20 px-4 sm:px-6 lg:px-10">
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 lg:gap-8">
             {/* User Info */}
-            <div className="space-y-1 max-w-2xl">
+            <div className="space-y-1 max-w-2xl text-center lg:text-left">
               <h1 className="text-2xl font-bold text-gray-900">
                 {user?.firstName} {user?.lastName}
               </h1>
@@ -182,7 +182,7 @@ export default function UserProfile() {
             </div>
 
             {/* Stats & Social */}
-            <div className="flex flex-col items-start lg:items-end gap-6">
+            <div className="flex flex-col items-center lg:items-end gap-4 lg:gap-6">
               <div className="flex gap-3">
                 <button
                   type="button"
@@ -204,13 +204,13 @@ export default function UserProfile() {
                 </Link>
               </div>
 
-              <div className="flex gap-8">
+              <div className="flex gap-6 sm:gap-8">
                 {statItems.map((item) => (
                   <div key={item.label} className="text-center">
-                    <p className="text-base lg:text-xl font-bold">
+                    <p className="text-lg sm:text-xl font-bold">
                       {item.value}
                     </p>
-                    <p className="text-gray-600 text-base lg:text-sm">
+                    <p className="text-gray-600 text-sm">
                       {item.label}
                     </p>
                   </div>
@@ -218,7 +218,7 @@ export default function UserProfile() {
               </div>
 
               {socialLinks.length > 0 && (
-                <div className="flex items-center gap-6 text-2xl text-gray-600">
+                <div className="flex items-center gap-5 text-2xl text-gray-600">
                   {socialLinks.map((item) => (
                     <a
                       key={item.key}

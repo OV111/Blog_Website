@@ -3,6 +3,7 @@ export default {
   content: [
     "./src/**/*.{js,ts,jsx,tsx}", // adjust paths according to your project
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {

@@ -15,10 +15,10 @@ const About = () => {
 
   return (
     <div className="container min-h-screen">
-      <h1 className="relative flex justify-center items-center text-xl font-medium text-sky-800 py-6 sm:text-2xl md:text-4xl lg:text-5xl">
+      <h1 className="relative flex justify-center items-center text-xl font-medium text-sky-800 dark:text-sky-400 py-6 sm:text-2xl md:text-4xl lg:text-5xl">
         About Page
       </h1>
-      <div className="static top-30 left-30">
+      <div className="static top-30 left-30 text-gray-700 dark:text-gray-300">
         <p>This page shows up information about Devs Blog </p>
         <p>What is it about!</p>
         <p>What is the missions</p>

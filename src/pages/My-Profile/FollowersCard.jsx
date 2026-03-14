@@ -32,19 +32,19 @@ const FollowersCard = ({
   const lastActiveText = formatTimeAgo(user?.stats?.lastActive);
 
   return (
-    <div className="mb-3 rounded-lg border border-gray-300 p-3">
+    <div className="rounded-xl border border-gray-200 dark:border-gray-700/60 bg-white dark:bg-gray-800/50 p-4 transition-all duration-200 hover:border-purple-300 dark:hover:border-purple-700/60">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <img
             src="/user_profile/User_Profile.jpg"
             alt="profile image"
-            className="h-10 w-10 rounded-full bg-gray-300 object-cover lg:h-14 lg:w-14"
+            className="h-11 w-11 rounded-full bg-gray-200 dark:bg-gray-700 object-cover ring-2 ring-purple-100 dark:ring-purple-900/50 lg:h-14 lg:w-14"
           />
           <div>
-            <p className="text-base font-semibold text-gray-900 lg:text-lg">
+            <p className="text-base font-semibold text-gray-900 dark:text-gray-100 lg:text-lg">
               {displayName}
             </p>
-            <p className="text-sm text-gray-500">@{user?.username}</p>
+            <p className="text-sm text-gray-400 dark:text-gray-500">@{user?.username}</p>
           </div>
         </div>
 
@@ -53,11 +53,11 @@ const FollowersCard = ({
             type="button"
             disabled={actionLoading}
             onClick={() => onToggleFollow(user, isFollowing)}
-            className={`rounded-lg px-3 py-1 text-sm font-semibold transition ${
+            className={`rounded-lg px-4 py-1.5 text-sm font-semibold transition-all duration-200 ${
               isFollowing
-                ? "bg-gray-200 text-gray-800 hover:bg-gray-300"
-                : "bg-indigo-600 text-white hover:bg-indigo-700"
-            } ${actionLoading ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
+                ? "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                : "bg-indigo-600 dark:bg-indigo-500 text-white hover:bg-indigo-700 dark:hover:bg-indigo-600"
+            } ${actionLoading ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
           >
             {actionLoading ? "..." : isFollowing ? "Following" : "Follow"}
           </button>
@@ -67,30 +67,38 @@ const FollowersCard = ({
               href={user.stats.githubLink}
               target="_blank"
               rel="noreferrer"
-              className="text-gray-600 transition hover:text-black"
+              className="text-gray-400 dark:text-gray-500 transition-colors hover:text-gray-900 dark:hover:text-gray-100"
             >
-              <FaGithub />
+              <FaGithub size={18} />
             </a>
           )}
           {user?.stats?.linkedinLink && (
-            <a href={user.stats.linkedinLink} target="_blank" className="">
-              <FaLinkedin />
+            <a
+              href={user.stats.linkedinLink}
+              target="_blank"
+              rel="noreferrer"
+              className="text-gray-400 dark:text-gray-500 transition-colors hover:text-blue-600 dark:hover:text-blue-400"
+            >
+              <FaLinkedin size={18} />
             </a>
           )}
         </div>
       </div>
 
-      <p className="mt-2 text-sm text-gray-700">{user?.stats?.bio || "-"}</p>
+      <p className="mt-3 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{user?.stats?.bio || "-"}</p>
 
-      <div className="mt-2 flex flex-wrap items-center justify-between gap-3 text-sm text-gray-600">
-        <div className="flex flex-wrap items-center gap-4">
-          <p>{user?.stats?.location || "Location not set"}</p>
-          <p>Last Active: {lastActiveText}</p>
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-gray-100 dark:border-gray-700/50 text-xs text-gray-500 dark:text-gray-400">
+        <div className="flex flex-wrap items-center gap-3">
+          <span>{user?.stats?.location || "Location not set"}</span>
+          <span className="text-gray-300 dark:text-gray-600">•</span>
+          <span>Last Active: {lastActiveText}</span>
         </div>
-        <div className="flex items-center gap-4">
-          <p>{user?.stats?.followersCount ?? 0} Followers</p>
-          <p>{user?.stats?.followingsCount ?? 0} Following</p>
-          <p>{user?.stats?.postsCount ?? 0} Posts</p>
+        <div className="flex items-center gap-3">
+          <span className="font-medium text-gray-700 dark:text-gray-300">{user?.stats?.followersCount ?? 0} <span className="font-normal text-gray-400 dark:text-gray-500">Followers</span></span>
+          <span className="text-gray-300 dark:text-gray-600">·</span>
+          <span className="font-medium text-gray-700 dark:text-gray-300">{user?.stats?.followingsCount ?? 0} <span className="font-normal text-gray-400 dark:text-gray-500">Following</span></span>
+          <span className="text-gray-300 dark:text-gray-600">·</span>
+          <span className="font-medium text-gray-700 dark:text-gray-300">{user?.stats?.postsCount ?? 0} <span className="font-normal text-gray-400 dark:text-gray-500">Posts</span></span>
         </div>
       </div>
     </div>
