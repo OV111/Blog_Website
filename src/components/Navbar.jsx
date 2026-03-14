@@ -161,7 +161,7 @@ const Navbar = () => {
       <div>
         <nav className="relative space-x-1 flex items-center justify-between px-3 gap-10 py-1 shadow z-20 w-full bg-linear-to-r from-purple-600 to-purple-800 dark:from-purple-700 dark:to-purple-800 lg:gap-10 lg:py-2">
           <h2 className="text-base font-bold my-1 lg:my-0.5 cursor-pointer sm:text-xl text-gray-100 md:text-xl lg:text-xl lg:w-auto lg:ml-3">
-            <NavLink to="/">DevsFlow</NavLink>
+            <NavLink to="/">DevsWebs</NavLink>
           </h2>
 
           {showSearch && (

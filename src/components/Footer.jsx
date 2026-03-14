@@ -32,7 +32,7 @@ const Footer = () => {
             <Link to="/" className="flex items-center gap-2 mb-4">
               <img src="" alt="Logo" />
               <h1 className="text-3xl font-extrabold  tracking-wide">
-                Devs Platfo
+                DevsWebs
               </h1>
             </Link>
             <p className="mb-6 max-w-sm text-sm leading-6 text-purple-200 sm:text-base">
