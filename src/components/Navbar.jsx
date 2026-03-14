@@ -58,9 +58,9 @@ const Navbar = () => {
           username: data.userWithoutPassword?.username || "",
           profileImage: data.stats?.profileImage || null,
         });
-        console.log(data);
-      } catch (err) {
-        console.log(err);
+      } catch {
+        // silent
+        console.log("error");
       }
     };
     fetchNavUser();
@@ -112,12 +112,37 @@ const Navbar = () => {
     setIsOpen(false);
   };
 
+  const ThemeToggle = ({
+    spanClassName,
+    buttonClassName = "cursor-pointer",
+  }) => (
+    <>
+      <span className={spanClassName}>
+        {theme === "dark" ? <Moon size={15} /> : <Sun size={15} />}
+        {theme === "dark" ? "Dark mode" : "Light mode"}
+      </span>
+      <button onClick={setTheme} className={buttonClassName}>
+        {theme === "dark" ? (
+          <LightModeOutlinedIcon fontSize="small" />
+        ) : (
+          <NightsStayOutlinedIcon fontSize="small" />
+        )}
+      </button>
+    </>
+  );
+
+  const MobileNavLink = ({ to, children, className }) => (
+    <li className="font-medium text-base hover:text-purple-300 transition">
+      <NavLink to={to} onClick={() => setIsOpen(false)} className={className}>
+        {children}
+      </NavLink>
+    </li>
+  );
+
   const AvatarImage = ({ inDropdown = false }) => (
     <div
       className={`w-8 h-8 rounded-full shrink-0 border ${
-        inDropdown
-          ? "border-gray-200 dark:border-gray-600"
-          : "border-white/50"
+        inDropdown ? "border-gray-200 dark:border-gray-600" : "border-white/50"
       }`}
     >
       {navUser?.profileImage ? (
@@ -134,8 +159,8 @@ const Navbar = () => {
               : "bg-white/20 text-white"
           }`}
         >
-          {navUser?.firstName?.[0]?.toUpperCase() || "?"}
-          {navUser?.lastName?.[0]?.toUpperCase() || "?"}
+          {navUser?.firstName?.[0]?.toUpperCase() || ""}
+          {navUser?.lastName?.[0]?.toUpperCase() || ""}
         </div>
       )}
     </div>
@@ -157,301 +182,262 @@ const Navbar = () => {
   );
 
   return (
-    <React.Fragment>
-      <div>
-        <nav className="relative space-x-1 flex items-center justify-between px-3 gap-10 py-1 shadow z-20 w-full bg-linear-to-r from-purple-600 to-purple-800 dark:from-purple-700 dark:to-purple-800 lg:gap-10 lg:py-2">
-          <h2 className="text-base font-bold my-1 lg:my-0.5 cursor-pointer sm:text-xl text-gray-100 md:text-xl lg:text-xl lg:w-auto lg:ml-3">
-            <NavLink to="/">DevsWebs</NavLink>
-          </h2>
+    <nav className="relative space-x-1 flex items-center justify-between px-3 gap-10 py-1 shadow z-20 w-full bg-linear-to-r from-purple-600 to-purple-800 dark:from-purple-700 dark:to-purple-800 lg:gap-10 lg:py-2">
+      <h2 className="text-base font-bold my-1 lg:my-0.5 cursor-pointer sm:text-xl text-gray-100 md:text-xl lg:text-xl lg:w-auto lg:ml-3">
+        <NavLink to="/">DevsWebs</NavLink>
+      </h2>
 
-          {showSearch && (
-            <div
-              ref={desktopSearchRef}
-              className="relative hidden flex-1 justify-end text-purple-600 md:flex"
-            >
-              <SearchBar
-                value={searchValue}
-                onChange={setSearchValue}
-                onSubmit={handleSearchSubmit}
-                placeholder="Search"
-              />
-              <SearchResults
-                query={searchValue}
-                onSelect={handleSearchSelect}
-                boundaryRef={desktopSearchRef}
-              />
-            </div>
-          )}
+      {showSearch && (
+        <div
+          ref={desktopSearchRef}
+          className="relative hidden flex-1 justify-end text-purple-600 md:flex"
+        >
+          <SearchBar
+            value={searchValue}
+            onChange={setSearchValue}
+            onSubmit={handleSearchSubmit}
+            placeholder="Search"
+          />
+          <SearchResults
+            query={searchValue}
+            onSelect={handleSearchSelect}
+            boundaryRef={desktopSearchRef}
+          />
+        </div>
+      )}
 
-          <ul className="flex items-center gap-1 text-gray-100 my-2 lg:my-0.5">
-            {/* Home */}
-            <li className="font-medium text-sm lg:text-base px-1 py-1 hover:text-purple-300 transition">
-              <NavLink to="/">Home</NavLink>
+      <ul className="flex items-center gap-1 text-gray-100 my-2 lg:my-0.5">
+        {/* Home */}
+        <li className="hidden md:block font-medium text-sm lg:text-base px-1 py-1 hover:text-purple-300 transition">
+          <NavLink to="/">Home</NavLink>
+        </li>
+
+        {/* Categories — desktop */}
+        <li
+          className="relative hidden md:block text-sm lg:text-base font-medium px-1 py-1 hover:text-purple-300 transition"
+          ref={dropdownRef}
+        >
+          <button
+            onClick={() => setShowDropdown(!showDropdown)}
+            className="flex lg:gap-1 justify-center items-center cursor-pointer"
+          >
+            Categories
+            <ChevronDown
+              size={16}
+              className={`transition-transform duration-200 ${showDropdown ? "rotate-180" : ""}`}
+            />
+          </button>
+          {showDropdown && <CategoryList onClose={closeDropdown} />}
+        </li>
+
+        {auth ? (
+          <>
+            <li className="hidden md:block font-medium text-sm lg:text-base px-1 hover:text-purple-300 transition">
+              <NavLink to="roadmaps">Roadmaps</NavLink>
+            </li>
+            <li className="hidden md:block font-medium text-sm lg:text-base px-1 hover:text-purple-300 transition">
+              <NavLink to="roadmaps">Coding Libs</NavLink>
             </li>
 
-            {/* Categories — desktop */}
-            <li
-              className="relative text-sm lg:text-base font-medium px-1 py-1 hover:text-purple-300 transition"
-              ref={dropdownRef}
-            >
+            {/* Avatar dropdown — desktop */}
+            <li className="relative hidden md:block" ref={avatarRef}>
               <button
-                onClick={() => setShowDropdown(!showDropdown)}
-                className="hidden sm:flex lg:gap-1 justify-center items-center cursor-pointer"
+                onClick={() => setAvatarMenuOpen(!avatarMenuOpen)}
+                className="cursor-pointer"
               >
-                Categories
-                <ChevronDown
-                  size={16}
-                  className={`transition-transform duration-200 ${showDropdown ? "rotate-180" : ""}`}
-                />
+                <AvatarImage />
               </button>
-              {showDropdown && <CategoryList onClose={closeDropdown} />}
-            </li>
 
-            {auth ? (
-              <React.Fragment>
-                <li className="hidden md:block font-medium text-sm lg:text-base px-1 hover:text-purple-300 transition">
-                  <NavLink to="roadmaps">Roadmaps</NavLink>
-                </li>
-                <li className="hidden md:block font-medium text-sm lg:text-base px-1 hover:text-purple-300 transition">
-                  <NavLink to="roadmaps">Coding Libs</NavLink>
-                </li>
-
-                {/* Avatar dropdown — desktop */}
-                <li className="relative hidden md:block" ref={avatarRef}>
-                  <button
-                    onClick={() => setAvatarMenuOpen(!avatarMenuOpen)}
-                    className="cursor-pointer"
-                  >
-                    <AvatarImage />
-                  </button>
-
-                  {avatarMenuOpen && (
-                    <div className="absolute right-0 top-full mt-3 w-52 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 py-1 z-10">
-                      {/* User info header */}
-                      <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 dark:border-gray-700">
-                        <AvatarImage inDropdown />
-                        <div className="min-w-0">
-                          <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
-                            {navUser?.firstName}
-                          </p>
-                          {navUser?.username && (
-                            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                              @{navUser.username}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Menu items */}
-                      {AVATAR_MENU_ITEMS.map(({ label, to, icon: Icon }) => (
-                        <NavLink
-                          key={to}
-                          to={to}
-                          onClick={() => setAvatarMenuOpen(false)}
-                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
-                        >
-                          <Icon size={15} />
-                          {label}
-                        </NavLink>
-                      ))}
-
-                      <div className="border-t border-gray-100 dark:border-gray-700 my-1" />
-
-                      {/* Theme toggle */}
-                      <div className="flex items-center justify-between px-4 py-2">
-                        <span className="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-200">
-                          {theme === "dark" ? (
-                            <Moon size={15} />
-                          ) : (
-                            <Sun size={15} />
-                          )}
-                          {theme === "dark" ? "Dark mode" : "Light mode"}
-                        </span>
-                        <button
-                          onClick={setTheme}
-                          className="cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-100 transition"
-                        >
-                          {theme === "dark" ? (
-                            <LightModeOutlinedIcon fontSize="small" />
-                          ) : (
-                            <NightsStayOutlinedIcon fontSize="small" />
-                          )}
-                        </button>
-                      </div>
-
-                      <div className="border-t border-gray-100 dark:border-gray-700 my-1" />
-
-                      <button
-                        onClick={handleLogout}
-                        className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 transition cursor-pointer"
-                      >
-                        <LogOut size={15} />
-                        Logout
-                      </button>
+              {avatarMenuOpen && (
+                <div className="absolute right-0 top-full mt-3 w-52 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 py-1 z-10">
+                  {/* User info header */}
+                  <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+                    <AvatarImage inDropdown />
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
+                        {navUser?.firstName}
+                      </p>
+                      {navUser?.username && (
+                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                          @{navUser.username}
+                        </p>
+                      )}
                     </div>
-                  )}
-                </li>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                <li className="hidden md:block font-medium text-sm lg:text-base px-1 py-1 hover:text-purple-300 transition">
-                  <NavLink to="about">About</NavLink>
-                </li>
-                <li className="font-medium text-sm lg:text-base px-1 py-1 hover:text-purple-300 transition">
-                  <NavLink to="get-started">Get Started</NavLink>
-                </li>
-                {/* Theme toggle — guests only in navbar */}
-                <li>
+                  </div>
+
+                  {/* Menu items */}
+                  {AVATAR_MENU_ITEMS.map(({ label, to, icon: Icon }) => (
+                    <NavLink
+                      key={to}
+                      to={to}
+                      onClick={() => setAvatarMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+                    >
+                      <Icon size={15} />
+                      {label}
+                    </NavLink>
+                  ))}
+
+                  <div className="border-t border-gray-100 dark:border-gray-700 my-1" />
+
+                  {/* Theme toggle */}
+                  <div className="flex items-center justify-between px-4 py-2">
+                    <ThemeToggle
+                      spanClassName="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-200"
+                      buttonClassName="cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-100 transition"
+                    />
+                  </div>
+
+                  <div className="border-t border-gray-100 dark:border-gray-700 my-1" />
+
                   <button
-                    onClick={setTheme}
-                    className="relative inline-flex items-center cursor-pointer"
+                    onClick={handleLogout}
+                    className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 transition cursor-pointer"
                   >
-                    {theme === "dark" ? (
-                      <LightModeOutlinedIcon className="text-3xl" />
-                    ) : (
-                      <NightsStayOutlinedIcon className="text-3xl" />
-                    )}
+                    <LogOut size={15} />
+                    Logout
                   </button>
-                </li>
-              </React.Fragment>
+                </div>
+              )}
+            </li>
+          </>
+        ) : (
+          <>
+            <li className="hidden md:block font-medium text-sm lg:text-base px-1 py-1 hover:text-purple-300 transition">
+              <NavLink to="about">About</NavLink>
+            </li>
+            <li className="hidden md:block font-medium text-sm lg:text-base px-1 py-1 hover:text-purple-300 transition">
+              <NavLink to="get-started">Get Started</NavLink>
+            </li>
+            {/* Theme toggle — guests only in navbar */}
+            <li className="hidden md:block">
+              <button
+                onClick={setTheme}
+                className="relative flex justify-center items-center cursor-pointer"
+              >
+                {theme === "dark" ? (
+                  <LightModeOutlinedIcon fontSize="medium" />
+                ) : (
+                  <NightsStayOutlinedIcon fontSize="medium" />
+                )}
+              </button>
+            </li>
+          </>
+        )}
+
+        {/* Hamburger */}
+        <li className="list-none">
+          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden mb-1">
+            {isOpen ? <CloseOutlinedIcon /> : <MenuOutlinedIcon />}
+          </button>
+        </li>
+
+        {/* Mobile menu */}
+        {isOpen && (
+          <ul className="flex flex-col gap-2 p-4 border-t-[0.1px] border-gray-100 absolute top-full left-0 w-full bg-linear-to-r from-purple-600 to-purple-800 dark:from-purple-700 dark:to-purple-800 md:hidden z-3">
+            {showSearch && (
+              <li>
+                <div ref={mobileSearchRef} className="relative">
+                  <SearchBar
+                    value={searchValue}
+                    onChange={setSearchValue}
+                    onSubmit={handleSearchSubmit}
+                    placeholder="Search posts..."
+                    className="max-w-full"
+                  />
+                  <SearchResults
+                    query={searchValue}
+                    onSelect={handleSearchSelect}
+                    boundaryRef={mobileSearchRef}
+                  />
+                </div>
+              </li>
             )}
 
-            {/* Hamburger */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden mb-1"
-            >
-              {isOpen ? <CloseOutlinedIcon /> : <MenuOutlinedIcon />}
-            </button>
+            {/* Categories — mobile */}
+            <li className="relative text-base font-medium hover:text-purple-300 transition">
+              <button
+                onClick={() => setShowDropdownMobile(!showDropdownMobile)}
+                className="flex items-center cursor-pointer"
+              >
+                Categories <IoMdArrowDropdown />
+              </button>
+              {showDropdownMobile && (
+                <CategoryList onClose={closeDropdownMobile} />
+              )}
+            </li>
 
-            {/* Mobile menu */}
-            {isOpen && (
-              <ul className="flex flex-col gap-2 p-4 border-t-[0.1px] border-gray-100 absolute top-full left-0 w-full bg-linear-to-r from-purple-600 to-purple-800 dark:from-purple-700 dark:to-purple-800 md:hidden z-3">
-                {showSearch && (
-                  <li>
-                    <div ref={mobileSearchRef} className="relative">
-                      <SearchBar
-                        value={searchValue}
-                        onChange={setSearchValue}
-                        onSubmit={handleSearchSubmit}
-                        placeholder="Search posts..."
-                        className="max-w-full"
-                      />
-                      <SearchResults
-                        query={searchValue}
-                        onSelect={handleSearchSelect}
-                        boundaryRef={mobileSearchRef}
-                      />
-                    </div>
-                  </li>
-                )}
+            {auth && (
+              <>
+                <MobileNavLink to="roadmaps">Roadmaps</MobileNavLink>
+                <MobileNavLink to="roadmaps">Coding Libs</MobileNavLink>
 
-                {/* Categories — mobile */}
-                <li className="relative text-base font-medium hover:text-purple-300 transition">
-                  <button
-                    onClick={() => setShowDropdownMobile(!showDropdownMobile)}
-                    className="flex items-center cursor-pointer"
-                  >
-                    Categories <IoMdArrowDropdown />
-                  </button>
-                  {showDropdownMobile && (
-                    <CategoryList onClose={closeDropdownMobile} />
-                  )}
+                {/* Extra links */}
+                {MOBILE_EXTRA_LINKS.map(({ label, to }) => (
+                  <MobileNavLink key={to} to={to}>
+                    {label}
+                  </MobileNavLink>
+                ))}
+
+                {/* Avatar row */}
+                <li className="flex items-center gap-3 pt-2 mt-1 border-t border-white/20">
+                  <AvatarImage />
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-white truncate">
+                      {navUser?.firstName}
+                    </p>
+                    {navUser?.username && (
+                      <p className="text-xs text-purple-200 truncate">
+                        @{navUser.username}
+                      </p>
+                    )}
+                  </div>
                 </li>
 
-                {auth && (
-                  <React.Fragment>
-                    <li className="font-medium text-base hover:text-purple-300 transition">
-                      <NavLink to="roadmaps" onClick={() => setIsOpen(false)}>
-                        Roadmaps
-                      </NavLink>
-                    </li>
-                    <li className="font-medium text-base hover:text-purple-300 transition">
-                      <NavLink to="roadmaps" onClick={() => setIsOpen(false)}>
-                        Coding Libs
-                      </NavLink>
-                    </li>
+                {/* Profile links */}
+                {AVATAR_MENU_ITEMS.map(({ label, to, icon: Icon }) => (
+                  <MobileNavLink
+                    key={to}
+                    to={to}
+                    className="flex items-center gap-2"
+                  >
+                    <Icon size={15} />
+                    {label}
+                  </MobileNavLink>
+                ))}
 
-                    {/* Extra links */}
-                    {MOBILE_EXTRA_LINKS.map(({ label, to }) => (
-                      <li
-                        key={to}
-                        className="font-medium text-base hover:text-purple-300 transition"
-                      >
-                        <NavLink to={to} onClick={() => setIsOpen(false)}>
-                          {label}
-                        </NavLink>
-                      </li>
-                    ))}
-                    {/* Avatar row */}
-                    <li className="flex items-center gap-3 pt-2 mt-1 border-t border-white/20">
-                      <AvatarImage />
-                      <div className="min-w-0">
-                        <p className="text-sm font-semibold text-white truncate">
-                          {navUser?.firstName}
-                        </p>
-                        {navUser?.username && (
-                          <p className="text-xs text-purple-200 truncate">
-                            @{navUser.username}
-                          </p>
-                        )}
-                      </div>
-                    </li>
+                {/* Theme toggle — mobile */}
+                <li className="flex items-center justify-between border-t border-white/20 pt-2 mt-1">
+                  <ThemeToggle spanClassName="flex items-center gap-2 text-base font-medium" />
+                </li>
 
-                    {/* Profile links */}
-                    {AVATAR_MENU_ITEMS.map(({ label, to, icon: Icon }) => (
-                      <li
-                        key={to}
-                        className="font-medium text-base hover:text-purple-300 transition"
-                      >
-                        <NavLink
-                          to={to}
-                          onClick={() => setIsOpen(false)}
-                          className="flex items-center gap-2"
-                        >
-                          <Icon size={15} />
-                          {label}
-                        </NavLink>
-                      </li>
-                    ))}
+                {/* Logout */}
+                <li className="border-t border-white/20 pt-2">
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-2 text-base font-medium text-red-300 hover:text-red-200 transition cursor-pointer"
+                  >
+                    <LogOut size={15} />
+                    Logout
+                  </button>
+                </li>
+              </>
+            )}
 
-                    {/* Theme toggle — mobile */}
-                    <li className="flex items-center justify-between border-t border-white/20 pt-2 mt-1">
-                      <span className="flex items-center gap-2 text-base font-medium">
-                        {theme === "dark" ? (
-                          <Moon size={15} />
-                        ) : (
-                          <Sun size={15} />
-                        )}
-                        {theme === "dark" ? "Dark mode" : "Light mode"}
-                      </span>
-                      <button onClick={setTheme} className="cursor-pointer">
-                        {theme === "dark" ? (
-                          <LightModeOutlinedIcon fontSize="small" />
-                        ) : (
-                          <NightsStayOutlinedIcon fontSize="small" />
-                        )}
-                      </button>
-                    </li>
-
-                    {/* Logout */}
-                    <li className="border-t border-white/20 pt-2">
-                      <button
-                        onClick={handleLogout}
-                        className="flex items-center gap-2 text-base font-medium text-red-300 hover:text-red-200 transition cursor-pointer"
-                      >
-                        <LogOut size={15} />
-                        Logout
-                      </button>
-                    </li>
-                  </React.Fragment>
-                )}
-              </ul>
+            {!auth && (
+              <>
+                <MobileNavLink to="/">Home</MobileNavLink>
+                <MobileNavLink to="about">About</MobileNavLink>
+                <MobileNavLink to="get-started">Get Started</MobileNavLink>
+                <li className="flex items-center justify-between border-t border-white/20 pt-0 mt-0">
+                  <ThemeToggle spanClassName="flex items-center gap-0 text-base font-medium" />
+                </li>
+              </>
             )}
           </ul>
-        </nav>
-      </div>
-    </React.Fragment>
+        )}
+      </ul>
+    </nav>
   );
 };
 

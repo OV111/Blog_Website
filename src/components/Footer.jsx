@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Send } from "lucide-react";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -23,6 +23,15 @@ const Categories = [
 
 const Footer = () => {
   const { pathname } = useLocation();
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setSubscribed(true);
+    setEmail("");
+  };
 
   return (
     <React.Fragment>
@@ -92,7 +101,7 @@ const Footer = () => {
                   key={link.href}
                   to={link.href}
                   className={`text-base hover:text-purple-300 transition sm:text-lg ${
-                    pathname === link.href ? "text-purple-400" : ""
+                    pathname === link.href ? "text-purple-400" : "text-white"
                   }`}
                 >
                   {link.title}
@@ -128,19 +137,26 @@ const Footer = () => {
             <p className="text-purple-200 mb-4 lg:mb-0 w-60">
               Subscribe to our newsletter for the latest articles and updates.
             </p>
-            <form className="flex gap-2 lg:h-10">
-              <input
-                type="email"
-                placeholder="Enter Your Email."
-                className="p-2 flex-grow rounded-md pl-2 outline-none bg-purple-700 border-purple-600 text-white placeholder-purple-300 focus:ring-purple-500 focus:border-purple-500"
-              />
-              <button
-                type="submit"
-                className="p-2 bg-purple-600 cursor-pointer   hover:bg-purple-700 text-white  rounded-md shadow-sm transition-colors duration-200"
-              >
-                <Send className="w-6 h-6 lg:mx-4 my-0 "></Send>
-              </button>
-            </form>
+            {subscribed ? (
+              <p className="text-purple-200 text-sm">Thanks for subscribing!</p>
+            ) : (
+              <form onSubmit={handleSubscribe} className="flex gap-2 lg:h-10">
+                <input
+                  type="email"
+                  placeholder="Enter Your Email."
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="p-2 flex-grow rounded-md pl-2 outline-none bg-purple-700 border-purple-600 text-white placeholder-purple-300 focus:ring-purple-500 focus:border-purple-500"
+                />
+                <button
+                  type="submit"
+                  className="p-2 bg-purple-600 cursor-pointer   hover:bg-purple-700 text-white  rounded-md shadow-sm transition-colors duration-200"
+                >
+                  <Send className="w-6 h-6 lg:mx-4 my-0 "></Send>
+                </button>
+              </form>
+            )}
           </div>
         </div>
         {/* <hr className="border-purple-800 my-6" /> */}
