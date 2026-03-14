@@ -197,6 +197,11 @@ const StartServer = async () => {
       }
 
       if (req.method === "POST" && req.url === "/blogs") {
+        const token = req.headers.authorization?.replace("Bearer ", "");
+        if (!verifyToken(token)) {
+          res.writeHead(401, { "content-type": "application/json" });
+          return res.end(JSON.stringify({ message: "Unauthorized", code: 401 }));
+        }
         let body = "";
         req.on("data", (chunk) => {
           body += chunk;
@@ -617,6 +622,12 @@ const StartServer = async () => {
         const currentUserId = new ObjectId(verifyTokenResult?.id);
         const users = db.collection("users");
         const targetUser = await users.findOne({ username: userName });
+
+        if (!targetUser) {
+          res.writeHead(404, { "content-type": "application/json" });
+          return res.end(JSON.stringify({ message: "Not Found", code: 404 }));
+        }
+
         const userStats = db.collection("usersStats");
         const follows = db.collection("follows");
         const [followDoc, reverseDoc] = await Promise.all([
@@ -631,11 +642,6 @@ const StartServer = async () => {
         ]);
         if (followDoc) isFollowing = true;
         if (reverseDoc) isFollower = true;
-
-        if (!targetUser) {
-          res.writeHead(404, { "content-type": "application/json" });
-          return res.end(JSON.stringify({ message: "Not Found", code: 404 }));
-        }
 
         const stats = await userStats.findOne({ userId: targetUser._id });
 

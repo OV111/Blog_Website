@@ -13,9 +13,9 @@ const Home = () => {
       <Toaster position="right-bottom" reverseOrder={false} />
 
       {/* Background blobs */}
-      {/* <div className="pointer-events-none absolute -top-20 -left-20 h-72 w-72 rounded-full bg-fuchsia-200/50 blur-3xl dark:bg-fuchsia-900/20" />
+      <div className="pointer-events-none absolute -top-20 -left-20 h-72 w-72 rounded-full bg-fuchsia-200/50 blur-3xl dark:bg-fuchsia-900/20" />
       <div className="pointer-events-none absolute top-10 right-10 h-72 w-72 rounded-full bg-violet-200/40 blur-3xl dark:bg-violet-900/20" />
-      <div className="pointer-events-none absolute bottom-0 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-purple-100/60 blur-3xl dark:bg-purple-900/10" /> */}
+      <div className="pointer-events-none absolute bottom-0 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-purple-100/60 blur-3xl dark:bg-purple-900/10" />
 
       {/* Hero */}
       <section className="relative flex justify-between gap-0 lg:gap-48 min-h-[80vh] lg:min-h-[85vh] items-center mx-auto max-w-8xl px-6 sm:px-10 md:px-20 lg:px-28 py-12 lg:py-0">

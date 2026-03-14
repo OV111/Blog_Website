@@ -4,7 +4,8 @@ import process from "process";
 export const createToken = (user) => {
   return jwt.sign(
     {id: user.id,},
-    process.env.JWT_Secret
+    process.env.JWT_Secret,
+    { expiresIn: "7d" }
   );
 };
 
