@@ -62,7 +62,7 @@ const StartServer = async () => {
       }
 
       // CORS Headers
-      res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+      res.setHeader("Access-Control-Allow-Origin", "https://devs-website-6nafw53w3-ov111s-projects.vercel.app");
       res.setHeader(
         "Access-Control-Allow-Methods",
         "GET, POST, PUT, OPTIONS, DELETE",
