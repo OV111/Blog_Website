@@ -1,4 +1,4 @@
-import http from "http";
+import https from "https";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import process from "process";
@@ -54,7 +54,12 @@ const StartServer = async () => {
   try {
     db = await connectDB();
 
-    const server = http.createServer(async (req, res) => {
+    const sslOptions = {
+      key: fs.readFileSync(process.env.SSL_KEY_PATH),
+      cert: fs.readFileSync(process.env.SSL_CERT_PATH),
+    };
+
+    const server = https.createServer(sslOptions, async (req, res) => {
       const maintenance = false;
       if (maintenance) {
         res.writeHead(503, { "content-type": "application/json" });
@@ -62,7 +67,7 @@ const StartServer = async () => {
       }
 
       // CORS Headers
-      res.setHeader("Access-Control-Allow-Origin", "https://devs-website-6nafw53w3-ov111s-projects.vercel.app");
+      res.setHeader("Access-Control-Allow-Origin", "https://devs-website-mu.vercel.app");
       res.setHeader(
         "Access-Control-Allow-Methods",
         "GET, POST, PUT, OPTIONS, DELETE",
@@ -136,7 +141,7 @@ const StartServer = async () => {
                 failedLoginByIp.delete(ip);
                 const serialized = cookie.serialize("session", result.userId, {
                   httpOnly: true,
-                  secure: false,
+                  secure: true,
                   sameSite: "strict",
                   maxAge: 60 * 60,
                   path: "/",
@@ -842,7 +847,7 @@ const StartServer = async () => {
     initWebSocketServer(server);
     // ///////////////////////////////////////////////////
     server.listen(PORT, () => {
-      console.log(`Main Server is Running at http://localhost:${PORT}`);
+      console.log(`Main Server is Running at https://localhost:${PORT}`);
     });
   } catch (err) {
     console.log("Failed to Connect!", err);
