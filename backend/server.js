@@ -841,8 +841,8 @@ const StartServer = async () => {
     // Initialize WebSocket server
     initWebSocketServer(server);
     // ///////////////////////////////////////////////////
-    server.listen(PORT, () => {
-      console.log(`Main Server is Running at https://localhost:${PORT}`);
+    server.listen(PORT, "0.0.0.0", () => {
+      console.log(`Main Server is Running at http://0.0.0.0:${PORT}`);
     });
   } catch (err) {
     console.log("Failed to Connect!", err);
