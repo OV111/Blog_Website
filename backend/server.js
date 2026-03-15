@@ -1,4 +1,4 @@
-import https from "https";
+import http from "http";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import process from "process";
@@ -54,12 +54,7 @@ const StartServer = async () => {
   try {
     db = await connectDB();
 
-    const sslOptions = {
-      key: fs.readFileSync(process.env.SSL_KEY_PATH),
-      cert: fs.readFileSync(process.env.SSL_CERT_PATH),
-    };
-
-    const server = https.createServer(sslOptions, async (req, res) => {
+    const server = http.createServer(async (req, res) => {
       const maintenance = false;
       if (maintenance) {
         res.writeHead(503, { "content-type": "application/json" });
@@ -141,7 +136,7 @@ const StartServer = async () => {
                 failedLoginByIp.delete(ip);
                 const serialized = cookie.serialize("session", result.userId, {
                   httpOnly: true,
-                  secure: true,
+                  secure: false,
                   sameSite: "strict",
                   maxAge: 60 * 60,
                   path: "/",
