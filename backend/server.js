@@ -1,5 +1,6 @@
 import http from "http";
 import dotenv from "dotenv";
+dotenv.config({ path: "./backend/.env" });
 import connectDB from "./config/db.js";
 import process from "process";
 import cookie from "cookie";
@@ -7,6 +8,13 @@ import bcrypt from "bcrypt";
 import busboy from "busboy";
 import fs from "fs";
 import path from "path";
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 import initWebSocketServer from "./websocket/index.js";
 
@@ -22,8 +30,6 @@ import {
   getFollowersData,
   getFollowingData,
 } from "./services/followService.js";
-
-dotenv.config({ path: "./backend/.env" });
 
 const PORT = process.env.PORT || 5000;
 const escapeRegex = (value = "") =>
@@ -313,16 +319,19 @@ const StartServer = async () => {
 
         const fields = {};
         const files = {};
-        bb.on("file", (fieldname, file, filename) => {
-          const uploadDir = path.join(process.cwd(), "uploads");
-          if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
-
-          const uniqueFilename = `${Date.now()}-${filename}`;
-          const savePath = path.join(uploadDir, uniqueFilename);
-          files[fieldname] = uniqueFilename;
-
-          const writeStream = fs.createWriteStream(savePath);
-          file.pipe(writeStream);
+        bb.on("file", (fieldname, file) => {
+          const uploadPromise = new Promise((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+              { folder: "devs_website" },
+              (error, result) => {
+                if (error) return reject(error);
+                files[fieldname] = result.secure_url;
+                resolve();
+              }
+            );
+            file.pipe(stream);
+          });
+          files[`${fieldname}_promise`] = uploadPromise;
         });
 
         bb.on("field", (fieldname, val) => {
@@ -330,6 +339,11 @@ const StartServer = async () => {
         });
         bb.on("finish", async () => {
           try {
+            const uploadPromises = Object.keys(files)
+              .filter((k) => k.endsWith("_promise"))
+              .map((k) => files[k]);
+            await Promise.all(uploadPromises);
+
             const users = db.collection("users");
             const usersStats = db.collection("usersStats");
             const userUpdate = {};

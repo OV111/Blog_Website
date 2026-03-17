@@ -166,19 +166,19 @@ const MyProfile = () => {
 
               <div className="flex items-center gap-6 text-2xl text-gray-600 dark:text-gray-400">
                 <Link
-                  to="#"
+                  to={stats?.githubLink}
                   className="hover:text-black dark:hover:text-gray-100"
                 >
                   <FaGithub />
                 </Link>
                 <Link
-                  to="#"
+                  to={stats?.linkedinLink}
                   className="hover:text-blue-600 dark:hover:text-blue-400"
                 >
                   <FaLinkedin />
                 </Link>
                 <Link
-                  to="#"
+                  to={stats?.twitterLink}
                   className="hover:text-gray-900 dark:hover:text-gray-100"
                 >
                   <XIcon />

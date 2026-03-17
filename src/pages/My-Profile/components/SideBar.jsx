@@ -133,7 +133,7 @@ export default function SideBar({ isOpen, onClose }) {
               <img
                 src={avatarSrc}
                 alt="Profile"
-                className="lg:mx-0 mx-auto w-8 h-8 rounded-full bg-purple-100"
+                className="lg:mx-0 mx-auto w-8 h-8 object-cover rounded-full bg-purple-100"
               />
             )}
           </button>

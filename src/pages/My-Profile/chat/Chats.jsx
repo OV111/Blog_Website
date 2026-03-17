@@ -321,7 +321,7 @@ const Chats = () => {
                     `}
                 >
                   <img
-                    src={user?.profileImage}
+                    src={userStats?.profileImage}
                     alt="Profile"
                     className="h-8 w-8 shrink-0 rounded-full bg-purple-100 object-cover"
                   />

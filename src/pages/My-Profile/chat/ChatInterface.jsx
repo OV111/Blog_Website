@@ -106,7 +106,7 @@ const ChatInterface = ({
                 <img
                   src={userStats?.profileImage}
                   alt="Profile"
-                  className="lg:mx-0 mx-auto h-8 w-8 rounded-full bg-purple-100"
+                  className="lg:mx-0 mx-auto h-8 w-8 object-cover rounded-full bg-purple-100"
                 />
               )}
               <div className="hidden lg:block">
