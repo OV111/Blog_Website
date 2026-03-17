@@ -62,8 +62,8 @@ const Chats = () => {
   const skeletonHighlightColor = isDarkMode ? "#374151" : "#f5f5f5";
 
   // ws implementation //////////////////////////////////////////////
-  const [socket, setSocket] = useState(null);
   const token = localStorage.getItem("JWT");
+  const [socket, setSocket] = useState(null);
   const senderId = getUserIdFromJWT(token);
   const receiverId = userSelected?._id;
   const roomId =
@@ -72,10 +72,11 @@ const Chats = () => {
       : null;
 
   useEffect(() => {
-    const ws = new WebSocket("wss://devswebsite-production.up.railway.app");
+    const ws = new WebSocket(import.meta.env.VITE_WS_URL);
 
     ws.onopen = () => {
       console.log("WebSocket connection opened");
+      ws.send(JSON.stringify({type:"auth",token}))
       setSocket(ws);
       ws.send(
         JSON.stringify({
@@ -218,6 +219,7 @@ const Chats = () => {
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
+
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
       <Sidebar />
@@ -293,9 +295,9 @@ const Chats = () => {
 
         <div className="mt-1 max-h-[calc(100vh-180px)] overflow-y-auto bg-white dark:bg-gray-950">
           {isLoadingChats ? (
-            <p className="flex justify-center items-center px-3 py-6 text-sm text-gray-500 dark:text-gray-100">
+            <div className="flex justify-center items-center px-3 py-6 text-sm text-gray-500 dark:text-gray-100">
               <LoadingChatSuspense />
-            </p>
+            </div>
           ) : filteredFollowers.length > 0 ? (
             filteredFollowers.map((user) => {
               const roomIdForUser =

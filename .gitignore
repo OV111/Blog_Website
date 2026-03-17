@@ -17,8 +17,11 @@ dist-ssr
 # Environment variables
 .env
 .env.local
+.env.staging
 .env.*.local
 backend/.env
+backend/.env.local
+backend/.env.staging
 
 # User uploads
 uploads/

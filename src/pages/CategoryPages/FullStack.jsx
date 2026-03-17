@@ -1,22 +1,10 @@
 /* This code snippet is a React component named `FullStack` that represents a page for displaying full
 stack development content. Here's a breakdown of what the code is doing: */
-import React, { lazy, Suspense, useCallback, useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import BlogCard from "@/components/BlogCard";
-
 import { FloatingIcons } from "../../components/FloatingIcons";
-
 import { ScrollLine } from "../../animations/ScrollingLine";
-import { Navigate } from "react-router-dom";
 import useAuthStore from "../../context/useAuthStore";
 
 const LoadingSuspense = lazy(() => import("../../components/LoadingSuspense"));
@@ -27,13 +15,10 @@ const ReadMore = lazy(() => import("../../components/ReadMore"));
 
 const FullStack = () => {
   const [categoryPage, setCategoryPage] = useState("fullstack");
-  const location = useLocation();
-  const navigate = useNavigate();
   const { auth } = useAuthStore();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  console.log(auth);
   const fetchPosts = async () => {
     try {
       let url = auth
@@ -106,41 +91,7 @@ const FullStack = () => {
             {loading ? (
               <LoadingSuspense></LoadingSuspense>
             ) : (
-              // <Grid container spacing={4} padding={5}>
-              //   {data.map((post) => (
-              //     <Card
-              //       key={post.id}
-              //       sx={{ minWidth: 425, maxWidth: 425 }}
-              //       variant="outlined"
-              //     >
-              //       <CardMedia sx={{ height: 200 }} image={post.image} />
-              //       <CardContent>
-              //         <Typography
-              //           gutterBottom
-              //           variant="h5"
-              //           alignItems={"center"}
-              //           textAlign={"center"}
-              //         >
-              //           {post.title}
-              //         </Typography>
-              //         <Typography variant="body2" maxHeight={400}>
-              //           {post.description}
-              //         </Typography>
-              //       </CardContent>
-              //       <CardActions>
-              //         <Button
-              //           size="small"
-              //           component={Link}
-              //           to={`post/${post.id}`}
-              //           state={{ post }}
-              //         >
-              //           Read More
-              //         </Button>
-              //       </CardActions>
-              //     </Card>
-              //   ))}
-              // </Grid>
-               <div className="flex flex-wrap justify-center gap-10 px-2 pb-10 lg:px-0">
+              <div className="flex flex-wrap justify-center gap-10 px-2 pb-10 lg:px-0">
               {data.map((card) => (
                 <BlogCard key={card.id} card={card} />
               ))}

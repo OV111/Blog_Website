@@ -2,7 +2,8 @@ import connectDB from "../config/db.js";
 
 const rooms = new Map();
 export const joinRoom = async (ws, data) => {
-  const { roomId, receiverId, senderId } = data; // getting room id and case of missing
+  const { roomId, receiverId } = data;
+  const senderId = ws.userId;
   if (!roomId) {
     return ws.send(
       JSON.stringify({ type: "error", message: "Room ID is missing" }),
@@ -56,7 +57,8 @@ export const joinRoom = async (ws, data) => {
 };
 
 export const sendMessage = async (ws, data) => {
-  const { roomId, senderId, receiverId, text } = data;
+  const { roomId, receiverId, text } = data;
+  const senderId = ws.userId;
   if (!roomId || !senderId || !receiverId || !text) {
     return ws.send(
       JSON.stringify({ type: "error", message: "Missing required fields" }),
@@ -133,7 +135,7 @@ const loadMessages = async (roomId, limitNum = 50, cursor = null) => {
 };
 
 export const loadLastMessages = async (ws, data) => {
-  const { userId } = data;
+  const userId = ws.userId;
   if (!userId) {
     return ws.send(
       JSON.stringify({ type: "error", message: "userId is not defined" }),
