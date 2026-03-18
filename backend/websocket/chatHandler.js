@@ -134,7 +134,7 @@ const loadMessages = async (roomId, limitNum = 50, cursor = null) => {
   return roomMessages.reverse(); // Initial logic
 };
 
-export const loadLastMessages = async (ws, data) => {
+export const loadLastMessages = async (ws) => {
   const userId = ws.userId;
   if (!userId) {
     return ws.send(

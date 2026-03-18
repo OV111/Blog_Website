@@ -77,13 +77,12 @@ const Chats = () => {
     ws.onopen = () => {
       console.log("WebSocket connection opened");
       ws.send(JSON.stringify({type:"auth",token}))
-      setSocket(ws);
       ws.send(
         JSON.stringify({
           type: "load_last_messages",
-          userId: senderId,
         }),
       );
+      setSocket(ws);
     };
     ws.onmessage = (event) => {
       const payload = JSON.parse(event.data);
@@ -251,7 +250,7 @@ const Chats = () => {
             />
           </label>
 
-          <div className="relative flex justify-end py-1">
+          <div className="relative flex justify-end py-2">
             <button
               type="button"
               onClick={() => setIsSortOpen((prev) => !prev)}
@@ -270,7 +269,7 @@ const Chats = () => {
             </button>
 
             {isSortOpen && (
-              <div className="absolute top-full z-2 mt-2 w-36 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900">
+              <div className="absolute top-full z-2 mt-0 w-36 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900">
                 {["Newest", "Oldest"].map((option) => (
                   <button
                     key={option}
@@ -293,7 +292,7 @@ const Chats = () => {
           </div>
         </div>
 
-        <div className="mt-1 max-h-[calc(100vh-180px)] overflow-y-auto bg-white dark:bg-gray-950">
+        <div className="max-h-[calc(100vh-180px)] overflow-y-auto bg-white dark:bg-gray-950">
           {isLoadingChats ? (
             <div className="flex justify-center items-center px-3 py-6 text-sm text-gray-500 dark:text-gray-100">
               <LoadingChatSuspense />
