@@ -11,10 +11,10 @@ const LoadingSuspense = () => {
         </div>
         <div className="text-center">
           <h3 className="justify-center items-center text-2xl font-semibold text-gray-700 dark:text-gray-100 mb-1">
-            Loading . . .
+            Almost there...
           </h3>
           <p className="justify-center items-center text-lg text-gray-500 dark:text-gray-100">
-            Preparing your Blog reading
+            Fetching the latest from the community
           </p>
         </div>
       </div>
