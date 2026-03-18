@@ -75,7 +75,7 @@ const BlogCard = ({ card }) => {
     <Card className="w-full max-w-[400px] overflow-hidden rounded-2xl border-none bg-violet-50/40 dark:bg-slate-900">
       <div className="relative h-56 border-b border-violet-200 bg-violet-200/60 dark:border-slate-700 dark:bg-slate-800">
         <img
-          src={card.image}
+          src={card.image || null}
           alt={card.title}
           className="h-full w-full object-cover"
         />

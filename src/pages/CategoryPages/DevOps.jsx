@@ -36,7 +36,7 @@ const DevOps = () => {
       <header className="min-h-screen mt-40">
         <FloatingIcons category={categoryPage} />
 
-        <h1 className="flex justify-center items-center">
+        <div className="flex justify-center items-center">
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -52,7 +52,7 @@ const DevOps = () => {
               </span>
             </div>
           </motion.h1>
-        </h1>
+        </div>
 
         <motion.p
           initial={{ opacity: 0, y: 40 }}

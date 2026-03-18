@@ -17,12 +17,6 @@ const backendTags = [
   "MongoDB",
   "Authentication",
   "Docker",
-  "MongoDB",
-  "Authentication",
-  "Docker",
-  "MongoDB",
-  "Authentication",
-  "Docker",
 ];
 
 const Backend = () => {
@@ -52,7 +46,7 @@ const Backend = () => {
       <header className="min-h-screen pt-40">
         <FloatingIcons category={"backend"} />
 
-        <h1 className="flex justify-center items-center">
+        <div className="flex justify-center items-center">
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -68,7 +62,7 @@ const Backend = () => {
               </span>
             </div>
           </motion.h1>
-        </h1>
+        </div>
 
         <motion.p
           initial={{ opacity: 0, y: 40 }}

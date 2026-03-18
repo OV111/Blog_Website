@@ -190,6 +190,7 @@ const GetStarted = () => {
                 </label>
                 <input
                   type={showPassword ? "text" : "password"}
+                  autoComplete="new-password"
                   placeholder="Enter Your Password"
                   {...register("password", {
                     required: "Password is required!",
@@ -230,6 +231,7 @@ const GetStarted = () => {
                     </label>
                     <input
                       type={showConfirmPassword ? "text" : "password"}
+                      autoComplete="new-password"
                       placeholder="Confirm Password"
                       {...register("confirmPassword", {
                         required: "Please confirm your password!",
