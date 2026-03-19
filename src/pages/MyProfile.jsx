@@ -98,13 +98,13 @@ const MyProfile = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="flex  bg-gray-50 dark:bg-gray-950">
       <SideBar
         isOpen={isSideBarOpened}
         onClose={() => setIsSideBarOpened(false)}
       />
 
-      <main className="flex-1 dark:bg-gray-950">
+      <div className="flex-1">
         <div className="relative">
           <img
             src={
@@ -196,7 +196,7 @@ const MyProfile = () => {
             ))}
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 };

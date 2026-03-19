@@ -92,7 +92,7 @@ const ChatInterface = ({
     <div className="min-w-0 flex-1 bg-white dark:bg-gray-950">
       {userSelected ? (
         <div className="flex h-screen flex-col justify-between overflow-hidden">
-          <div className="flex items-center justify-between border-b border-gray-100 bg-white px-8 pt-3 pb-3 dark:border-gray-800 dark:bg-gray-900 lg:px-3">
+          <div className="flex items-center justify-between border-b border-gray-100 bg-white px-8 py-3 dark:border-gray-800 dark:bg-gray-900 lg:px-3">
             <div className="flex items-center gap-3">
               {isLoadingUserStats ? (
                 <Skeleton
@@ -111,7 +111,7 @@ const ChatInterface = ({
               )}
               <div className="hidden lg:block">
                 {isLoadingUserStats ? (
-                  <div className="space-y-1">
+                  <div className="space-y-0">
                     <Skeleton
                       width={130}
                       height={12}
@@ -164,7 +164,7 @@ const ChatInterface = ({
               </button>
 
               {isMenuOpen && (
-                <ul className="absolute right-0 z-30 mt-2 grid w-52 gap-1 overflow-hidden rounded-2xl border border-gray-200 bg-white/95 p-2 shadow-xl shadow-black/10 backdrop-blur-sm dark:border-gray-700 dark:bg-gray-900/95 dark:shadow-black/40">
+                <ul className="absolute right-0 z-4 mt-2 grid w-52 gap-1 overflow-hidden rounded-2xl border border-gray-200 bg-white/95 p-2 shadow-xl shadow-black/10 backdrop-blur-sm dark:border-gray-700 dark:bg-gray-900/95 dark:shadow-black/40">
                   <button
                     type="button"
                     onClick={() => {

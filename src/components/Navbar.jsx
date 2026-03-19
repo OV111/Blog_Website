@@ -141,7 +141,7 @@ const Navbar = () => {
 
   const AvatarImage = ({ inDropdown = false }) => (
     <div
-      className={`w-8 h-8 rounded-full shrink-0 border ${
+      className={`w-8 h-8 rounded-full shrink-0 border overflow-hidden flex justify-center items-center ${
         inDropdown ? "border-gray-200 dark:border-gray-600" : "border-white/50"
       }`}
     >
@@ -167,7 +167,7 @@ const Navbar = () => {
   );
 
   const CategoryList = ({ onClose }) => (
-    <ul className="absolute top-full mt-2 left-0 text-black bg-gray-200 dark:bg-gray-600 dark:text-white shadow-md rounded w-40 py-2 z-10">
+    <ul className="absolute top-full mt-2 left-0 text-black bg-gray-200 dark:bg-gray-600 dark:text-white shadow-md rounded w-40 py-2 z-4">
       {CATEGORY_OPTIONS.map(({ title, slug }) => (
         <li
           key={slug}
@@ -182,7 +182,7 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="relative space-x-1 flex items-center justify-between px-3 gap-10 py-1 shadow z-20 w-full bg-linear-to-r from-purple-600 to-purple-800 dark:from-purple-700 dark:to-purple-800 lg:gap-10 lg:py-2">
+    <nav className="relative space-x-1 flex items-center justify-between px-3 gap-10 py-1 shadow z-3 w-full bg-linear-to-r from-purple-600 to-purple-800 dark:from-purple-700 dark:to-purple-800 lg:gap-10 lg:py-2">
       <h2 className="text-base font-bold my-1 lg:my-0.5 cursor-pointer sm:text-xl text-gray-100 md:text-xl lg:text-xl lg:w-auto lg:ml-3">
         <NavLink to="/">DevsWebs</NavLink>
       </h2>
@@ -240,16 +240,19 @@ const Navbar = () => {
             </li>
 
             {/* Avatar dropdown — desktop */}
-            <li className="relative hidden md:block" ref={avatarRef}>
+            <li
+              className="relative hidden md:block flex items-center  px-1"
+              ref={avatarRef}
+            >
               <button
                 onClick={() => setAvatarMenuOpen(!avatarMenuOpen)}
-                className="cursor-pointer"
+                className="flex items-center cursor-pointer"
               >
                 <AvatarImage />
               </button>
 
               {avatarMenuOpen && (
-                <div className="absolute right-0 top-full mt-3 w-52 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 py-1 z-10">
+                <div className="absolute right-0 top-full mt-3 w-52 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 py-1 z-4">
                   {/* User info header */}
                   <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 dark:border-gray-700">
                     <AvatarImage inDropdown />
@@ -334,7 +337,7 @@ const Navbar = () => {
 
         {/* Mobile menu */}
         {isOpen && (
-          <ul className="flex flex-col gap-2 p-4 border-t-[0.1px] border-gray-100 absolute top-full left-0 w-full bg-linear-to-r from-purple-600 to-purple-800 dark:from-purple-700 dark:to-purple-800 md:hidden z-3">
+          <ul className="flex flex-col gap-2 p-4 border-t-[0.1px] border-gray-100 absolute top-full left-0 w-full bg-linear-to-r from-purple-600 to-purple-800 dark:from-purple-700 dark:to-purple-800 md:hidden z-4">
             {showSearch && (
               <li>
                 <div ref={mobileSearchRef} className="relative">

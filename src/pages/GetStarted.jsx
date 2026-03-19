@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Toaster, toast } from "react-hot-toast";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, BookOpen, Bookmark, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../context/useAuthStore";
+import Lottie from "lottie-react";
+import codingAnimation from "../assets/animations/coding.json";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const GetStarted = () => {
@@ -91,21 +93,56 @@ const GetStarted = () => {
     reset();
   };
 
-  const ToggleLink = () => {
+  const toggleLink = () => {
     setIsSignedUp(!isSignedUp);
     setAuthUiMessage("");
     reset();
   };
 
+  const features = [
+    {
+      icon: <BookOpen size={18} />,
+      text: "Access in-depth dev articles & tutorials",
+    },
+    {
+      icon: <Bookmark size={18} />,
+      text: "Save your favorite posts for later",
+    },
+    { icon: <Users size={18} />, text: "Join a community of developers" },
+  ];
+
   return (
     <React.Fragment>
       <Toaster position="top-center" reverseOrder={false} />
-      <div className="flex justify-between">
-        <div className="w-[100%]"></div>
-        <div className="mt-0 w-full px-4 sm:px-6 md:px-8">
-          <div className="mx-auto mt-0 mb-0 max-w-xl rounded-2xl border border-violet-100 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-gray-950 dark:shadow-2xl dark:shadow-black/30 sm:mt-6 sm:mb-6 sm:p-6 md:mt-8 md:mb-8 md:p-8">
+      <div className="flex min-h-screen">
+        {/* Left Panel */}
+        <div className="hidden lg:flex lg:w-1/2 flex-col items-center justify-center bg-zinc-100 dark:bg-gray-950 px-12 py-16">
+          <Lottie
+            animationData={codingAnimation}
+            loop
+            className="w-full max-w-sm"
+          />
+          <ul className="mt-6 space-y-4 w-full max-w-sm">
+            {features.map((f, i) => (
+              <li
+                key={i}
+                className="flex items-center gap-3 rounded-xl bg-purple-50 dark:bg-zinc-800/60 px-4 py-3"
+              >
+                <span className="text-purple-500 dark:text-purple-400">
+                  {f.icon}
+                </span>
+                <span className="text-sm font-medium text-purple-700 dark:text-zinc-200">
+                  {f.text}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* Right Panel — Form */}
+        <div className="flex min-h-screen w-full lg:w-1/2 items-center justify-center px-4 py-8 sm:px-6 sm:py-10 md:px-8">
+          <div className="w-full max-w-xl rounded-2xl border border-violet-100 bg-white p-4  dark:border-zinc-800 dark:bg-gray-950  sm:p-6 md:p-8">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-bold text-center mb-4 sm:mb-6 md:mb-8 text-purple-700 dark:text-purple-600">
-              {isSignedUp ? "Sign Up" : "Log In"}
+              {isSignedUp ? "Get Started" : "Welcome Back"}
             </h2>
             {authUiMessage && (
               <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900 dark:bg-red-950/50 dark:text-red-300">
@@ -114,7 +151,7 @@ const GetStarted = () => {
             )}
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
               {isSignedUp && (
-                <React.Fragment>
+                <>
                   <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                     <div className="flex-1">
                       <label className="block mb-1 font-medium text-sm text-slate-700 dark:text-zinc-200 sm:text-base">
@@ -160,7 +197,7 @@ const GetStarted = () => {
                       )}
                     </div>
                   </div>
-                </React.Fragment>
+                </>
               )}
 
               <div>
@@ -224,7 +261,7 @@ const GetStarted = () => {
               </div>
 
               {isSignedUp && (
-                <React.Fragment>
+                <>
                   <div className="relative">
                     <label className="block mb-1 font-medium text-sm text-slate-700 dark:text-zinc-200 sm:text-base">
                       Confirm Password
@@ -235,12 +272,9 @@ const GetStarted = () => {
                       placeholder="Confirm Password"
                       {...register("confirmPassword", {
                         required: "Please confirm your password!",
-                        validate: (value) => {
-                          return (
-                            value === getValues("password") ||
-                            "Password don't match!"
-                          );
-                        },
+                        validate: (value) =>
+                          value === getValues("password") ||
+                          "Passwords don't match!",
                       })}
                       className={`w-full rounded-lg border px-3 py-2 pr-10 text-sm focus:outline-none  dark:bg-zinc-900 dark:text-white dark:placeholder:text-zinc-500 sm:px-4 sm:pr-12 sm:text-base ${
                         errors.confirmPassword
@@ -267,7 +301,7 @@ const GetStarted = () => {
                       </p>
                     )}
                   </div>
-                </React.Fragment>
+                </>
               )}
               <button
                 type="submit"
@@ -278,7 +312,7 @@ const GetStarted = () => {
             </form>
 
             <p
-              onClick={ToggleLink}
+              onClick={toggleLink}
               className="mt-3 items-center cursor-pointer text-center text-sm text-blue-500 hover:underline dark:text-fuchsia-300 sm:mt-4 sm:text-base"
             >
               {isSignedUp

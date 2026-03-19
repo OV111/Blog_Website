@@ -6,8 +6,6 @@ import process from "process";
 import cookie from "cookie";
 import bcrypt from "bcrypt";
 import busboy from "busboy";
-import fs from "fs";
-import path from "path";
 import { v2 as cloudinary } from "cloudinary";
 
 cloudinary.config({

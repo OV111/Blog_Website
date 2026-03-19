@@ -473,13 +473,13 @@ const About = () => {
             <div className="pointer-events-none absolute -top-10 -right-10 w-48 h-48 rounded-full bg-white/10 blur-2xl" />
             <div className="pointer-events-none absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-white/10 blur-2xl" />
 
-            <div className="flex flex-col gap-1 text-center sm:text-left z-10">
+            <div className="flex flex-col gap-1 text-center sm:text-left z-2">
               <span className="text-white font-bold text-xl sm:text-2xl">Ready to join the community?</span>
               <span className="text-fuchsia-200 text-sm">Start reading, writing, and connecting with developers today.</span>
             </div>
             <Link
               to="/get-started"
-              className="z-10 flex-shrink-0 bg-white hover:bg-fuchsia-50 text-fuchsia-700 font-bold
+              className="z-2 flex-shrink-0 bg-white hover:bg-fuchsia-50 text-fuchsia-700 font-bold
                 px-8 py-3 rounded-xl text-sm
                 transition-all duration-200 hover:scale-105 shadow-lg"
             >

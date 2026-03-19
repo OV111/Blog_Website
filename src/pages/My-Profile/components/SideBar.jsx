@@ -111,71 +111,68 @@ export default function SideBar({ isOpen, onClose }) {
 
   return (
     <>
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-20 bg-black/20 backdrop-blur-[1px] lg:hidden"
-          onClick={onClose}
-        />
-      )}
-      {/* Need to correct the height for responsive */}
-      <aside className="flex h-dvh w-10 flex-col overflow-hidden border-r border-gray-200 bg-white transition-all duration-300 dark:border-gray-800 dark:bg-gray-950 lg:h-screen lg:w-56 lg:static lg:sticky lg:top-0">
-        <div className="flex items-center gap-3 border-b border-gray-100 pt-4 pb-2 px-0 dark:border-gray-800 lg:px-3">
-          <button
-            onClick={() => {
-              if (avatarSrc) setOpenImage(true);
-            }}
-            className={isUserInfoLoading ? "cursor-default" : "cursor-pointer"}
-            disabled={isUserInfoLoading}
-          >
-            {isUserInfoLoading ? (
-              <div className="lg:mx-0 mx-auto w-8 h-8 rounded-full bg-gray-200 animate-pulse dark:bg-gray-700" />
-            ) : (
-              <img
-                src={avatarSrc}
-                alt="Profile"
-                className="lg:mx-0 mx-auto w-8 h-8 object-cover rounded-full bg-purple-100"
-              />
-            )}
-          </button>
-          <div className="hidden lg:block">
-            {isUserInfoLoading ? (
-              <div className="space-y-1">
-                <Skeleton
-                  width={112}
-                  height={14}
-                  borderRadius={6}
-                  baseColor={isDarkMode ? "#1f2937" : "#ebebeb"}
-                  highlightColor={isDarkMode ? "#374151" : "#f5f5f5"}
+      <aside className="flex min-h-screen w-10 flex-col mx-auto overflow-hidden border-r border-gray-200 bg-white transition-all duration-300 dark:border-gray-800 dark:bg-gray-950 lg:w-56 lg:static lg:sticky  lg:top-0">
+        <div className="border-b border-gray-100 py-3 px-0 dark:border-gray-800 lg:px-3">
+          <div className="flex items-center justify-center gap-3 mx-auto">
+            <button
+              onClick={() => {
+                if (avatarSrc) setOpenImage(true);
+              }}
+              className={
+                isUserInfoLoading ? "cursor-default" : "cursor-pointer"
+              }
+              disabled={isUserInfoLoading}
+            >
+              {isUserInfoLoading ? (
+                <div className="lg:mx-0 mx-auto w-8 h-8 rounded-full bg-gray-200 animate-pulse dark:bg-gray-700" />
+              ) : (
+                <img
+                  src={avatarSrc}
+                  alt="Profile"
+                  className="lg:mx-0 mx-auto w-8 h-8 object-cover rounded-full bg-purple-100"
                 />
-                <Skeleton
-                  width={144}
-                  height={12}
-                  borderRadius={6}
-                  baseColor={isDarkMode ? "#1f2937" : "#ebebeb"}
-                  highlightColor={isDarkMode ? "#374151" : "#f5f5f5"}
-                />
-              </div>
-            ) : (
-              <>
-                <p className="truncate text-sm font-medium text-gray-800 overflow-x-auto dark:text-gray-100">
-                  {fullName}
-                </p>
-                <p className="truncate text-xs font-medium text-gray-500 overflow-x-auto dark:text-gray-400">
-                  {email}
-                </p>
-              </>
-            )}
+              )}
+            </button>
+            <div className="hidden lg:block">
+              {isUserInfoLoading ? (
+                <div className="space-y-1">
+                  <Skeleton
+                    width={112}
+                    height={14}
+                    borderRadius={6}
+                    baseColor={isDarkMode ? "#1f2937" : "#ebebeb"}
+                    highlightColor={isDarkMode ? "#374151" : "#f5f5f5"}
+                  />
+                  <Skeleton
+                    width={144}
+                    height={12}
+                    borderRadius={6}
+                    baseColor={isDarkMode ? "#1f2937" : "#ebebeb"}
+                    highlightColor={isDarkMode ? "#374151" : "#f5f5f5"}
+                  />
+                </div>
+              ) : (
+                <>
+                  <p className="truncate text-sm font-medium text-gray-800 overflow-x-auto dark:text-gray-100">
+                    {fullName}
+                  </p>
+                  <p className="truncate text-xs font-medium text-gray-500 overflow-x-auto dark:text-gray-400">
+                    {email}
+                  </p>
+                </>
+              )}
+            </div>
           </div>
         </div>
         {openImage && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
+            className="fixed inset-0 z-5 flex items-center  justify-center bg-black/70 p-4"
             onClick={() => setOpenImage(false)}
           >
             <img
               src={avatarSrc}
               alt="Profile"
-              className="max-w-[90vw] max-h-[90vh] rounded-2xl object-contain transition duration-200 scale-100"
+              className="max-w-[70vw] max-h-[70vh] rounded-2xl transition duration-200 scale-100"
               onClick={(e) => {
                 e.stopPropagation();
               }}
@@ -183,11 +180,11 @@ export default function SideBar({ isOpen, onClose }) {
           </div>
         )}
 
-        <nav className="flex min-h-0 flex-1 flex-col overflow-y-auto px-0 py-0 lg:px-2 lg:py-2">
+        <nav className="flex min-h-0 flex-1 flex-col overflow-y-auto px-0 mt-2 lg:mt-0 gap-3 lg:gap-0 py-0 lg:px-2 lg:py-2">
           {sidebarArr.map((group) => (
             <div
               key={group.section}
-              className="grid text-lg py-0 lg:pt-2 gap-1"
+              className="grid text-lg py-0 lg:pt-2 gap-3 lg:gap-1"
             >
               <p className="hidden px-2 py-0 text-[9px] uppercase tracking-wider text-gray-400 font-semibold dark:text-gray-400 lg:block lg:py-0.5">
                 {group.section}
@@ -204,9 +201,9 @@ export default function SideBar({ isOpen, onClose }) {
                         location.pathname,
                       );
                       const active = isActive || isAliasActive;
-                      return `flex w-10 items-center justify-center gap-0 rounded-none py-0 px-0 text-gray-700 transition-colors hover:bg-purple-100 dark:text-gray-100 dark:hover:bg-fuchsia-950/30  lg:mx-auto lg:w-full lg:justify-start lg:gap-2 lg:rounded-lg lg:py-2 lg:px-3 ${
+                      return `flex w-10 items-center justify-center gap-0 rounded-none py-0 px-0 text-gray-700 transition-colors lg:hover:bg-purple-100 dark:text-gray-100 lg:dark:hover:bg-fuchsia-950/30  lg:mx-auto lg:w-full lg:justify-start lg:gap-2 lg:rounded-lg lg:py-2 lg:px-3 ${
                         active
-                          ? "lg:bg-purple-50 text-purple-600 dark:bg-fuchsia-950/30 dark:text-purple-600 "
+                          ? "lg:bg-purple-50 text-purple-600 lg:dark:bg-fuchsia-950/30 dark:text-purple-600 "
                           : ""
                       }`;
                     })()
@@ -227,11 +224,7 @@ export default function SideBar({ isOpen, onClose }) {
           className="group mt-auto flex cursor-pointer items-center justify-center border-t border-gray-100 py-3.5 text-gray-700 transition-colors hover:bg-red-50 hover:text-red-600 dark:border-gray-800 dark:text-gray-100 dark:hover:bg-red-950/40 dark:hover:text-red-400 lg:justify-between lg:px-4"
         >
           <p className="hidden text-[16px] font-medium lg:block">Logout</p>
-          <LogOut size={16}/>
-          {/* fontSize="small"
-            className="mx-auto transition-colors group-hover:text-red-600 lg:mx-0"
-            sx={{ color: "currentColor" }}
-          /> */}
+          <LogOut size={16} />
         </div>
       </aside>
     </>

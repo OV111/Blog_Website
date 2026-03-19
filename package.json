@@ -36,6 +36,7 @@
     "framer-motion": "^12.27.1",
     "gsap": "^3.13.0",
     "jsonwebtoken": "^9.0.2",
+    "lottie-react": "^2.4.1",
     "lucide-react": "^0.536.0",
     "mongodb": "^6.19.0",
     "mongoose": "^8.18.0",

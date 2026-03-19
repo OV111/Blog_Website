@@ -269,7 +269,7 @@ const Chats = () => {
             </button>
 
             {isSortOpen && (
-              <div className="absolute top-full z-2 mt-0 w-36 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-900">
+              <div className="absolute top-full mt-0 w-36 overflow-hidden rounded-xl border border-gray-200 bg-white  dark:border-gray-700 dark:bg-gray-900">
                 {["Newest", "Oldest"].map((option) => (
                   <button
                     key={option}
