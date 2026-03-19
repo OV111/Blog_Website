@@ -1,11 +1,23 @@
 import React, { useEffect, useState } from "react";
 import DeleteAccount from "../../components/DeleteAccount";
 import { Toaster, toast } from "react-hot-toast";
-// import LoadingSuspense from "../components/LoadingSuspense";
 import SideBar from "./components/SideBar";
+import useProfileStore from "@/context/useProfileStore";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import useThemeStore from "@/context/useThemeStore";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Settings = () => {
+  const { user, stats, isLoading, fetchProfile, updateStats } =
+    useProfileStore();
+  const { theme } = useThemeStore();
+  const isDarkMode = theme === "dark";
+  const skeletonProps = {
+    borderRadius: 8,
+    baseColor: isDarkMode ? "#1f2937" : "#ebebeb",
+    highlightColor: isDarkMode ? "#374151" : "#f5f5f5",
+  };
   const [formData, setFormData] = useState({
     fname: "",
     lname: "",
@@ -21,37 +33,25 @@ const Settings = () => {
   const [bannerImage, setBannerImage] = useState(null);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = localStorage.getItem("JWT");
-
-        const request = await fetch(`${API_BASE_URL}/my-profile`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const response = await request.json();
-        const userData = {
-          fname: response.userWithoutPassword.firstName || "",
-          lname: response.userWithoutPassword.lastName || "",
-          bio: response.stats.bio || "",
-          location: response.stats.location || "",
-          postsCount: response.stats.postsCount || 0,
-          githubLink: response.stats.githubLink || "",
-          linkedinLink: response.stats.linkedinLink || "",
-          twitterLink: response.stats.twitterLink || "",
-          mediumLink: response.stats.mediumLink || "",
-        };
-        setFormData(userData);
-        setOriginalData(userData);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-    fetchUserData();
+    if (!user && !stats) fetchProfile();
   }, []);
+
+  useEffect(() => {
+    if (!user || !stats) return;
+    const userData = {
+      fname: user.firstName || "",
+      lname: user.lastName || "",
+      bio: stats.bio || "",
+      location: stats.location || "",
+      postsCount: stats.postsCount || 0,
+      githubLink: stats.githubLink || "",
+      linkedinLink: stats.linkedinLink || "",
+      twitterLink: stats.twitterLink || "",
+      mediumLink: stats.mediumLink || "",
+    };
+    setFormData(userData);
+    setOriginalData(userData);
+  }, [user, stats]);
 
   const SaveChanges = async () => {
     try {
@@ -87,6 +87,7 @@ const Settings = () => {
         };
         setFormData(updatedData);
         setOriginalData(updatedData);
+        updateStats(response.stats);
         toast.success(response.message || "Changes saved successfully");
 
         setProfileImage(null);
@@ -103,27 +104,27 @@ const Settings = () => {
   };
 
   return (
-    <React.Fragment>
-      <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
-        <Toaster position="top-center" reverseOrder />
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
+      <Toaster position="top-center" reverseOrder />
+      <SideBar />
 
-        <SideBar />
+      <div className="flex-1 p-4 sm:p-6 lg:p-8">
+        <h1 className="mb-2 font-semibold text-xl text-gray-900 dark:text-gray-100 lg:text-2xl">
+          Settings
+        </h1>
+        <p className="max-w-xl pb-8 text-sm text-gray-700 dark:text-gray-300 lg:text-lg">
+          Manage your account settings and preferences
+        </p>
 
-        <div className="flex-1 p-4 sm:p-6 lg:p-8">
-          <h1 className="mb-2 font-semibold text-xl text-gray-900 dark:text-gray-100 lg:text-2xl">
-            Settings
-          </h1>
-
-          <p className="max-w-xl pb-8 text-sm text-gray-700 dark:text-gray-300 lg:text-lg">
-            Manage your account settings and preferences
-          </p>
-
-          <div className="grid gap-8" id="general">
-            <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
-              <div className="grid gap-2 w-full lg:max-w-[400px]">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Full Name
-                </label>
+        <div className="grid gap-8" id="general">
+          <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
+            <div className="grid gap-2 w-full lg:max-w-[400px]">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Full Name
+              </label>
+              {isLoading ? (
+                <Skeleton height={38} {...skeletonProps} />
+              ) : (
                 <input
                   type="text"
                   value={formData.fname}
@@ -131,12 +132,15 @@ const Settings = () => {
                   className="w-full rounded-lg border border-gray-300 bg-white p-2 text-gray-900 outline-none placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
                   onChange={(e) => handleChange("fname", e.target.value)}
                 />
-              </div>
-
-              <div className="grid gap-2 w-full lg:max-w-[400px]">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Last Name
-                </label>
+              )}
+            </div>
+            <div className="grid gap-2 w-full lg:max-w-[400px]">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Last Name
+              </label>
+              {isLoading ? (
+                <Skeleton height={38} {...skeletonProps} />
+              ) : (
                 <input
                   type="text"
                   value={formData.lname}
@@ -144,14 +148,18 @@ const Settings = () => {
                   className="w-full rounded-lg border border-gray-300 bg-white p-2 text-gray-900 outline-none placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
                   onChange={(e) => handleChange("lname", e.target.value)}
                 />
-              </div>
+              )}
             </div>
+          </div>
 
-            <div className="grid gap-6 max-w-sm">
-              <div className="grid gap-2">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Profile Image
-                </label>
+          <div className="grid gap-6 max-w-sm">
+            <div className="grid gap-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Profile Image
+              </label>
+              {isLoading ? (
+                <Skeleton height={48} {...skeletonProps} />
+              ) : (
                 <label className="flex cursor-pointer items-center justify-between rounded-lg border border-dashed border-gray-300 px-4 py-3 transition duration-300 hover:border-purple-500 dark:border-gray-700 dark:hover:border-purple-400">
                   <span className="text-sm text-gray-500 dark:text-gray-400">
                     {profileImage ? profileImage.name : "Choose an image"}
@@ -166,12 +174,15 @@ const Settings = () => {
                     onChange={(e) => setProfileImage(e.target.files?.[0])}
                   />
                 </label>
-              </div>
-
-              <div className="grid gap-2">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Banner Image
-                </label>
+              )}
+            </div>
+            <div className="grid gap-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Banner Image
+              </label>
+              {isLoading ? (
+                <Skeleton height={48} {...skeletonProps} />
+              ) : (
                 <label className="flex cursor-pointer items-center justify-between rounded-lg border border-dashed border-gray-300 px-4 py-3 transition duration-300 hover:border-purple-500 dark:border-gray-700 dark:hover:border-purple-400">
                   <span className="text-sm text-gray-500 dark:text-gray-400">
                     {bannerImage ? bannerImage.name : "Choose an image"}
@@ -186,15 +197,18 @@ const Settings = () => {
                     onChange={(e) => setBannerImage(e.target.files?.[0])}
                   />
                 </label>
-              </div>
+              )}
             </div>
+          </div>
 
-            <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
-              {/* Change to textarea */}
-              <div className="grid gap-2 w-full lg:max-w-[400px]">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Bio
-                </label>
+          <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
+            <div className="grid gap-2 w-full lg:max-w-[400px]">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Bio
+              </label>
+              {isLoading ? (
+                <Skeleton height={38} {...skeletonProps} />
+              ) : (
                 <input
                   type="text"
                   value={formData.bio}
@@ -202,41 +216,52 @@ const Settings = () => {
                   className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
                   onChange={(e) => handleChange("bio", e.target.value)}
                 />
-              </div>
+              )}
             </div>
-            <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
-              <div className="grid gap-2 w-full lg:max-w-[400px]">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Time Zone
-                </label>
+          </div>
+
+          <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
+            <div className="grid gap-2 w-full lg:max-w-[400px]">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Time Zone
+              </label>
+              {isLoading ? (
+                <Skeleton height={38} {...skeletonProps} />
+              ) : (
                 <input
                   type="text"
                   placeholder="e.g. UTC +4"
                   className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
                 />
-              </div>
-              <div className="grid gap-2 w-full lg:max-w-[400px]">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Location
-                </label>
+              )}
+            </div>
+            <div className="grid gap-2 w-full lg:max-w-[400px]">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Location
+              </label>
+              {isLoading ? (
+                <Skeleton height={38} {...skeletonProps} />
+              ) : (
                 <input
                   type="text"
                   name="location"
                   value={formData.location}
                   placeholder="City, Country"
                   className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
-                  onChange={(e) => {
-                    handleChange("location", e.target.value);
-                  }}
+                  onChange={(e) => handleChange("location", e.target.value)}
                 />
-              </div>
+              )}
             </div>
+          </div>
 
-            <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
-              <div className="grid gap-2 w-full lg:max-w-[400px]">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Github
-                </label>
+          <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
+            <div className="grid gap-2 w-full lg:max-w-[400px]">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Github
+              </label>
+              {isLoading ? (
+                <Skeleton height={38} {...skeletonProps} />
+              ) : (
                 <input
                   type="text"
                   value={formData.githubLink}
@@ -244,12 +269,15 @@ const Settings = () => {
                   className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
                   onChange={(e) => handleChange("githubLink", e.target.value)}
                 />
-              </div>
-
-              <div className="grid gap-2 w-full lg:max-w-[400px]">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Linkedin
-                </label>
+              )}
+            </div>
+            <div className="grid gap-2 w-full lg:max-w-[400px]">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Linkedin
+              </label>
+              {isLoading ? (
+                <Skeleton height={38} {...skeletonProps} />
+              ) : (
                 <input
                   type="text"
                   value={formData.linkedinLink}
@@ -257,14 +285,18 @@ const Settings = () => {
                   className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
                   onChange={(e) => handleChange("linkedinLink", e.target.value)}
                 />
-              </div>
+              )}
             </div>
+          </div>
 
-            <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
-              <div className="grid gap-2 w-full lg:max-w-[400px]">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Twitter
-                </label>
+          <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
+            <div className="grid gap-2 w-full lg:max-w-[400px]">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Twitter
+              </label>
+              {isLoading ? (
+                <Skeleton height={38} {...skeletonProps} />
+              ) : (
                 <input
                   type="text"
                   value={formData.twitterLink}
@@ -272,20 +304,20 @@ const Settings = () => {
                   className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
                   onChange={(e) => handleChange("twitterLink", e.target.value)}
                 />
-              </div>
+              )}
             </div>
-
-            <button
-              onClick={SaveChanges}
-              className="w-full cursor-pointer rounded-lg bg-fuchsia-600 px-6 py-3 text-lg font-semibold text-white transition duration-300 hover:bg-fuchsia-700 dark:bg-fuchsia-500 dark:hover:bg-fuchsia-600 lg:w-full sm:w-fit"
-            >
-              Save Changes
-            </button>
-            <DeleteAccount />
           </div>
+
+          <button
+            onClick={SaveChanges}
+            className="w-full cursor-pointer rounded-lg bg-fuchsia-600 px-6 py-3 text-lg font-semibold text-white transition duration-300 hover:bg-fuchsia-700 dark:bg-fuchsia-500 dark:hover:bg-fuchsia-600 lg:w-full sm:w-fit"
+          >
+            Save Changes
+          </button>
+          <DeleteAccount />
         </div>
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 

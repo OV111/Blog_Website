@@ -12,24 +12,23 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import SearchResults from "./search/SearchResults";
 import { CATEGORY_OPTIONS } from "../../constants/Categories";
 import { AVATAR_MENU_ITEMS, MOBILE_EXTRA_LINKS } from "../../constants/Navbar";
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import useProfileStore from "@/context/useProfileStore";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
   const dropdownRef = useRef(null);
   const avatarRef = useRef(null);
   const desktopSearchRef = useRef(null);
   const mobileSearchRef = useRef(null);
-  const { auth, logout } = useAuthStore();
-  const { theme, setTheme } = useThemeStore();
   const [searchValue, setSearchValue] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [showDropdownMobile, setShowDropdownMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
-  const [navUser, setNavUser] = useState(null);
+  const { pathname } = useLocation();
+  const { auth, logout } = useAuthStore();
+  const { theme, setTheme } = useThemeStore();
+  const { user, stats, fetchProfile, clearProfile } = useProfileStore();
   const showSearch = pathname !== "/";
 
   useEffect(() => {
@@ -38,32 +37,10 @@ const Navbar = () => {
 
   useEffect(() => {
     if (!auth) {
-      setNavUser(null);
+      clearProfile();
       return;
     }
-    const fetchNavUser = async () => {
-      try {
-        const token = localStorage.getItem("JWT");
-        const response = await fetch(`${API_BASE_URL}/my-profile`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) return;
-        const data = await response.json();
-        setNavUser({
-          firstName: data.userWithoutPassword?.firstName || "",
-          lastName: data.userWithoutPassword?.lastName || "",
-          username: data.userWithoutPassword?.username || "",
-          profileImage: data.stats?.profileImage || null,
-        });
-      } catch {
-        // silent
-        console.log("error");
-      }
-    };
-    fetchNavUser();
+    fetchProfile();
   }, [auth]);
 
   // Single click-outside handler for both dropdowns
@@ -145,9 +122,9 @@ const Navbar = () => {
         inDropdown ? "border-gray-200 dark:border-gray-600" : "border-white/50"
       }`}
     >
-      {navUser?.profileImage ? (
+      {stats?.profileImage ? (
         <img
-          src={navUser.profileImage}
+          src={stats.profileImage}
           alt="avatar"
           className="w-full h-full object-cover rounded-full"
         />
@@ -159,21 +136,22 @@ const Navbar = () => {
               : "bg-white/20 text-white"
           }`}
         >
-          {navUser?.firstName?.[0]?.toUpperCase() || ""}
-          {navUser?.lastName?.[0]?.toUpperCase() || ""}
+          {user?.firstName?.[0]?.toUpperCase() || ""}
+          {user?.lastName?.[0]?.toUpperCase() || ""}
         </div>
       )}
     </div>
   );
 
   const CategoryList = ({ onClose }) => (
-    <ul className="absolute top-full mt-2 left-0 text-black bg-gray-200 dark:bg-gray-600 dark:text-white shadow-md rounded w-40 py-2 z-4">
+    <ul className="absolute top-full mt-2 left-0 w-44 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 py-0 z-4">
       {CATEGORY_OPTIONS.map(({ title, slug }) => (
-        <li
-          key={slug}
-          className="px-4 py-2 hover:text-purple-600 hover:bg-gray-100 dark:hover:bg-gray-700"
-        >
-          <NavLink to={`/categories/${slug}`} onClick={onClose}>
+        <li key={slug}>
+          <NavLink
+            to={`/categories/${slug}`}
+            onClick={onClose}
+            className="flex items-center px-4 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+          >
             {title}
           </NavLink>
         </li>
@@ -241,7 +219,7 @@ const Navbar = () => {
 
             {/* Avatar dropdown — desktop */}
             <li
-              className="relative hidden md:block flex items-center  px-1"
+              className="relative hidden md:block flex items-center px-1"
               ref={avatarRef}
             >
               <button
@@ -252,17 +230,17 @@ const Navbar = () => {
               </button>
 
               {avatarMenuOpen && (
-                <div className="absolute right-0 top-full mt-3 w-52 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 py-1 z-4">
+                <div className="absolute right-0 top-full mt-2 w-52 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 py-1 z-4">
                   {/* User info header */}
                   <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 dark:border-gray-700">
                     <AvatarImage inDropdown />
                     <div className="min-w-0">
                       <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
-                        {navUser?.firstName}
+                        {user?.firstName}
                       </p>
-                      {navUser?.username && (
+                      {user?.username && (
                         <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                          @{navUser.username}
+                          @{user.username}
                         </p>
                       )}
                     </div>
@@ -387,11 +365,11 @@ const Navbar = () => {
                   <AvatarImage />
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-white truncate">
-                      {navUser?.firstName}
+                      {user?.firstName}
                     </p>
-                    {navUser?.username && (
+                    {user?.username && (
                       <p className="text-xs text-purple-200 truncate">
-                        @{navUser.username}
+                        @{user.username}
                       </p>
                     )}
                   </div>

@@ -1,5 +1,6 @@
 import http from "http";
 import dotenv from "dotenv";
+dotenv.config({ path: "./backend/.env.local" });
 dotenv.config({ path: "./backend/.env" });
 import connectDB from "./config/db.js";
 import process from "process";
@@ -66,7 +67,7 @@ const StartServer = async () => {
       }
 
       // CORS Headers
-      res.setHeader("Access-Control-Allow-Origin", "https://devs-website-mu.vercel.app");
+      res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
       res.setHeader(
         "Access-Control-Allow-Methods",
         "GET, POST, PUT, OPTIONS, DELETE",

@@ -108,19 +108,19 @@ export default function UserProfile() {
   const socialLinks = [
     {
       key: "github",
-      href: stats?.githubUrl,
+      href: stats?.githubLink,
       icon: <FaGithub />,
       hover: "hover:text-black",
     },
     {
       key: "linkedin",
-      href: stats?.linkedinUrl,
+      href: stats?.linkedinLink,
       icon: <FaLinkedin />,
       hover: "hover:text-blue-700",
     },
     {
       key: "x",
-      href: stats?.twitterUrl,
+      href: stats?.twitterLink,
       icon: <XIcon fontSize="inherit" />,
       hover: "hover:text-gray-900",
     },

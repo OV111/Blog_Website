@@ -4,14 +4,14 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 import XIcon from "@mui/icons-material/X";
 import LoadingSuspense from "../components/LoadingSuspense";
 import SideBar from "./My-Profile/components/SideBar";
+import useProfileStore from "@/context/useProfileStore";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const MyProfile = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [stats, setStats] = useState({});
-  const [loading, setLoading] = useState(true);
+  const { user, stats, isLoading, fetchProfile, updateStats } =
+    useProfileStore();
 
   const [isSideBarOpened, setIsSideBarOpened] = useState(
     window.innerWidth >= 1024,
@@ -19,68 +19,34 @@ const MyProfile = () => {
 
   const isActive = async (userId) => {
     if (!userId) return;
-
+    const now = new Date().toLocaleString();
     try {
       const request = await fetch(`${API_BASE_URL}/my-profile`, {
         method: "PUT",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          id: userId,
-          lastActive: new Date().toLocaleString(),
-        }),
+        body: JSON.stringify({ id: userId, lastActive: now }),
       });
-      const response = await request.json();
-      console.log(response);
+      if (request.ok) updateStats({ lastActive: now });
     } catch (err) {
       console.log(err);
-    }
-  };
-
-  const fetchingUserProfile = async () => {
-    setLoading(true);
-
-    try {
-      const token = localStorage.getItem("JWT");
-      if (!token) {
-        navigate("/get-started");
-        return;
-      }
-
-      const request = await fetch(`${API_BASE_URL}/my-profile`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!request.ok) {
-        if (request.status === 403) {
-          console.log("Invalid Token");
-          localStorage.removeItem("JWT");
-          navigate("/get-started");
-        }
-        return;
-      }
-
-      const response = await request.json();
-
-      setUser(response.userWithoutPassword ?? null);
-      setStats(response.stats ?? {});
-
-      if (response?.stats?.userId) {
-        isActive(response.stats.userId);
-      }
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchingUserProfile();
+    if (!user) {
+      fetchProfile().then((result) => {
+        if (result === "unauthorized") {
+          localStorage.removeItem("JWT");
+          navigate("/get-started");
+        }
+      });
+    }
   }, []);
+
+  useEffect(() => {
+    if (!stats?.userId) return;
+    isActive(stats.userId);
+  }, [stats?.userId]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -93,8 +59,8 @@ const MyProfile = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (loading) {
-    return <LoadingSuspense></LoadingSuspense>;
+  if (isLoading) {
+    return <LoadingSuspense />;
   }
 
   return (

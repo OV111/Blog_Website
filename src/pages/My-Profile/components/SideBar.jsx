@@ -2,26 +2,27 @@ import { sidebarArr } from "../../../../constants/Sidebars.jsx";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "../../../context/useAuthStore.js";
 import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import useThemeStore from "../../../context/useThemeStore.js";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { LogOut } from "lucide-react";
-
+import useProfileStore from "@/context/useProfileStore.js";
 export default function SideBar({ isOpen, onClose }) {
+  const { user, stats, isLoading, fetchProfile, updateStats } =
+    useProfileStore();
+
   const { theme } = useThemeStore();
   const isDarkMode = theme === "dark";
   const navigate = useNavigate();
   const location = useLocation();
   const { logout } = useAuthStore();
-  const [userInfo, setUserInfo] = useState(null);
-  const [isUserInfoLoading, setIsUserInfoLoading] = useState(true);
   const [openImage, setOpenImage] = useState(false);
   const fullName =
-    `${userInfo?.firstName ?? ""} ${userInfo?.lastName ?? ""}`.trim() ||
-    "Name Surname";
-  const email = userInfo?.email ?? "example@.com";
-  const avatarSrc = userInfo?.profileImage ?? "";
+    `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim() || "Name Surname";
+  const email = user?.email ?? "example@.com";
+  const avatarSrc = stats?.profileImage ?? "";
 
   const handleLogOut = async () => {
     try {
@@ -46,68 +47,9 @@ export default function SideBar({ isOpen, onClose }) {
     }
   };
 
-  const fetchUserInfo = async () => {
-    setIsUserInfoLoading(true);
-    try {
-      const token = localStorage.getItem("JWT");
-      if (!token) {
-        navigate("/get-started");
-        return;
-      }
-      const request = await fetch(`${API_BASE_URL}/my-profile`, {
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!request.ok) {
-        if (request.status === 403) {
-          console.log("Invalid Token");
-          localStorage.removeItem("JWT");
-          navigate("/get-started");
-        }
-      }
-      const response = await request.json();
-      setUserInfo({
-        ...(response.userWithoutPassword ?? {}),
-        profileImage: response?.stats?.profileImage ?? "",
-      });
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setIsUserInfoLoading(false);
-    }
-  };
   useEffect(() => {
-    fetchUserInfo();
+    if (!user) fetchProfile();
   }, []);
-  //   useEffect(() => {
-  //   let isMounted = true;
-
-  //   const fetchUserInfo = async () => {
-  //     try {
-  //       const token = localStorage.getItem("JWT");
-  //       if (!token) return;
-
-  //       const req = await fetch(`${API_BASE_URL}/my-profile`, {
-  //         headers: { Authorization: `Bearer ${token}` },
-  //       });
-
-  //       if (!req.ok) return;
-
-  //       const res = await req.json();
-  //       if (isMounted) setUserInfo(res?.userWithoutPassword ?? null);
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-
-  //   fetchUserInfo();
-  //   return () => {
-  //     isMounted = false;
-  //   };
-  // }, []);
 
   return (
     <>
@@ -118,12 +60,10 @@ export default function SideBar({ isOpen, onClose }) {
               onClick={() => {
                 if (avatarSrc) setOpenImage(true);
               }}
-              className={
-                isUserInfoLoading ? "cursor-default" : "cursor-pointer"
-              }
-              disabled={isUserInfoLoading}
+              className={isLoading ? "cursor-default" : "cursor-pointer"}
+              disabled={isLoading}
             >
-              {isUserInfoLoading ? (
+              {isLoading ? (
                 <div className="lg:mx-0 mx-auto w-8 h-8 rounded-full bg-gray-200 animate-pulse dark:bg-gray-700" />
               ) : (
                 <img
@@ -134,19 +74,19 @@ export default function SideBar({ isOpen, onClose }) {
               )}
             </button>
             <div className="hidden lg:block">
-              {isUserInfoLoading ? (
+              {isLoading ? (
                 <div className="space-y-1">
                   <Skeleton
-                    width={112}
-                    height={14}
-                    borderRadius={6}
+                    width={172}
+                    height={16}
+                    borderRadius={8}
                     baseColor={isDarkMode ? "#1f2937" : "#ebebeb"}
                     highlightColor={isDarkMode ? "#374151" : "#f5f5f5"}
                   />
                   <Skeleton
-                    width={144}
-                    height={12}
-                    borderRadius={6}
+                    width={172}
+                    height={14}
+                    borderRadius={8}
                     baseColor={isDarkMode ? "#1f2937" : "#ebebeb"}
                     highlightColor={isDarkMode ? "#374151" : "#f5f5f5"}
                   />
