@@ -111,7 +111,7 @@ export default function SideBar({ isOpen, onClose }) {
 
   return (
     <>
-      <aside className="flex min-h-screen w-10 flex-col mx-auto overflow-hidden border-r border-gray-200 bg-white transition-all duration-300 dark:border-gray-800 dark:bg-gray-950 lg:w-56 lg:static lg:sticky  lg:top-0">
+      <aside className="flex min-h-screen w-10 flex-col overflow-hidden border-r border-gray-200 bg-white transition-all duration-300 dark:border-gray-800 dark:bg-gray-950 lg:w-56 lg:static lg:sticky  lg:top-0">
         <div className="border-b border-gray-100 py-3 px-0 dark:border-gray-800 lg:px-3">
           <div className="flex items-center justify-center gap-3 mx-auto">
             <button
