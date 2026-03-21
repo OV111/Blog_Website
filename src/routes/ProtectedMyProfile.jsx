@@ -4,13 +4,13 @@ import useAuthStore from "../stores/useAuthStore";
 
 const ProtectedMyProfile = ({ children }) => {
   const navigate = useNavigate();
-  const { auth } = useAuthStore();
+  const { auth, isLoading } = useAuthStore();
 
   useEffect(() => {
-    if (!auth) {
+    if (!isLoading && !auth) {
       navigate("/get-started");
     }
-  }, [auth, navigate]);
+  }, [auth, isLoading, navigate]);
 
 
   return children;

@@ -66,7 +66,6 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    localStorage.removeItem("JWT");
     navigate("/get-started");
     setAvatarMenuOpen(false);
     setIsOpen(false);

@@ -58,13 +58,13 @@ const GetStarted = () => {
       const result = await response.json();
 
       if (response.ok) {
-        if (result.token) {
-          localStorage.setItem("JWT", result.token);
-        }
+        // if (result.token) {
+        //   localStorage.setItem("JWT", result.token);
+        // }
         toast.success(`${result.message}`, { duration: 900 });
         setTimeout(() => {
           navigate("/");
-          login();
+          login(result.token);
         }, 950);
       } else if (response.status === 409) {
         setAuthUiMessage(result.message);

@@ -201,11 +201,24 @@ const StartServer = async () => {
         }
       }
 
+      if (req.method === "GET" && req.url === "/verify-token") {
+        const token = req.headers.authorization?.replace("Bearer ", "");
+        const isValid = verifyToken(token);
+        if (!isValid) {
+          res.writeHead(200, { "content-type": "application/json" });
+          return res.end(JSON.stringify({ valid: false }));
+        }
+        res.writeHead(200, { "content-type": "application/json" });
+        return res.end(JSON.stringify({ valid: true }));
+      }
+
       if (req.method === "POST" && req.url === "/blogs") {
         const token = req.headers.authorization?.replace("Bearer ", "");
         if (!verifyToken(token)) {
           res.writeHead(401, { "content-type": "application/json" });
-          return res.end(JSON.stringify({ message: "Unauthorized", code: 401 }));
+          return res.end(
+            JSON.stringify({ message: "Unauthorized", code: 401 }),
+          );
         }
         let body = "";
         req.on("data", (chunk) => {
@@ -326,7 +339,7 @@ const StartServer = async () => {
                 if (error) return reject(error);
                 files[fieldname] = result.secure_url;
                 resolve();
-              }
+              },
             );
             file.pipe(stream);
           });

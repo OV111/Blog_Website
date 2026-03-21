@@ -3,10 +3,8 @@ import { Navigate } from "react-router-dom";
 import useAuthStore from "../stores/useAuthStore";
 
 const ProtectedRoutes = ({children}) => {
-  const token = localStorage.getItem("JWT");
-
   const { auth } = useAuthStore();
-    if(auth || token) {
+    if(auth) {
         return <Navigate to='/get-started' />
     }
     return children
