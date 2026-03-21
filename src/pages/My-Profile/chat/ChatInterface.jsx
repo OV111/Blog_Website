@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AudioLines, CirclePlus, Ellipsis, Send } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
-import useThemeStore from "../../../context/useThemeStore";
+import useThemeStore from "../../../stores/useThemeStore";
 export function formatTimeAgo(dateString) {
   if (!dateString) return "recently";
   const date = new Date(dateString);

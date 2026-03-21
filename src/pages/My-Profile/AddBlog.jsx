@@ -4,7 +4,7 @@ import { TextField, FormLabel, Chip } from "@mui/material";
 import SaveAsOutlinedIcon from "@mui/icons-material/SaveAsOutlined";
 import { Toaster, toast } from "react-hot-toast";
 import SideBar from "./components/SideBar";
-import useThemeStore from "../../context/useThemeStore";
+import useThemeStore from "../../stores/useThemeStore";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 

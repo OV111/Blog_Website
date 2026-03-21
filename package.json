@@ -7,6 +7,7 @@
     "dev": "vite",
     "start": "node backend/server.js",
     "build": "vite build",
+    "build:staging": "vite build --mode staging",
     "server": "nodemon ./server.js",
     "lint": "eslint .",
     "preview": "vite preview",

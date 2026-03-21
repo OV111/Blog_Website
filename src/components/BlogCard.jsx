@@ -9,7 +9,7 @@ import {
 import { Link } from "react-router-dom";
 import { FaRegBookmark, FaRegComment, FaRegHeart } from "react-icons/fa6";
 import { FiShare } from "react-icons/fi";
-import useAuthStore from "../context/useAuthStore";
+import useAuthStore from "../stores/useAuthStore";
 
 const FictionalUsers = [
   {

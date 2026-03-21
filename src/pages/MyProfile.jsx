@@ -4,7 +4,7 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 import XIcon from "@mui/icons-material/X";
 import LoadingSuspense from "../components/LoadingSuspense";
 import SideBar from "./My-Profile/components/SideBar";
-import useProfileStore from "@/context/useProfileStore";
+import useProfileStore from "@/stores/useProfileStore";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 

@@ -17,7 +17,9 @@ dist-ssr
 # Environment variables
 .env
 .env.local
+.env.development
 .env.staging
+.env.production
 .env.*.local
 backend/.env
 backend/.env.local

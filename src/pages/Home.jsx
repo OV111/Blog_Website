@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import TextType from "../components/TextType";
 import GradientText from "../components/GradientText";
 import { Toaster } from "react-hot-toast";
-import useAuthStore from "../context/useAuthStore";
+import useAuthStore from "../stores/useAuthStore";
 import heroIllustration from "../assets/Code typing-bro (1).svg";
 
 const Home = () => {

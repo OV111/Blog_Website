@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import useAuthStore from "../context/useAuthStore";
-import useThemeStore from "../context/useThemeStore";
+import useAuthStore from "../stores/useAuthStore";
+import useThemeStore from "../stores/useThemeStore";
 import SearchBar from "./search/SearchBar";
 import { ChevronDown, LogOut, Sun, Moon } from "lucide-react";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
@@ -12,7 +12,7 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import SearchResults from "./search/SearchResults";
 import { CATEGORY_OPTIONS } from "../../constants/Categories";
 import { AVATAR_MENU_ITEMS, MOBILE_EXTRA_LINKS } from "../../constants/Navbar";
-import useProfileStore from "@/context/useProfileStore";
+import useProfileStore from "@/stores/useProfileStore";
 
 const Navbar = () => {
   const navigate = useNavigate();

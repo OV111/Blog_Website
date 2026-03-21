@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import useAuthStore from "../context/useAuthStore";
+import useAuthStore from "../stores/useAuthStore";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 

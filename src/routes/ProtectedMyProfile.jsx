@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuthStore from "../context/useAuthStore";
+import useAuthStore from "../stores/useAuthStore";
 
 const ProtectedMyProfile = ({ children }) => {
   const navigate = useNavigate();

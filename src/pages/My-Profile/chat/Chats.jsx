@@ -9,7 +9,7 @@ import LoadingChatSuspense from "@/components/LoadingChatSuspense";
 import ChatInterface from "./ChatInterface";
 import { formatTimeAgo } from "./ChatInterface";
 import Skeleton from "react-loading-skeleton";
-import useThemeStore from "../../../context/useThemeStore";
+import useThemeStore from "../../../stores/useThemeStore";
 const getUserIdFromJWT = (token) => {
   if (!token) return null;
   try {

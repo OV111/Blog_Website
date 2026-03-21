@@ -1,14 +1,14 @@
 import { sidebarArr } from "../../../../constants/Sidebars.jsx";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import useAuthStore from "../../../context/useAuthStore.js";
+import useAuthStore from "../../../stores/useAuthStore.js";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import useThemeStore from "../../../context/useThemeStore.js";
+import useThemeStore from "../../../stores/useThemeStore.js";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { LogOut } from "lucide-react";
-import useProfileStore from "@/context/useProfileStore.js";
+import useProfileStore from "@/stores/useProfileStore.js";
 export default function SideBar({ isOpen, onClose }) {
   const { user, stats, isLoading, fetchProfile, updateStats } =
     useProfileStore();

@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import useAuthStore from "../context/useAuthStore";
+import useAuthStore from "../stores/useAuthStore";
 
 const ProtectedRoutes = ({children}) => {
   const token = localStorage.getItem("JWT");

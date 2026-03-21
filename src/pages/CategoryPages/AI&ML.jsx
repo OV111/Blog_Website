@@ -7,7 +7,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import useAuthStore from "../../context/useAuthStore";
+import useAuthStore from "../../stores/useAuthStore";
 import { motion } from "framer-motion";
 import BlogCard from "@/components/BlogCard";
 

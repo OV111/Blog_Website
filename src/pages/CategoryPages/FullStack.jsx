@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import BlogCard from "@/components/BlogCard";
 import { FloatingIcons } from "../../components/FloatingIcons";
 import { ScrollLine } from "../../animations/ScrollingLine";
-import useAuthStore from "../../context/useAuthStore";
+import useAuthStore from "../../stores/useAuthStore";
 
 const LoadingSuspense = lazy(() => import("../../components/LoadingSuspense"));
 

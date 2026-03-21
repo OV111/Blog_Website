@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import DeleteAccount from "../../components/DeleteAccount";
+import DeleteAccount from "@/components/DeleteAccount";
 import { Toaster, toast } from "react-hot-toast";
 import SideBar from "./components/SideBar";
-import useProfileStore from "@/context/useProfileStore";
+import useProfileStore from "@/stores/useProfileStore";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import useThemeStore from "@/context/useThemeStore";
+import useThemeStore from "@/stores/useThemeStore";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Settings = () => {

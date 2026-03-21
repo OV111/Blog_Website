@@ -31,7 +31,7 @@ const useProfileStore = create((set) => ({
   updateStats: (newStats) =>
     set((state) => ({ stats: { ...state.stats, ...newStats } })),
 
-  clear: () => {
+  clearProfile: () => {
     set({ user: null, stats: null });
   },
 }));

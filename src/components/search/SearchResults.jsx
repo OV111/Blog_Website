@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchCategoryData, fetchUserData } from "./services/SearchApi";
-import useAuthStore from "@/context/useAuthStore";
+import useAuthStore from "@/stores/useAuthStore";
 
 export default function SearchResults({ query = "", onSelect, boundaryRef }) {
   const { auth } = useAuthStore();

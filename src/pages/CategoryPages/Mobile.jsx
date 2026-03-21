@@ -13,7 +13,7 @@ import BlogCard from "@/components/BlogCard";
 import { motion } from "framer-motion";
 
 import { FloatingIcons } from "../../components/FloatingIcons";
-import useAuthStore from "../../context/useAuthStore";
+import useAuthStore from "../../stores/useAuthStore";
 
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 

@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect, useState } from "react";
-import useAuthStore from "../../context/useAuthStore";
+import useAuthStore from "../../stores/useAuthStore";
 import BlogCard from "@/components/BlogCard";
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { motion } from "framer-motion";

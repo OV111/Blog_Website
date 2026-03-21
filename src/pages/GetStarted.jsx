@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Toaster, toast } from "react-hot-toast";
 import { Eye, EyeOff, BookOpen, Bookmark, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import useAuthStore from "../context/useAuthStore";
+import useAuthStore from "../stores/useAuthStore";
 import Lottie from "lottie-react";
 import codingAnimation from "../assets/animations/coding.json";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
