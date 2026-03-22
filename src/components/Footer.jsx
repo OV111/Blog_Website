@@ -57,7 +57,7 @@ const Footer = () => {
               </p>
               <div className="flex flex-wrap items-center gap-3">
                 <Link
-                  to="/"
+                  to="https://github.com/OV111"
                   aria-label="Visit our GitHub"
                   className="group flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 backdrop-blur-sm transition duration-200 hover:-translate-y-1 hover:border-white/40 hover:bg-white/20"
                 >

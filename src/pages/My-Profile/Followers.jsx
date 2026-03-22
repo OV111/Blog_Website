@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from "react";
-import SideBar from "./components/SideBar";
-import { sortOptions, filterOptions } from "../../../constants/FollowersPage";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { sortOptions, filterOptions } from "../../../constants/FollowersPage";
+import SideBar from "./components/SideBar";
 import FollowersCard from "./FollowersCard";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -96,10 +96,12 @@ const Followers = () => {
   }, [followingPage]);
 
   useEffect(() => {
-    if (!followersView) {
+    if (followersView) {
+      fetchFollowing();
+    } else {
       fetchFollowers();
+      fetchFollowing();
     }
-    fetchFollowing();
   }, [followersView, fetchFollowers, fetchFollowing]);
 
   useEffect(() => {
@@ -111,57 +113,77 @@ const Followers = () => {
     setInitialLoading(true);
   }, [followersView]);
 
-  // Need to implement my way 
-  // const handleFollowToggle = async (user, isFollowing) => {
-  //   if (!user?.username) return;
+  const handleFollowToggle = async (user, isFollowing) => {
+    if (!user?.username) return;
 
-  //   try {
-  //     setActionLoadingId(user._id ?? user.id ?? user.username);
-  //     const request = await fetch(
-  //       `${API_BASE_URL}/users/${user.username}/follow`,
-  //       {
-  //         method: isFollowing ? "DELETE" : "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${localStorage.getItem("JWT")}`,
-  //         },
-  //       },
-  //     );
-
-  //     if (!request.ok) return;
-
-  //     if (isFollowing) {
-  //       setFollowings((prev) =>
-  //         prev.filter(
-  //           (item) =>
-  //             (item._id ?? item.id ?? item.username) !==
-  //             (user._id ?? user.id ?? user.username),
-  //         ),
-  //       );
-  //       setFollowingCount((prev) => Math.max(prev - 1, 0));
-  //     } else {
-  //       setFollowings((prev) => {
-  //         const exists = prev.some(
-  //           (item) =>
-  //             (item._id ?? item.id ?? item.username) ===
-  //             (user._id ?? user.id ?? user.username),
-  //         );
-  //         if (exists) return prev;
-  //         return [...prev, user];
-  //       });
-  //       setFollowingCount((prev) => prev + 1);
-  //     }
-  //   } catch (err) {
-  //     console.error("follow toggle error", err);
-  //   } finally {
-  //     setActionLoadingId(null);
-  //   }
-  // };
+    try {
+      setActionLoadingId(user._id ?? user.id ?? user.username);
+      const request = await fetch(
+        `${API_BASE_URL}/users/${user.username}/follow`,
+        {
+          method: isFollowing ? "DELETE" : "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("JWT")}`,
+          },
+        },
+      );
+      if (!request.ok) return;
+      if (isFollowing) {
+        setFollowings((prev) =>
+          prev.filter(
+            (item) =>
+              (item._id ?? item.id ?? item.username) !==
+              (user._id ?? user.id ?? user.username),
+          ),
+        );
+        setFollowingCount((prev) => Math.max(prev - 1, 0));
+      } else {
+        setFollowings((prev) => {
+          const exists = prev.some(
+            (item) =>
+              (item._id ?? item.id ?? item.username) ===
+              (user._id ?? user.id ?? user.username),
+          );
+          if (exists) return prev;
+          return [...prev, user];
+        });
+        setFollowingCount((prev) => prev + 1);
+      }
+    } catch (err) {
+      console.error("follow toggle error", err);
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
 
   const usersList = followersView ? followings : followers;
-  const followingUsernames = new Set(
-    followings.map((user) => String(user?.username ?? "")),
+  const followingUsernames = useMemo(
+    () => new Set(followings.map((user) => String(user?.username ?? ""))),
+    [followings],
   );
+
+  const sortedList = useMemo(() => {
+    if (sortBy === "Newest") {
+      return [...usersList].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+      );
+    } else if (sortBy === "Oldest") {
+      return [...usersList].sort(
+        (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+      );
+    }
+    return usersList;
+  }, [usersList, sortBy]);
+
+  const filteredList = useMemo(() => {
+    if (activeFilter === "Mutuals") {
+      return sortedList.filter((user) =>
+        followingUsernames.has(String(user?.username ?? "")),
+      );
+    }
+    return sortedList;
+  }, [sortedList, activeFilter, followingUsernames]);
 
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
@@ -177,13 +199,12 @@ const Followers = () => {
         </p>
 
         <div className="bg-white dark:bg-gray-900 w-full rounded-xl border border-gray-200 dark:border-gray-800">
-          {/* Tabs + Sort Row */}
           <div className="flex flex-wrap justify-between items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-gray-800">
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => navigate("/my-profile/followers")}
-                className={`rounded-lg px-4 py-2 text-sm font-medium cursor-pointer transition-all duration-200 ${
+                className={`rounded-lg px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium cursor-pointer transition-all duration-200 ${
                   !followersView
                     ? "bg-purple-600 text-white"
                     : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-purple-950/40 hover:text-purple-700 dark:hover:text-purple-300"
@@ -194,7 +215,7 @@ const Followers = () => {
               <button
                 type="button"
                 onClick={() => navigate("/my-profile/following")}
-                className={`rounded-lg px-4 py-2 text-sm font-medium cursor-pointer transition-all duration-200 ${
+                className={`rounded-lg px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium cursor-pointer transition-all duration-200 ${
                   followersView
                     ? "bg-purple-600 text-white"
                     : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-purple-950/40 hover:text-purple-700 dark:hover:text-purple-300"
@@ -204,14 +225,16 @@ const Followers = () => {
               </button>
             </div>
 
-            <ul className="flex items-center gap-2 text-sm">
-              <li className="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide">Sort:</li>
+            <ul className="flex flex-wrap items-center gap-1 sm:gap-2 text-sm">
+              <li className="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide">
+                Sort:
+              </li>
               {sortOptions.map((option) => (
                 <li key={option}>
                   <button
                     type="button"
                     onClick={() => setSortBy(option)}
-                    className={`cursor-pointer rounded-md px-3 py-1 text-xs font-medium transition-all duration-200 ${
+                    className={`cursor-pointer rounded-md px-2 sm:px-3 py-1 text-xs font-medium transition-all duration-200 ${
                       sortBy === option
                         ? "bg-purple-600 text-white"
                         : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-purple-50 dark:hover:bg-purple-950/40 hover:text-purple-700 dark:hover:text-purple-300"
@@ -224,9 +247,8 @@ const Followers = () => {
             </ul>
           </div>
 
-          {/* Filter chips */}
           <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-800">
-            <ul className="flex flex-wrap gap-2">
+            <ul className="flex flex-wrap gap-1 sm:gap-2">
               {filterOptions.map((option) => {
                 const Icon = option.icon;
                 const isActive = activeFilter === option.content;
@@ -236,7 +258,7 @@ const Followers = () => {
                     <button
                       type="button"
                       onClick={() => setActiveFilter(option.content)}
-                      className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium transition-all duration-200 ${
+                      className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full px-2 sm:px-3 py-0.5 sm:py-1 text-sm font-medium transition-all duration-200 ${
                         isActive
                           ? "bg-purple-600 text-white"
                           : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-purple-50 dark:hover:bg-purple-950/40 hover:text-purple-700 dark:hover:text-purple-300"
@@ -251,7 +273,6 @@ const Followers = () => {
             </ul>
           </div>
 
-          {/* Cards list */}
           <div className="px-4 py-3 space-y-3">
             {initialLoading
               ? Array.from({ length: 4 }).map((_, i) => (
@@ -270,13 +291,13 @@ const Followers = () => {
                       <div className="h-8 w-20 rounded-lg bg-gray-200 dark:bg-gray-700" />
                     </div>
                     <div className="mt-3 h-3 w-3/4 rounded bg-gray-200 dark:bg-gray-700" />
-                    <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700/50 flex justify-between">
-                      <div className="h-3 w-40 rounded bg-gray-200 dark:bg-gray-700" />
-                      <div className="h-3 w-36 rounded bg-gray-200 dark:bg-gray-700" />
+                    <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700/50 flex flex-col gap-2 sm:flex-row sm:justify-between">
+                      <div className="h-3 w-full sm:w-40 rounded bg-gray-200 dark:bg-gray-700" />
+                      <div className="h-3 w-full sm:w-36 rounded bg-gray-200 dark:bg-gray-700" />
                     </div>
                   </div>
                 ))
-              : usersList.map((user) => (
+              : filteredList.map((user) => (
                   <FollowersCard
                     key={user._id ?? user.id}
                     user={user}
@@ -286,12 +307,11 @@ const Followers = () => {
                     actionLoading={
                       actionLoadingId === (user._id ?? user.id ?? user.username)
                     }
-                    // onToggleFollow={handleFollowToggle}
+                    onToggleFollow={handleFollowToggle}
                   />
                 ))}
           </div>
 
-          {/* Load more */}
           <div className="px-4 pb-4">
             {(followersView ? followingHasMore : followersHasMore) && (
               <button

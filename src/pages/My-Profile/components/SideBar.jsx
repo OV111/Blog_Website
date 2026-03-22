@@ -73,7 +73,7 @@ export default function SideBar({ isOpen, onClose }) {
                 />
               )}
             </button>
-            <div className="hidden lg:block">
+            <div className="hidden lg:block min-w-0 overflow-hidden">
               {isLoading ? (
                 <div className="space-y-1">
                   <Skeleton
@@ -93,10 +93,10 @@ export default function SideBar({ isOpen, onClose }) {
                 </div>
               ) : (
                 <>
-                  <p className="truncate text-sm font-medium text-gray-800 overflow-x-auto dark:text-gray-100">
+                  <p className="truncate text-sm font-medium text-gray-800 dark:text-gray-100">
                     {fullName}
                   </p>
-                  <p className="truncate text-xs font-medium text-gray-500 overflow-x-auto dark:text-gray-400">
+                  <p className="truncate text-xs font-medium text-gray-500 dark:text-gray-400">
                     {email}
                   </p>
                 </>

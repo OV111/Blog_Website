@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { AudioLines, CirclePlus, Ellipsis, Send } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 import useThemeStore from "../../../stores/useThemeStore";
+import StartChatSvg from "../../../assets/StartChat.svg";
+import VoiceChatSvg from "../../../assets/Voice chat-amico.svg";
 export function formatTimeAgo(dateString) {
   if (!dateString) return "recently";
   const date = new Date(dateString);
@@ -270,7 +272,7 @@ const ChatInterface = ({
                 <div className="flex h-full items-center justify-center py-16">
                   <div className="rounded-3xl bg-transparent px-6 py-8 text-center">
                     <img
-                      src="../../src/assets/StartChat.svg"
+                      src={StartChatSvg}
                       alt="no messages"
                     />
                     <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
@@ -313,7 +315,7 @@ const ChatInterface = ({
         <div className="m-4 flex items-center gap-3 pt-6">
           <div className="mx-auto grid items-center justify-center text-center text-gray-500 dark:text-gray-400">
             <img
-              src="../../src/assets/Voice chat-amico.svg"
+              src={VoiceChatSvg}
               alt="select a chat"
             />
             <h2 className="pt-2 text-xl font-semibold text-gray-800 dark:text-gray-100">

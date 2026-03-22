@@ -11,6 +11,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const GetStarted = () => {
   const navigate = useNavigate();
   const { login } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(false);
   const [isSignedUp, setIsSignedUp] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -39,6 +40,7 @@ const GetStarted = () => {
 
   const onSubmit = async (data) => {
     setAuthUiMessage("");
+    setIsLoading(true);
     const url = isSignedUp
       ? `${API_BASE_URL}/get-started`
       : `${API_BASE_URL}/login`;
@@ -58,9 +60,6 @@ const GetStarted = () => {
       const result = await response.json();
 
       if (response.ok) {
-        // if (result.token) {
-        //   localStorage.setItem("JWT", result.token);
-        // }
         toast.success(`${result.message}`, { duration: 900 });
         setTimeout(() => {
           navigate("/");
@@ -90,6 +89,7 @@ const GetStarted = () => {
         duration: 2500,
       });
     }
+    setIsLoading(false);
     reset();
   };
 
@@ -305,9 +305,14 @@ const GetStarted = () => {
               )}
               <button
                 type="submit"
-                className="text-base sm:text-lg md:text-xl w-full mt-3 py-2 sm:py-2.5 rounded-lg mx-auto text-white font-bold bg-fuchsia-600 cursor-pointer hover:bg-fuchsia-700 transition-colors"
+                disabled={isLoading}
+                className={`text-base sm:text-lg md:text-xl w-full mt-3 py-2 sm:py-2.5 rounded-lg mx-auto text-white font-bold transition-colors ${
+                  isLoading
+                    ? "cursor-not-allowed bg-gray-400 dark:bg-gray-600"
+                    : "cursor-pointer bg-fuchsia-600 hover:bg-fuchsia-700"
+                }`}
               >
-                {isSignedUp ? "Sign Up " : "Login"}
+                {isLoading ? "Loading..." : isSignedUp ? "Sign Up" : "Login"}
               </button>
             </form>
 
