@@ -6,4 +6,25 @@ export const CATEGORY_OPTIONS = [
   { id: "qa", title: "QA", slug: "qa" },
   { id: "devops", title: "DevOps", slug: "devops" },
   { id: "gamedev", title: "Game Dev", slug: "gamedev" },
+  // { id: "datascience", title: "Data Science", slug: "datascience" },
+  // { id: "cybersecurity", title: "Cybersecurity", slug: "cybersecurity" },
+  // { id: "cloud", title: "Cloud Computing", slug: "cloud" },
+  // { id: "database", title: "Database Managment", slug: "database" },
+  // { id: "quantum", title: "Quantum Computing", slug: "quantum" },
+];
+
+
+export const CATEGORY_OPTIONS2 = [
+  { id: "fullstack", title: "Full Stack", slug: "fullstack" },
+  { id: "backend", title: "Backend", slug: "backend" },
+  { id: "mobile", title: "Mobile", slug: "mobile" },
+  { id: "aiml", title: "AI & ML", slug: "ai&ml" },
+  { id: "qa", title: "QA", slug: "qa" },
+  { id: "devops", title: "DevOps", slug: "devops" },
+  { id: "gamedev", title: "Game Dev", slug: "gamedev" },
+  { id: "datascience", title: "Data Science", slug: "datascience" },
+  { id: "cybersecurity", title: "Cybersecurity", slug: "cybersecurity" },
+  { id: "cloud", title: "Cloud Computing", slug: "cloud" },
+  { id: "database", title: "Database Managment", slug: "database" },
+  { id: "quantum", title: "Quantum Computing", slug: "quantum" },
 ];

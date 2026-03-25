@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import GradientText from "../components/GradientText";
 import ShinyText from "../components/ShinyText";
-import { CATEGORY_OPTIONS } from "../../constants/Categories";
+import { CATEGORY_OPTIONS2 } from "../../constants/Categories";
 
 // ── Animated counter ──────────────────────────────────────────────────────────
 function useCounter(target, duration = 2000, active = false) {
@@ -52,7 +52,6 @@ function StatCard({ value, label, suffix = "+", delay = 0 }) {
   );
 }
 
-// ── Shared animation preset ───────────────────────────────────────────────────
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 28 },
   whileInView: { opacity: 1, y: 0 },
@@ -60,7 +59,6 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.55, delay },
 });
 
-// ── Data ──────────────────────────────────────────────────────────────────────
 const features = [
   {
     icon: "📖",
@@ -73,7 +71,7 @@ const features = [
   {
     icon: "✍️",
     title: "Write",
-    desc: "Share your knowledge with thousands of developers. Publish articles, tutorials, and insights across 7 tech categories.",
+    desc: "Share your knowledge with thousands of developers. Publish articles, tutorials, and insights across 12 tech categories.",
     gradient: "from-fuchsia-500/10 to-pink-500/10 dark:from-fuchsia-900/20 dark:to-pink-900/20",
     border: "border-fuchsia-200 dark:border-fuchsia-800/40",
     badge: "Available now",
@@ -110,6 +108,30 @@ const features = [
     border: "border-orange-200 dark:border-orange-800/40",
     badge: "Coming soon",
   },
+  {
+    icon: "📝",
+    title: "Exams",
+    desc: "Test your knowledge with topic-based exams curated by the community. Track your score, review mistakes, and level up your understanding across every specialisation.",
+    gradient: "from-rose-500/10 to-pink-500/10 dark:from-rose-900/20 dark:to-pink-900/20",
+    border: "border-rose-200 dark:border-rose-800/40",
+    badge: "Coming soon",
+  },
+  {
+    icon: "💻",
+    title: "Coding Problems",
+    desc: "Sharpen your skills with hand-picked coding challenges. Solve problems directly in the browser, compare solutions with other devs, and build real interview confidence.",
+    gradient: "from-cyan-500/10 to-sky-500/10 dark:from-cyan-900/20 dark:to-sky-900/20",
+    border: "border-cyan-200 dark:border-cyan-800/40",
+    badge: "Coming soon",
+  },
+  {
+    icon: "🗺️",
+    title: "Roadmaps",
+    desc: "Follow structured, community-built learning paths for every specialisation. Know exactly what to learn next and track your progress from beginner to expert.",
+    gradient: "from-lime-500/10 to-green-500/10 dark:from-lime-900/20 dark:to-green-900/20",
+    border: "border-lime-200 dark:border-lime-800/40",
+    badge: "Coming soon",
+  },
 ];
 
 const categoryEmoji = {
@@ -120,6 +142,11 @@ const categoryEmoji = {
   qa: "🧪",
   devops: "🚀",
   gamedev: "🎮",
+  datascience: "📊",
+  cybersecurity: "🔒",
+  cloud: "☁️",
+  database: "🗄️",
+  quantum: "⚛️",
 };
 
 const roadmap = [
@@ -171,7 +198,6 @@ const socials = [
   },
 ];
 
-// ── Component ─────────────────────────────────────────────────────────────────
 const About = () => {
   return (
     <div className="relative overflow-hidden">
@@ -284,7 +310,7 @@ const About = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <StatCard value={120} label="Articles Published" delay={0} />
             <StatCard value={500} label="Developers Joined"  delay={0.1} />
-            <StatCard value={7}   label="Tech Categories"    suffix="" delay={0.2} />
+            <StatCard value={12}  label="Tech Categories"    suffix="" delay={0.2} />
           </div>
         </section>
 
@@ -294,11 +320,11 @@ const About = () => {
             className="text-2xl sm:text-3xl font-bold text-center text-purple-800 dark:text-purple-300"
             {...fadeUp(0)}
           >
-            7 Specialisations, One Platform
+            12 Specialisations, One Platform
           </motion.h2>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
-            {CATEGORY_OPTIONS.map((cat, i) => (
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+            {CATEGORY_OPTIONS2.map((cat, i) => (
               <motion.div
                 key={cat.id}
                 initial={{ opacity: 0, scale: 0.85 }}
