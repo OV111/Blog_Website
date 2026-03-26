@@ -5,6 +5,7 @@ import MainLayout from "./layouts/MainLayout";
 import ProtectedMyProfile from "./routes/ProtectedMyProfile";
 import ReadMore from "./components/ReadMore";
 import GameDev from "./pages/CategoryPages/GameDev";
+// import RoadmapPage from "./features/roadmap/RoadmapPage";
 // import ProtectedRoutes from "./routes/ProtectedRoutes";
 
 const Followers = lazy(() => import("./pages/My-Profile/Followers"));
@@ -22,6 +23,8 @@ const MyProfile = lazy(() => import("./pages/MyProfile"));
 const GetStarted = lazy(() => import("./pages/GetStarted"));
 
 const UserProfile = lazy(() => import("./pages/Users/UserProfile"));
+
+const RoadmapPage = lazy(() => import("./features/roadmap/RoadmapPage"));
 
 const FullStack = lazy(() => import("./pages/CategoryPages/FullStack"));
 const Backend = lazy(() => import("./pages/CategoryPages/Backend"));
@@ -41,6 +44,7 @@ const router = createBrowserRouter([
       { path: "about", element: <About /> },
       { path: "contact", element: <Contact /> },
       { path: "privacy", element: <Privacy /> },
+      { path: "roadmaps", element: <RoadmapPage /> },
       { path: "get-started", element: <GetStarted /> },
       { path: "users/:username", element: <UserProfile /> },
       {
