@@ -59,7 +59,7 @@ Not just a blog. Not just a social network. A place where every developer who jo
 - Search, favorites, notifications
 - Admin panel (in progress)
 
-### 2. AI Agent Per User
+### 2. AI Agent Per User || LLM || RAG System
 
 - Every user gets their own personal AI agent on signup
 - The agent is not a generic chatbot — it **knows the user**:
