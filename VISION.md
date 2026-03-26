@@ -73,7 +73,7 @@ Not just a blog. Not just a social network. A place where every developer who jo
 - It proactively nudges users ("you haven't practiced Node.js in a while")
 - It generates custom explanations, mini-lessons, and challenges on the fly
 
-### 3. Problem Solving Arena — Not LeetCode
+### 3. The Problem Solving Arena — Not LeetCode
 
 LeetCode gives you random problems. **DevsFlow gives you problems that match your path.**
 
@@ -129,7 +129,33 @@ Mobile path
 
 ---
 
-### 4. The Roadmap — Not roadmap.sh
+### 4. The Dev Library — Not a link dump
+
+Every learning platform needs a library. **DevsFlow's is curated, contextualized, and connected to the roadmap.**
+
+Not a list of random resources. Every entry exists because it belongs to a learning path.
+
+**What it contains:**
+- Books — free and paid (You Don't Know JS, Clean Code, DDIA, Pragmatic Programmer...)
+- Official documentation — curated picks, not every doc ever written
+- Guides & deep-dive articles — concepts worth reading in full
+- Cheat sheets — Git, SQL, Big O, Regex, common patterns
+
+**Each entry has:**
+- Type (Book / Docs / Guide / Cheat Sheet)
+- Difficulty level (Beginner → Advanced)
+- Short description of *what you'll actually learn*, not just what it is
+- Free/paid access links
+- Which roadmap path and layer it belongs to
+
+**How it connects to the platform:**
+- Roadmap layers surface their relevant library entries automatically
+- AI agent recommends specific books/guides based on where you are in your path
+- Replaces the need to Google "best resources to learn X" — the answer is already here, curated
+
+---
+
+### 5. The Roadmap — Not roadmap.sh
 
 This is the key innovation. roadmap.sh shows you a map. **DevsFlow makes you earn it.**
 

@@ -8,7 +8,6 @@ export default function CodingChallenges() {
       <div className="pointer-events-none fixed -top-20 -left-20 h-72 w-72 rounded-full bg-orange-200/40 blur-3xl dark:bg-orange-900/20" />
       <div className="pointer-events-none fixed top-10 right-10 h-72 w-72 rounded-full bg-purple-200/30 blur-3xl dark:bg-purple-900/15" />
 
-      {/* Header */}
       <motion.div
         className="mb-10 text-center"
         initial={{ opacity: 0, y: -16 }}
@@ -24,11 +23,12 @@ export default function CodingChallenges() {
           Coding Challenges
         </GradientText>
         <p className="mt-3 text-sm sm:text-base text-neutral-500 dark:text-neutral-400 max-w-2xl mx-auto">
-          Test your skills with timed challenges — solve real problems, compete with other devs, and level up your problem-solving one challenge at a time.
+          Test your skills with timed challenges — solve real problems, compete
+          with other devs, and level up your problem-solving one challenge at a
+          time.
         </p>
       </motion.div>
 
-      {/* Placeholder */}
       <motion.div
         className="flex flex-col items-center justify-center mt-24 gap-3 text-neutral-400 dark:text-neutral-600"
         initial={{ opacity: 0 }}

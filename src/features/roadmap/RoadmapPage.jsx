@@ -11,7 +11,7 @@ export default function RoadmapPage() {
   return (
     <div className="min-h-screen px-6 sm:px-10 md:px-20 lg:px-28 py-12">
       <div className="pointer-events-none fixed -top-20 -left-20 h-72 w-72 rounded-full bg-purple-200/40 blur-3xl dark:bg-purple-900/20" />
-      <div className="pointer-events-none fixed top-10 right-10 h-72 w- 72 rounded-full bg-teal-200/30 blur-3xl dark:bg-teal-900/15" />
+      <div className="pointer-events-none fixed top-10 right-10 h-72 w-72 rounded-full bg-netural-200/30 blur-3xl dark:bg-purple-900/6" />
       <motion.div
         className="mb-10 text-center"
         initial={{ opacity: 0, y: -16 }}

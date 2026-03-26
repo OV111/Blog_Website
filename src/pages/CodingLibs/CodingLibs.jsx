@@ -8,7 +8,6 @@ export default function CodingLibs() {
       <div className="pointer-events-none fixed -top-20 -left-20 h-72 w-72 rounded-full bg-teal-200/40 blur-3xl dark:bg-teal-900/20" />
       <div className="pointer-events-none fixed top-10 right-10 h-72 w-72 rounded-full bg-purple-200/30 blur-3xl dark:bg-purple-900/15" />
 
-      {/* Header */}
       <motion.div
         className="mb-10 text-center"
         initial={{ opacity: 0, y: -16 }}
@@ -24,11 +23,25 @@ export default function CodingLibs() {
           Coding Libraries
         </GradientText>
         <p className="mt-3 text-sm sm:text-base text-neutral-500 dark:text-neutral-400 max-w-2xl mx-auto">
-          A curated library of coding challenges — browse by topic, difficulty, or stack and sharpen your skills one problem at a time.
+          A curated library of coding challenges — browse by topic, difficulty,
+          or stack and sharpen your skills one problem at a time.
         </p>
       </motion.div>
 
-      {/* Placeholder */}
+      {/* Category Bar (path filter)                  │
+│  All | Frontend | Backend | AI/ML | DevOps   │
+│  Mobile | General                            │
+├──────────────────────────────────────────────┤
+│  Type Filter (second row of pills)           │
+│  All | 📚 Books | 📖 Docs | 📝 Guides        │
+│  🗒️ Cheat Sheets                             │
+├──────────────────────────────────────────────┤
+│  Search bar (by title or topic)              │
+├──────────────────────────────────────────────┤
+│  Resource Grid (2 cols desktop, 1 mobile)    │
+│  ┌──────────┐  ┌──────────┐                 │
+│  │  Card    │  │  Card    │                 │
+│  └──────────┘  └──────── */}
       <motion.div
         className="flex flex-col items-center justify-center mt-24 gap-3 text-neutral-400 dark:text-neutral-600"
         initial={{ opacity: 0 }}
