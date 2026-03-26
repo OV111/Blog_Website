@@ -18,21 +18,21 @@ export default function RoadmapPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        <h1 className="text-4xl sm:text-6xl font-bold tracking-wide text-purple-600 dark:text-purple-500 drop-shadow-[0_0_20px_rgba(147,51,234,0.2)] dark:drop-shadow-[0_0_16px_rgba(147,51,234,0.5)]">
-          Roadmaps
-        </h1>
-
         <GradientText
-          colors={["#8A2BE2", "#FF1493", "#FF00FF", "#9c40ff", "#8A2BE2"]}
+          colors={["#7c3aed", "#a855f7", "#6d28d9", "#c084fc", "#7c3aed"]}
           animationSpeed={7}
           showBorder={false}
-          className="mt-3 text-sm w-2xl sm:text-base text-neutral-500 dark:text-neutral-400 mx-auto"
+          className="text-4xl sm:text-6xl font-bold leading-tight tracking-wide"
         >
+          Roadmaps
+        </GradientText>
+
+        <p className="mt-3 text-sm sm:text-base text-neutral-500 dark:text-neutral-400 max-w-2xl mx-auto">
           Structured learning paths built for developers — from first commit to
           production-ready. Pick a domain, choose your specialization, and track
           your progress with exams, coding challenges, real projects layer by
           layer.
-        </GradientText>
+        </p>
       </motion.div>
 
       {/* Zone 1 — CategoryBar */}

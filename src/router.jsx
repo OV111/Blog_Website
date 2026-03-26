@@ -25,6 +25,8 @@ const GetStarted = lazy(() => import("./pages/GetStarted"));
 const UserProfile = lazy(() => import("./pages/Users/UserProfile"));
 
 const RoadmapPage = lazy(() => import("./features/roadmap/RoadmapPage"));
+const CodingLibs = lazy(() => import("./pages/CodingLibs/CodingLibs"));
+const CodingChallenges = lazy(() => import("./pages/CodingChallenges/CodingChallenges"));
 
 const FullStack = lazy(() => import("./pages/CategoryPages/FullStack"));
 const Backend = lazy(() => import("./pages/CategoryPages/Backend"));
@@ -32,6 +34,7 @@ const Mobile = lazy(() => import("./pages/CategoryPages/Mobile"));
 const AIandML = lazy(() => import("./pages/CategoryPages/AI&ML"));
 const QA = lazy(() => import("./pages/CategoryPages/QA"));
 const DevOps = lazy(() => import("./pages/CategoryPages/DevOps"));
+
 
 const NotFound = lazy(() => import("./components/NotFound"));
 
@@ -45,6 +48,8 @@ const router = createBrowserRouter([
       { path: "contact", element: <Contact /> },
       { path: "privacy", element: <Privacy /> },
       { path: "roadmaps", element: <RoadmapPage /> },
+      { path: "coding-libs", element: <CodingLibs /> },
+      { path: "coding-challenges", element: <CodingChallenges /> },
       { path: "get-started", element: <GetStarted /> },
       { path: "users/:username", element: <UserProfile /> },
       {

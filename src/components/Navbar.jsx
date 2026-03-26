@@ -213,7 +213,10 @@ const Navbar = () => {
               <NavLink to="roadmaps">Roadmaps</NavLink>
             </li>
             <li className="hidden md:block font-medium text-sm lg:text-base px-1 hover:text-purple-300 transition">
-              <NavLink to="roadmaps">Coding Libs</NavLink>
+              <NavLink to="coding-libs">Coding Libs</NavLink>
+            </li>
+            <li className="hidden md:block font-medium text-sm lg:text-base px-1 hover:text-purple-300 transition">
+              <NavLink to="coding-challenges">Challenges</NavLink>
             </li>
 
             {/* Avatar dropdown — desktop */}
@@ -350,7 +353,8 @@ const Navbar = () => {
             {auth && (
               <>
                 <MobileNavLink to="roadmaps">Roadmaps</MobileNavLink>
-                <MobileNavLink to="roadmaps">Coding Libs</MobileNavLink>
+                <MobileNavLink to="coding-libs">Coding Libs</MobileNavLink>
+                <MobileNavLink to="coding-challenges">Challenges</MobileNavLink>
 
                 {/* Extra links */}
                 {MOBILE_EXTRA_LINKS.map(({ label, to }) => (
