@@ -3,8 +3,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
 import ProtectedMyProfile from "./routes/ProtectedMyProfile";
-import ReadMore from "./components/ReadMore";
-import GameDev from "./pages/CategoryPages/GameDev";
 // import RoadmapPage from "./features/roadmap/RoadmapPage";
 // import ProtectedRoutes from "./routes/ProtectedRoutes";
 
@@ -34,8 +32,9 @@ const Mobile = lazy(() => import("./pages/CategoryPages/Mobile"));
 const AIandML = lazy(() => import("./pages/CategoryPages/AI&ML"));
 const QA = lazy(() => import("./pages/CategoryPages/QA"));
 const DevOps = lazy(() => import("./pages/CategoryPages/DevOps"));
+const GameDev  = lazy(() => import("./pages/CategoryPages/GameDev"));
 
-
+const ReadMore = lazy(() => import("./components/ReadMore"));
 const NotFound = lazy(() => import("./components/NotFound"));
 
 const router = createBrowserRouter([

@@ -4,11 +4,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "../stores/useAuthStore";
 import useThemeStore from "../stores/useThemeStore";
 import SearchBar from "./search/SearchBar";
-import { ChevronDown, LogOut, Sun, Moon } from "lucide-react";
-import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import NightsStayOutlinedIcon from "@mui/icons-material/NightsStayOutlined";
-import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import { ChevronDown, LogOut, Sun, Moon, Menu, X } from "lucide-react";
 import SearchResults from "./search/SearchResults";
 import { CATEGORY_OPTIONS } from "../../constants/Categories";
 import { AVATAR_MENU_ITEMS, MOBILE_EXTRA_LINKS } from "../../constants/Navbar";
@@ -99,9 +95,9 @@ const Navbar = () => {
       </span>
       <button onClick={setTheme} className={buttonClassName}>
         {theme === "dark" ? (
-          <LightModeOutlinedIcon fontSize="small" />
+          <Sun fontSize="small" />
         ) : (
-          <NightsStayOutlinedIcon fontSize="small" />
+          <Moon fontSize="small" />
         )}
       </button>
     </>
@@ -299,9 +295,9 @@ const Navbar = () => {
                 className="relative flex justify-center items-center cursor-pointer"
               >
                 {theme === "dark" ? (
-                  <LightModeOutlinedIcon fontSize="medium" />
+                  <Sun fontSize="medium" />
                 ) : (
-                  <NightsStayOutlinedIcon fontSize="medium" />
+                  <Moon fontSize="medium" />
                 )}
               </button>
             </li>
@@ -311,7 +307,7 @@ const Navbar = () => {
         {/* Hamburger */}
         <li className="list-none">
           <button onClick={() => setIsOpen(!isOpen)} className="md:hidden mb-1">
-            {isOpen ? <CloseOutlinedIcon /> : <MenuOutlinedIcon />}
+            {isOpen ? <X /> : <Menu />}
           </button>
         </li>
 

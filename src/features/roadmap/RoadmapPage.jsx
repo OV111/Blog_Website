@@ -17,7 +17,7 @@ export default function RoadmapPage() {
         className="mb-10 text-center"
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <GradientText
           colors={["#7c3aed", "#a855f7", "#6d28d9", "#c084fc", "#7c3aed"]}

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Send } from "lucide-react";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import XIcon from "@mui/icons-material/X";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
+// import { Send, Github, Twitter, Mail } from "lucide-react";
+import { Send } from "lucide-react";                                                                             
+      import GitHubIcon from "@mui/icons-material/GitHub";                                                             
+      import XIcon from "@mui/icons-material/X";                                                                       
+      import MailOutlineIcon from "@mui/icons-material/MailOutline";  
 
 const QuickLinks = [
   { title: "Home", href: "/" },
