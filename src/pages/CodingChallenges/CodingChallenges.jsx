@@ -22,7 +22,7 @@ export default function CodingChallenges() {
         >
           Coding Challenges
         </GradientText>
-        <p className="mt-3 text-sm sm:text-base text-neutral-500 dark:text-neutral-400 max-w-2xl mx-auto">
+        <p className="mt-3 text-sm sm:text-base max-w-2xl mx-auto bg-gradient-to-r from-orange-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent">
           Test your skills with timed challenges — solve real problems, compete
           with other devs, and level up your problem-solving one challenge at a
           time.

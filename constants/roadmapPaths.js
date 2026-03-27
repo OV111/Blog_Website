@@ -496,3 +496,258 @@ export const TRACKS = {
     },
   ],
 };
+
+// ─── Layer Schema ────────────────────────────────────────────────────────────
+// {
+//   id: string
+//   title: string
+//   order: number
+//   techs: string[]
+//   description: string
+//   topics: string[]
+//   resources: { label: string, platform: string, type: "docs"|"course"|"video"|"book" }[]
+//   challenge: string        — hands-on mini project for this layer
+//   estimatedTime: string
+// }
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const ROADMAPS = {
+  mern: [
+    {
+      id: "mern-1",
+      title: "Web Fundamentals",
+      order: 1,
+      techs: ["HTML", "CSS", "JavaScript"],
+      description:
+        "The foundation of everything web. Learn how browsers render pages, how to structure content with HTML, style it with CSS, and add interactivity with JavaScript.",
+      topics: [
+        "HTML5 semantic elements & accessibility",
+        "CSS box model, flexbox, grid",
+        "CSS responsive design & media queries",
+        "JavaScript variables, types, functions",
+        "DOM manipulation & events",
+        "Browser DevTools basics",
+      ],
+      resources: [
+        { label: "MDN Web Docs — HTML", platform: "MDN", type: "docs" },
+        { label: "MDN Web Docs — CSS", platform: "MDN", type: "docs" },
+        { label: "JavaScript.info", platform: "javascript.info", type: "docs" },
+        { label: "The Odin Project — Foundations", platform: "The Odin Project", type: "course" },
+        { label: "CSS Tricks — Flexbox Guide", platform: "CSS Tricks", type: "docs" },
+      ],
+      challenge: "Build a fully responsive personal portfolio page using only HTML & CSS.",
+      estimatedTime: "2–3 weeks",
+    },
+    {
+      id: "mern-2",
+      title: "JavaScript Deep Dive",
+      order: 2,
+      techs: ["ES6+", "Async/Await", "Fetch API"],
+      description:
+        "Go beyond the basics. Master modern JavaScript features, asynchronous patterns, and how to communicate with external APIs.",
+      topics: [
+        "ES6+ — destructuring, spread, arrow functions, modules",
+        "Closures, scope & the prototype chain",
+        "Promises & async/await",
+        "Fetch API & error handling",
+        "Array methods — map, filter, reduce",
+        "Event loop & call stack",
+      ],
+      resources: [
+        { label: "You Don't Know JS (book series)", platform: "GitHub / O'Reilly", type: "book" },
+        { label: "JavaScript.info — Advanced", platform: "javascript.info", type: "docs" },
+        { label: "Fireship — JS in 100 Seconds", platform: "YouTube", type: "video" },
+        { label: "Frontend Masters — JavaScript", platform: "Frontend Masters", type: "course" },
+      ],
+      challenge: "Build a weather app that fetches live data from a public API and handles loading/error states.",
+      estimatedTime: "2–3 weeks",
+    },
+    {
+      id: "mern-3",
+      title: "React Fundamentals",
+      order: 3,
+      techs: ["React", "JSX", "Props", "useState"],
+      description:
+        "Learn how to think in components. Build dynamic UIs with React, understand the component lifecycle, and manage local state.",
+      topics: [
+        "JSX syntax & expressions",
+        "Functional components & props",
+        "useState & useEffect hooks",
+        "Conditional rendering & lists",
+        "Handling forms & controlled inputs",
+        "Component composition patterns",
+      ],
+      resources: [
+        { label: "React Official Docs", platform: "react.dev", type: "docs" },
+        { label: "Scrimba — Learn React", platform: "Scrimba", type: "course" },
+        { label: "The Odin Project — React", platform: "The Odin Project", type: "course" },
+        { label: "Codevolution — React Tutorial", platform: "YouTube", type: "video" },
+      ],
+      challenge: "Build a task manager app with add, delete, and filter functionality — no backend yet.",
+      estimatedTime: "3–4 weeks",
+    },
+    {
+      id: "mern-4",
+      title: "React Advanced",
+      order: 4,
+      techs: ["useContext", "React Router", "Custom Hooks"],
+      description:
+        "Level up your React skills with global state management, client-side routing, and reusable hook patterns.",
+      topics: [
+        "useContext & the Context API",
+        "useReducer for complex state",
+        "Custom hooks & reusability",
+        "React Router v6 — nested routes, params",
+        "Code splitting & lazy loading",
+        "Performance — useMemo, useCallback, React.memo",
+      ],
+      resources: [
+        { label: "React Router Official Docs", platform: "reactrouter.com", type: "docs" },
+        { label: "Jack Herrington — Custom Hooks", platform: "YouTube", type: "video" },
+        { label: "Frontend Masters — React Performance", platform: "Frontend Masters", type: "course" },
+      ],
+      challenge: "Extend your task manager with multi-page routing, a global theme toggle, and persisted state.",
+      estimatedTime: "2–3 weeks",
+    },
+    {
+      id: "mern-5",
+      title: "Node.js & Express",
+      order: 5,
+      techs: ["Node.js", "Express.js", "REST", "Middleware"],
+      description:
+        "Move to the server. Build REST APIs with Node.js and Express, understand middleware, and handle routing and error management.",
+      topics: [
+        "Node.js runtime & module system (CommonJS / ESM)",
+        "Express setup, routing & controllers",
+        "Middleware — logging, validation, error handling",
+        "RESTful API design & HTTP methods",
+        "Environment variables & dotenv",
+        "Working with the file system",
+      ],
+      resources: [
+        { label: "Node.js Official Docs", platform: "nodejs.org", type: "docs" },
+        { label: "Express Official Docs", platform: "expressjs.com", type: "docs" },
+        { label: "Traversy Media — Express Crash Course", platform: "YouTube", type: "video" },
+        { label: "The Odin Project — NodeJS", platform: "The Odin Project", type: "course" },
+      ],
+      challenge: "Build a REST API for a blog — CRUD endpoints for posts, with input validation and error handling.",
+      estimatedTime: "2–3 weeks",
+    },
+    {
+      id: "mern-6",
+      title: "MongoDB & Mongoose",
+      order: 6,
+      techs: ["MongoDB", "Mongoose", "Atlas"],
+      description:
+        "Persist your data. Learn NoSQL database design, connect MongoDB to your Express app, and model data with Mongoose schemas.",
+      topics: [
+        "NoSQL vs SQL — when to use MongoDB",
+        "MongoDB Atlas setup & cloud hosting",
+        "CRUD operations with the MongoDB driver",
+        "Mongoose schemas, models & validation",
+        "Relationships — embedding vs referencing",
+        "Indexing & query performance basics",
+      ],
+      resources: [
+        { label: "MongoDB Official Docs", platform: "mongodb.com", type: "docs" },
+        { label: "Mongoose Official Docs", platform: "mongoosejs.com", type: "docs" },
+        { label: "Web Dev Simplified — MongoDB Crash Course", platform: "YouTube", type: "video" },
+      ],
+      challenge: "Add a MongoDB database to your blog API — store posts and authors with a proper schema and relationships.",
+      estimatedTime: "2 weeks",
+    },
+    {
+      id: "mern-7",
+      title: "Authentication & Security",
+      order: 7,
+      techs: ["JWT", "bcrypt", "Cookies", "CORS"],
+      description:
+        "Secure your app. Implement user registration and login, hash passwords, issue JWTs, and protect routes.",
+      topics: [
+        "Password hashing with bcrypt",
+        "JWT — signing, verifying, refresh tokens",
+        "Auth middleware & protected routes",
+        "HTTP-only cookies vs localStorage",
+        "CORS configuration",
+        "Input sanitization & basic OWASP awareness",
+      ],
+      resources: [
+        { label: "JWT.io — Introduction", platform: "jwt.io", type: "docs" },
+        { label: "Web Dev Simplified — JWT Auth", platform: "YouTube", type: "video" },
+        { label: "OWASP Top 10", platform: "owasp.org", type: "docs" },
+      ],
+      challenge: "Add full auth to your blog API — register, login, JWT issuance, and protected post creation routes.",
+      estimatedTime: "2 weeks",
+    },
+    {
+      id: "mern-8",
+      title: "Full Stack Integration",
+      order: 8,
+      techs: ["Axios", "React Query", "Zustand"],
+      description:
+        "Connect your React frontend to your Express backend. Handle API calls, loading states, caching, and global state across the full stack.",
+      topics: [
+        "Axios setup & interceptors",
+        "React Query — queries, mutations, caching",
+        "Global state with Zustand",
+        "Handling auth tokens on the client",
+        "Proxy config for local dev (Vite / CRA)",
+        "Error boundaries & toast notifications",
+      ],
+      resources: [
+        { label: "TanStack Query Docs", platform: "tanstack.com", type: "docs" },
+        { label: "Zustand Docs", platform: "GitHub / npm", type: "docs" },
+        { label: "Jack Herrington — React Query", platform: "YouTube", type: "video" },
+      ],
+      challenge: "Build a full MERN blog — React frontend that talks to your Express/MongoDB backend with auth, protected routes, and optimistic UI.",
+      estimatedTime: "3–4 weeks",
+    },
+    {
+      id: "mern-9",
+      title: "Testing",
+      order: 9,
+      techs: ["Jest", "React Testing Library", "Supertest"],
+      description:
+        "Write tests that give you confidence. Cover your React components, API endpoints, and async logic.",
+      topics: [
+        "Unit testing with Jest",
+        "React Testing Library — render, queries, events",
+        "Testing async code & mocking",
+        "API endpoint testing with Supertest",
+        "Test coverage & CI integration",
+        "Test-driven development basics",
+      ],
+      resources: [
+        { label: "Jest Official Docs", platform: "jestjs.io", type: "docs" },
+        { label: "React Testing Library Docs", platform: "testing-library.com", type: "docs" },
+        { label: "Kent C. Dodds — Testing JavaScript", platform: "testingjavascript.com", type: "course" },
+      ],
+      challenge: "Write unit + integration tests for your blog app — cover components, API routes, and auth flow.",
+      estimatedTime: "2 weeks",
+    },
+    {
+      id: "mern-10",
+      title: "Deployment & DevOps",
+      order: 10,
+      techs: ["Vercel", "Railway", "Docker", "GitHub Actions"],
+      description:
+        "Ship your app to the world. Deploy your frontend and backend, automate with CI/CD, and containerize with Docker.",
+      topics: [
+        "Deploying React to Vercel / Netlify",
+        "Deploying Express API to Railway / Render",
+        "Environment variables in production",
+        "Docker basics — Dockerfile, images, containers",
+        "GitHub Actions — CI pipeline on push",
+        "Domain setup & HTTPS basics",
+      ],
+      resources: [
+        { label: "Vercel Docs", platform: "vercel.com", type: "docs" },
+        { label: "Railway Docs", platform: "railway.app", type: "docs" },
+        { label: "TechWorld with Nana — Docker for Beginners", platform: "YouTube", type: "video" },
+        { label: "GitHub Actions Docs", platform: "GitHub", type: "docs" },
+      ],
+      challenge: "Deploy your full MERN blog app — frontend on Vercel, API on Railway, MongoDB on Atlas, with a GitHub Actions CI pipeline.",
+      estimatedTime: "1–2 weeks",
+    },
+  ],
+};

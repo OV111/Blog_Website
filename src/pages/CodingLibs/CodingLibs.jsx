@@ -22,7 +22,7 @@ export default function CodingLibs() {
         >
           Coding Libraries
         </GradientText>
-        <p className="mt-3 text-sm sm:text-base text-neutral-500 dark:text-neutral-400 max-w-2xl mx-auto">
+        <p className="mt-3 text-sm sm:text-base max-w-2xl mx-auto bg-gradient-to-r from-teal-400 via-indigo-400 to-violet-400 bg-clip-text text-transparent">
           A curated library of coding challenges — browse by topic, difficulty,
           or stack and sharpen your skills one problem at a time.
         </p>

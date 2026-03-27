@@ -1,4 +1,5 @@
 export const CATEGORY_OPTIONS = [
+  { id: "fundamentals", title: "Fundamentals", slug: "fundamental" },
   { id: "fullstack", title: "Full Stack", slug: "fullstack" },
   { id: "backend", title: "Backend", slug: "backend" },
   { id: "mobile", title: "Mobile", slug: "mobile" },
@@ -12,7 +13,6 @@ export const CATEGORY_OPTIONS = [
   // { id: "database", title: "Database Managment", slug: "database" },
   // { id: "quantum", title: "Quantum Computing", slug: "quantum" },
 ];
-
 
 export const CATEGORY_OPTIONS2 = [
   { id: "fullstack", title: "Full Stack", slug: "fullstack" },
