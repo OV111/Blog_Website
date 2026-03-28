@@ -1,5 +1,18 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import GradientText from "@/components/GradientText";
+import { LIBRARY_TYPES } from "../../../constants/CodingLibs";
+
+const containerVariants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+  },
+};
+const cardVariants = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+};
 
 export default function CodingLibs() {
   return (
@@ -9,7 +22,7 @@ export default function CodingLibs() {
       <div className="pointer-events-none fixed top-10 right-10 h-72 w-72 rounded-full bg-purple-200/30 blur-3xl dark:bg-purple-900/15" />
 
       <motion.div
-        className="mb-10 text-center"
+        className="mb-14 text-center"
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
@@ -23,33 +36,59 @@ export default function CodingLibs() {
           Coding Libraries
         </GradientText>
         <p className="mt-3 text-sm sm:text-base max-w-2xl mx-auto bg-gradient-to-r from-teal-400 via-indigo-400 to-violet-400 bg-clip-text text-transparent">
-          A curated library of coding challenges — browse by topic, difficulty,
-          or stack and sharpen your skills one problem at a time.
+          Everything you need to level up — books, docs, guides, and cheat
+          sheets curated by the community.
         </p>
       </motion.div>
 
-      {/* Category Bar (path filter)                  │
-│  All | Frontend | Backend | AI/ML | DevOps   │
-│  Mobile | General                            │
-├──────────────────────────────────────────────┤
-│  Type Filter (second row of pills)           │
-│  All | 📚 Books | 📖 Docs | 📝 Guides        │
-│  🗒️ Cheat Sheets                             │
-├──────────────────────────────────────────────┤
-│  Search bar (by title or topic)              │
-├──────────────────────────────────────────────┤
-│  Resource Grid (2 cols desktop, 1 mobile)    │
-│  ┌──────────┐  ┌──────────┐                 │
-│  │  Card    │  │  Card    │                 │
-│  └──────────┘  └──────── */}
       <motion.div
-        className="flex flex-col items-center justify-center mt-24 gap-3 text-neutral-400 dark:text-neutral-600"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
+        className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-4xl mx-auto"
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
       >
-        <span className="text-5xl">📚</span>
-        <p className="text-sm tracking-wide">Libraries coming soon</p>
+        {LIBRARY_TYPES.map((item) => (
+          <motion.div key={item.slug} variants={cardVariants}>
+            <Link
+              to={`/coding-libs/${item.slug}`}
+              className={`
+                group flex flex-col gap-4 p-6 rounded-2xl
+                bg-gradient-to-br ${item.gradient}
+                border ${item.border}
+                shadow-lg ${item.glow}
+                hover:shadow-xl hover:-translate-y-1
+                transition-all duration-300
+                backdrop-blur-sm
+              `}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-4xl">{item.icon}</span>
+                <span
+                  className={`text-xs font-medium px-3 py-1 rounded-full bg-gradient-to-r ${item.tag} bg-clip-text text-transparent border border-current/10`}
+                >
+                  {item.count}
+                </span>
+              </div>
+
+              <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-100 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors">
+                {item.label}
+              </h2>
+
+              <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+                {item.description}
+              </p>
+
+              <div
+                className={`flex items-center gap-1.5 text-sm font-medium bg-gradient-to-r ${item.tag} bg-clip-text text-transparent mt-auto`}
+              >
+                Explore
+                <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">
+                  →
+                </span>
+              </div>
+            </Link>
+          </motion.div>
+        ))}
       </motion.div>
     </div>
   );

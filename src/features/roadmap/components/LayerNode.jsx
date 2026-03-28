@@ -7,15 +7,15 @@ const LayerNode = ({ layer, index }) => {
   const isActive = activeLayer?.id === layer.id;
 
   return (
-    <div className="flex justify-center items-center">
+    <div>
       <motion.button
         onClick={() => setActiveLayer(layer)}
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.3, delay: index * 0.06 }}
         className={`
-        w-full flex items-center gap-4 px-4 py-4 rounded-2xl border text-left
-        transition-all duration-200 cursor-pointer
+        w-full h-[72px] flex items-center gap-4 px-4 rounded-2xl border text-left
+        transition-all duration-200 cursor-pointer overflow-hidden
         ${
           isActive
             ? "bg-violet-50 dark:bg-violet-900/20 border-violet-400 dark:border-violet-600 shadow-[0_0_20px_rgba(139,92,246,0.15)]"
@@ -46,12 +46,12 @@ const LayerNode = ({ layer, index }) => {
             {layer.title}
           </p>
 
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
-            <span className="flex items-center gap-1 text-[11px] text-neutral-400 dark:text-neutral-500">
+          <div className="flex items-center gap-x-3 mt-1 overflow-hidden">
+            <span className="flex shrink-0 items-center gap-1 text-[11px] text-neutral-400 dark:text-neutral-500">
               <Clock size={11} />
               {layer.estimatedTime}
             </span>
-            <div className="flex flex-wrap gap-1">
+            <div className="flex gap-1 overflow-hidden">
               {layer.techs.slice(0, 3).map((t) => (
                 <span
                   key={t}

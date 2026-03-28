@@ -40,7 +40,7 @@ const Footer = () => {
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,0.95fr)] lg:gap-12">
           <div className="flex flex-col items-start">
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <img src={null} alt="Logo" />
+              <img src={null} width={0} height={0} alt="Logo" />
               <h1 className="text-3xl font-extrabold  tracking-wide">
                 DevsWebs
               </h1>
@@ -160,7 +160,6 @@ const Footer = () => {
             )}
           </div>
         </div>
-        {/* <hr className="border-purple-800 my-6" /> */}
 
         <div className="mx-auto mt-8 max-w-7xl py-8 text-center text-sm text-purple-300 sm:text-base">
           © {new Date().getFullYear()} Devs Blog. All rights reserved!

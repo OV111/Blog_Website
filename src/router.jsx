@@ -1,10 +1,8 @@
 import React, { lazy } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
 import ProtectedMyProfile from "./routes/ProtectedMyProfile";
-// import RoadmapPage from "./features/roadmap/RoadmapPage";
-// import ProtectedRoutes from "./routes/ProtectedRoutes";
 
 const Followers = lazy(() => import("./pages/My-Profile/Followers"));
 const Favorites = lazy(() => import("./pages/My-Profile/Favorites"));
@@ -13,7 +11,7 @@ const Chats = lazy(() => import("./pages/My-Profile/chat/Chats"));
 const Notifications = lazy(() => import("./pages/My-Profile/Notifications"));
 const Settings = lazy(() => import("./pages/My-Profile/Settings"));
 
-const Home = lazy(() => import("./pages/Home"));
+import Home from "./pages/Home";
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Privacy = lazy(() => import("./pages/Privacy"));
@@ -24,15 +22,20 @@ const UserProfile = lazy(() => import("./pages/Users/UserProfile"));
 
 const RoadmapPage = lazy(() => import("./features/roadmap/RoadmapPage"));
 const CodingLibs = lazy(() => import("./pages/CodingLibs/CodingLibs"));
-const CodingChallenges = lazy(() => import("./pages/CodingChallenges/CodingChallenges"));
+const Books = lazy(() => import("./pages/CodingLibs/Books"));
+const Docs = lazy(() => import("./pages/CodingLibs/Docs"));
+const CodingChallenges = lazy(
+  () => import("./pages/CodingChallenges/CodingChallenges"),
+);
 
+const Fundamentals = lazy(() => import("./pages/CategoryPages/Fundamentals"));
 const FullStack = lazy(() => import("./pages/CategoryPages/FullStack"));
 const Backend = lazy(() => import("./pages/CategoryPages/Backend"));
 const Mobile = lazy(() => import("./pages/CategoryPages/Mobile"));
 const AIandML = lazy(() => import("./pages/CategoryPages/AI&ML"));
 const QA = lazy(() => import("./pages/CategoryPages/QA"));
 const DevOps = lazy(() => import("./pages/CategoryPages/DevOps"));
-const GameDev  = lazy(() => import("./pages/CategoryPages/GameDev"));
+const GameDev = lazy(() => import("./pages/CategoryPages/GameDev"));
 
 const ReadMore = lazy(() => import("./components/ReadMore"));
 const NotFound = lazy(() => import("./components/NotFound"));
@@ -47,7 +50,20 @@ const router = createBrowserRouter([
       { path: "contact", element: <Contact /> },
       { path: "privacy", element: <Privacy /> },
       { path: "roadmaps", element: <RoadmapPage /> },
-      { path: "coding-libs", element: <CodingLibs /> },
+      {
+        path: "coding-libs",
+        children: [
+          {
+            index: true,
+            element: <CodingLibs />,
+          },
+          { path: "books", element: <Books /> },
+          {
+            path: "docs",
+            element: <Docs />,
+          },
+        ],
+      },
       { path: "coding-challenges", element: <CodingChallenges /> },
       { path: "get-started", element: <GetStarted /> },
       { path: "users/:username", element: <UserProfile /> },
@@ -124,9 +140,8 @@ const router = createBrowserRouter([
         path: "categories",
         errorElement: <NotFound />,
         children: [
+          { path: "fundamentals", element: <Fundamentals /> },
           { path: "fullstack", element: <FullStack /> },
-          // ! check if it have a meaning (give a sense)
-          // {path:"fullstack/default",element:<FullStack/>},
           { path: "fullstack/post/:id", element: <ReadMore /> },
 
           { path: "backend", element: <Backend /> },

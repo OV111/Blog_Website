@@ -1,5 +1,5 @@
 export const CATEGORY_OPTIONS = [
-  { id: "fundamentals", title: "Fundamentals", slug: "fundamental" },
+  { id: "fundamentals", title: "Fundamentals", slug: "fundamentals" },
   { id: "fullstack", title: "Full Stack", slug: "fullstack" },
   { id: "backend", title: "Backend", slug: "backend" },
   { id: "mobile", title: "Mobile", slug: "mobile" },
@@ -12,6 +12,136 @@ export const CATEGORY_OPTIONS = [
   // { id: "cloud", title: "Cloud Computing", slug: "cloud" },
   // { id: "database", title: "Database Managment", slug: "database" },
   // { id: "quantum", title: "Quantum Computing", slug: "quantum" },
+];
+
+export const FUNDAMENTALS_CONCEPTS = [
+  {
+    icon: "🧮",
+    title: "Binary & Number Systems",
+    desc: "Binary, hexadecimal, bitwise operations. Computers speak in 0s and 1s — understanding that changes how you think.",
+    difficulty: "beginner",
+  },
+
+  {
+    icon: "∫",
+    title: "Calculus for ML",
+    desc: "Derivatives, gradients, chain rule. Backpropagation is just calculus — understanding it makes you a better AI engineer.",
+    difficulty: "hard",
+  },
+  {
+    icon: "🧩",
+    title: "Design Patterns",
+    desc: "Proven solutions to recurring problems. Patterns make code readable, scalable, and maintainable.",
+    difficulty: "medium",
+  },
+  {
+    icon: "🖥️",
+    title: "How Computers Work",
+    desc: "Memory, CPU, processes, threads, the call stack. What actually happens when you run your code.",
+    difficulty: "beginner",
+  },
+  {
+    icon: "🔀",
+    title: "Version Control",
+    desc: "Git isn't optional. Branching, merging, resolving conflicts — this is how real teams build software.",
+    difficulty: "beginner",
+  },
+  {
+    icon: "🌐",
+    title: "Networking Basics",
+    desc: "HTTP, DNS, TCP/IP, APIs, request/response cycles — the internet is your runtime.",
+    difficulty: "beginner",
+  },
+  {
+    icon: "📊",
+    title: "Linear Algebra",
+    desc: "Vectors, matrices, dot products, transformations. The language every AI model speaks under the hood.",
+    difficulty: "hard",
+  },
+  {
+    icon: "📐",
+    title: "Big O Complexity",
+    desc: "Understand how your code scales. Time and space complexity are what separates good code from great code.",
+    difficulty: "medium",
+  },
+  {
+    icon: "🔁",
+    title: "Programming Paradigms",
+    desc: "Object-oriented, functional, procedural — knowing when and why to use each one is a core skill.",
+    difficulty: "medium",
+  },
+  {
+    icon: "🧠",
+    title: "Data Structures",
+    desc: "Arrays, linked lists, stacks, queues, trees, graphs — the building blocks every algorithm depends on.",
+    difficulty: "hard",
+  },
+  {
+    icon: "⚙️",
+    title: "Algorithms",
+    desc: "Sorting, searching, recursion, dynamic programming. Learn to think in solutions, not just code.",
+    difficulty: "hard",
+  },
+  {
+    icon: "🗄️",
+    title: "Databases",
+    desc: "Relational vs non-relational, queries, indexing, and why data modeling matters from day one.",
+    difficulty: "medium",
+  },
+  {
+    icon: "🔐",
+    title: "Security Basics",
+    desc: "Encryption, authentication, common vulnerabilities. Every developer is responsible for writing secure code.",
+    difficulty: "medium",
+  },
+  {
+    icon: "🧪",
+    title: "Testing",
+    desc: "Unit, integration, end-to-end. If you don't test it, you don't know it works.",
+    difficulty: "medium",
+  },
+  {
+    icon: "🏗️",
+    title: "Operating Systems",
+    desc: "Processes, scheduling, file systems, permissions — the layer between your code and the hardware.",
+    difficulty: "hard",
+  },
+  {
+    icon: "📡",
+    title: "APIs & Protocols",
+    desc: "REST, WebSockets, GraphQL, gRPC. How systems talk to each other is as important as the systems themselves.",
+    difficulty: "beginner",
+  },
+  {
+    icon: "🔧",
+    title: "Compilers & Interpreters",
+    desc: "How source code becomes execution. Lexing, parsing, ASTs — what actually runs your program.",
+    difficulty: "hard",
+  },
+  {
+    icon: "📦",
+    title: "Package Management",
+    desc: "npm, pip, cargo — managing dependencies, versioning, and avoiding supply chain chaos.",
+    difficulty: "beginner",
+  },
+  {
+    icon: "🔄",
+    title: "Concurrency & Async",
+    desc: "Threads, event loops, promises, async/await. Writing code that does more than one thing at a time is a skill in itself.",
+    difficulty: "hard",
+  },
+  {
+    icon: "📈",
+    title: "Statistics & Probability",
+    desc: "Distributions, variance, Bayes theorem, hypothesis testing. ML is applied statistics — skip this and you're guessing.",
+    difficulty: "hard",
+  },
+  {
+    icon: "💻",
+    title: "Command Line",
+    desc: "Navigate, automate, and control your environment. The terminal is where real development happens.",
+    difficulty: "beginner",
+  },
 ];
 
 export const CATEGORY_OPTIONS2 = [

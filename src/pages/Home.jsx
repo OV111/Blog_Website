@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import TextType from "../components/TextType";
 import GradientText from "../components/GradientText";
-import { Toaster } from "react-hot-toast";
 import useAuthStore from "../stores/useAuthStore";
 import heroIllustration from "../assets/Code typing-bro (1).svg";
 
@@ -10,8 +9,6 @@ const Home = () => {
 
   return (
     <div className="relative overflow-hidden">
-      <Toaster position="right-bottom" reverseOrder={false} />
-
       {/* Background blobs */}
       <div className="pointer-events-none absolute -top-20 -left-20 h-72 w-72 rounded-full bg-fuchsia-200/50 blur-3xl dark:bg-fuchsia-900/20" />
       <div className="pointer-events-none absolute top-10 right-10 h-72 w-72 rounded-full bg-violet-200/40 blur-3xl dark:bg-violet-900/20" />
@@ -25,6 +22,7 @@ const Home = () => {
                 text={[
                   "Welcome to Developers Web",
                   "Level up your dev skills,",
+                  "Next generation of learning",
                   "Created by Devs for Devs!",
                   "Every expert was once a beginner.",
                   "It is not ordinary platform"

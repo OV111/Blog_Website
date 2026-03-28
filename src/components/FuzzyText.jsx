@@ -38,6 +38,8 @@ const FuzzyText = ({
       if (typeof fontSize === "number") {
         numericFontSize = fontSize;
       } else {
+        await new Promise((resolve) => requestAnimationFrame(resolve));
+        if (isCancelled) return;
         const temp = document.createElement("span");
         temp.style.fontSize = fontSize;
         document.body.appendChild(temp);

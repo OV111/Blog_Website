@@ -16,6 +16,7 @@ export default defineConfig({
     },
   },
   build: {
+    cssMinify: true,
     rollupOptions: {
       output: {
         manualChunks: {
@@ -23,11 +24,14 @@ export default defineConfig({
           "vendor-motion": ["framer-motion"],
           "vendor-three": ["three", "postprocessing"],
           "vendor-mui": ["@mui/material", "@mui/icons-material"],
-          "vendor-chakra": ["@chakra-ui/react", "@emotion/react", "@emotion/styled"],
           "vendor-gsap": ["gsap"],
           "vendor-lottie": ["lottie-react"],
+          "vendor-icons": ["react-icons"],
+          "vendor-toast": ["react-hot-toast"],
+          "vendor-forms": ["react-hook-form"],
         },
       },
     },
+    chunkSizeWarningLimit: 600,
   },
 });

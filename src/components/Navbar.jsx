@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
-import { IoMdArrowDropdown } from "react-icons/io";
+import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "../stores/useAuthStore";
 import useThemeStore from "../stores/useThemeStore";
 import SearchBar from "./search/SearchBar";
 import { ChevronDown, LogOut, Sun, Moon, Menu, X } from "lucide-react";
-import SearchResults from "./search/SearchResults";
 import { CATEGORY_OPTIONS } from "../../constants/Categories";
 import { AVATAR_MENU_ITEMS, MOBILE_EXTRA_LINKS } from "../../constants/Navbar";
 import useProfileStore from "@/stores/useProfileStore";
+const SearchResults = lazy(() => import("./search/SearchResults"));
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -94,11 +93,7 @@ const Navbar = () => {
         {theme === "dark" ? "Dark mode" : "Light mode"}
       </span>
       <button onClick={setTheme} className={buttonClassName}>
-        {theme === "dark" ? (
-          <Sun fontSize="small" />
-        ) : (
-          <Moon fontSize="small" />
-        )}
+        {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
       </button>
     </>
   );
@@ -119,7 +114,10 @@ const Navbar = () => {
     >
       {stats?.profileImage ? (
         <img
-          src={stats.profileImage}
+          src={stats.profileImage?.replace(
+            "/upload/",
+            "/upload/w_64,h_64,c_fill,f_auto,q_auto/",
+          )}
           alt="avatar"
           className="w-full h-full object-cover rounded-full"
         />
@@ -171,11 +169,13 @@ const Navbar = () => {
             onSubmit={handleSearchSubmit}
             placeholder="Search"
           />
-          <SearchResults
-            query={searchValue}
-            onSelect={handleSearchSelect}
-            boundaryRef={desktopSearchRef}
-          />
+          <Suspense fallback={null}>
+            <SearchResults
+              query={searchValue}
+              onSelect={handleSearchSelect}
+              boundaryRef={desktopSearchRef}
+            />
+          </Suspense>
         </div>
       )}
 
@@ -196,7 +196,7 @@ const Navbar = () => {
           >
             Categories
             <ChevronDown
-              size={16}
+              size={15}
               className={`transition-transform duration-200 ${showDropdown ? "rotate-180" : ""}`}
             />
           </button>
@@ -294,11 +294,7 @@ const Navbar = () => {
                 onClick={setTheme}
                 className="relative flex justify-center items-center cursor-pointer"
               >
-                {theme === "dark" ? (
-                  <Sun fontSize="medium" />
-                ) : (
-                  <Moon fontSize="medium" />
-                )}
+                {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
               </button>
             </li>
           </>
@@ -307,7 +303,7 @@ const Navbar = () => {
         {/* Hamburger */}
         <li className="list-none">
           <button onClick={() => setIsOpen(!isOpen)} className="md:hidden mb-1">
-            {isOpen ? <X /> : <Menu />}
+            {isOpen ? <X size={15} /> : <Menu size={15} />}
           </button>
         </li>
 
@@ -324,11 +320,13 @@ const Navbar = () => {
                     placeholder="Search posts..."
                     className="max-w-full"
                   />
-                  <SearchResults
-                    query={searchValue}
-                    onSelect={handleSearchSelect}
-                    boundaryRef={mobileSearchRef}
-                  />
+                  <Suspense fallback={null}>
+                    <SearchResults
+                      query={searchValue}
+                      onSelect={handleSearchSelect}
+                      boundaryRef={mobileSearchRef}
+                    />
+                  </Suspense>
                 </div>
               </li>
             )}
@@ -339,7 +337,7 @@ const Navbar = () => {
                 onClick={() => setShowDropdownMobile(!showDropdownMobile)}
                 className="flex items-center cursor-pointer"
               >
-                Categories <IoMdArrowDropdown />
+                Categories <ChevronDown size={16} className="inline" />
               </button>
               {showDropdownMobile && (
                 <CategoryList onClose={closeDropdownMobile} />
@@ -381,7 +379,7 @@ const Navbar = () => {
                     to={to}
                     className="flex items-center gap-2"
                   >
-                    <Icon size={15} />
+                    <Icon size={14} />
                     {label}
                   </MobileNavLink>
                 ))}
@@ -397,7 +395,7 @@ const Navbar = () => {
                     onClick={handleLogout}
                     className="flex items-center gap-2 text-base font-medium text-red-300 hover:text-red-200 transition cursor-pointer"
                   >
-                    <LogOut size={15} />
+                    <LogOut size={14} />
                     Logout
                   </button>
                 </li>

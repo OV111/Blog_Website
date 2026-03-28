@@ -127,3 +127,8 @@ body {
     --sidebar-ring: oklch(0.552 0.016 285.938);
 
 }
+
+@keyframes blink {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
