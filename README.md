@@ -1,4 +1,4 @@
-# Devs Blog
+# Devs Website
 
 A full-stack blog platform for developers, built with React and Node.js.
 
