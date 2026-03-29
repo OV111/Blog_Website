@@ -8,16 +8,16 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 
-import BlogCard from "@/components/BlogCard";
+import BlogCard from "@/components/blog/BlogCard";
 
 import { motion } from "framer-motion";
 
-import { FloatingIcons } from "../../components/FloatingIcons";
+import { FloatingIcons } from "../../components/effects/FloatingIcons";
 import useAuthStore from "../../stores/useAuthStore";
 
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const LoadingSuspense = lazy(() => import("../../components/LoadingSuspense"));
+const LoadingSuspense = lazy(() => import("../../components/feedback/LoadingSuspense"));
 
 const Mobile = () => {
   const [categoryPage, setCategoryPage] = useState("mobile");

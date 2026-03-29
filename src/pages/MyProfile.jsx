@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import XIcon from "@mui/icons-material/X";
-import LoadingSuspense from "../components/LoadingSuspense";
+import LoadingSuspense from "../components/feedback/LoadingSuspense";
 import SideBar from "./My-Profile/components/SideBar";
 import useProfileStore from "@/stores/useProfileStore";
 

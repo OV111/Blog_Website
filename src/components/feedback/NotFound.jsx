@@ -1,5 +1,5 @@
 import React from "react";
-import FuzzyText from "./FuzzyText";
+import FuzzyText from "../effects/FuzzyText";
 
 const NotFound = () => {
   return (

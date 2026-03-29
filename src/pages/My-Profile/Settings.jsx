@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import DeleteAccount from "@/components/DeleteAccount";
+import DeleteAccount from "@/features/profile/components/DeleteAccount";
 import { Toaster, toast } from "react-hot-toast";
 import SideBar from "./components/SideBar";
 import useProfileStore from "@/stores/useProfileStore";

@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import CategoryBar from "./components/CategotyBar";
 import TrackSelector from "./components/TrackSelector";
 import RoadmapTree from "./components/RoadmapTree";
-import GradientText from "@/components/GradientText";
+import GradientText from "@/components/effects/GradientText";
 import useRoadmapStore from "../../stores/useRoadmapStore";
 import FloatingLoad from "./components/FloatingLoad";
 

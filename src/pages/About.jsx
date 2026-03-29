@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import GradientText from "../components/GradientText";
-import ShinyText from "../components/ShinyText";
+import GradientText from "../components/effects/GradientText";
+import ShinyText from "../components/effects/ShinyText";
 import { CATEGORY_OPTIONS2 } from "../../constants/Categories";
 
 // ── Animated counter ──────────────────────────────────────────────────────────

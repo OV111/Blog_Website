@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import GradientText from "@/components/GradientText";
+import GradientText from "@/components/effects/GradientText";
 
 export default function CodingChallenges() {
   return (

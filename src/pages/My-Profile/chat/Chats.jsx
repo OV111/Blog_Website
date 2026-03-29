@@ -5,7 +5,7 @@ import { ChevronDown, SquarePen } from "lucide-react";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { ArrowUpDown } from "lucide-react";
 import "react-loading-skeleton/dist/skeleton.css";
-import LoadingChatSuspense from "@/components/LoadingChatSuspense";
+import LoadingChatSuspense from "@/components/feedback/LoadingChatSuspense";
 import ChatInterface from "./ChatInterface";
 import { formatTimeAgo } from "./ChatInterface";
 import Skeleton from "react-loading-skeleton";

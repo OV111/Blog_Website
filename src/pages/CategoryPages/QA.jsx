@@ -1,12 +1,12 @@
 import React, { lazy, Suspense, useEffect, useState } from "react";
 import useAuthStore from "../../stores/useAuthStore";
-import BlogCard from "@/components/BlogCard";
+import BlogCard from "@/components/blog/BlogCard";
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { motion } from "framer-motion";
 
-import { FloatingIcons } from "../../components/FloatingIcons";
+import { FloatingIcons } from "../../components/effects/FloatingIcons";
 
-const LoadingSuspense = lazy(() => import("../../components/LoadingSuspense"));
+const LoadingSuspense = lazy(() => import("../../components/feedback/LoadingSuspense"));
 
 const QA = () => {
   const { auth } = useAuthStore();

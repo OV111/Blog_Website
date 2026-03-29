@@ -2,10 +2,10 @@ import React, { lazy, Suspense, useEffect, useState } from "react";
 import useAuthStore from "../../stores/useAuthStore";
 import { motion } from "framer-motion";
 
-import BlogCard from "@/components/BlogCard";
+import BlogCard from "@/components/blog/BlogCard";
 
-import { FloatingIcons } from "../../components/FloatingIcons";
-const LoadingSuspense = lazy(() => import("../../components/LoadingSuspense"));
+import { FloatingIcons } from "../../components/effects/FloatingIcons";
+const LoadingSuspense = lazy(() => import("../../components/feedback/LoadingSuspense"));
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const DevOps = () => {

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import GradientText from "@/components/GradientText";
+import GradientText from "@/components/effects/GradientText";
 import { CATEGORY_OPTIONS } from "../../../constants/Categories";
 
 export default function Books() {

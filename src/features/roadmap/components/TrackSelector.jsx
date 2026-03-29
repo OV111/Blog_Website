@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { TRACKS } from "../../../../constants/roadmapPaths.js";
-import useRoadmapStore from "../../../stores/useRoadmapStore";
+import useRoadmapStore from "../../../stores/useRoadmapStore.js";
 
 const TrackSelector = () => {
   const { selectedCategory, selectedTrack, setTrack } = useRoadmapStore();

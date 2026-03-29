@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchCategoryData, fetchUserData } from "./services/SearchApi";
+import { fetchCategoryData, fetchUserData } from "../../services/SearchApi";
 import useAuthStore from "@/stores/useAuthStore";
 
 export default function SearchResults({ query = "", onSelect, boundaryRef }) {

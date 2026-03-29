@@ -1,4 +1,4 @@
-import { CATEGORY_OPTIONS } from "../../../../constants/Categories";
+import { CATEGORY_OPTIONS } from "../../constants/Categories";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import TextType from "../components/TextType";
-import GradientText from "../components/GradientText";
+import TextType from "../components/effects/TextType";
+import GradientText from "../components/effects/GradientText";
 import useAuthStore from "../stores/useAuthStore";
 import heroIllustration from "../assets/Code typing-bro (1).svg";
 

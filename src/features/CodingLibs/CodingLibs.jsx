@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import GradientText from "@/components/GradientText";
+import GradientText from "@/components/effects/GradientText";
 import { LIBRARY_TYPES } from "../../../constants/CodingLibs";
 
 const containerVariants = {

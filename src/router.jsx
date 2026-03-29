@@ -20,12 +20,12 @@ const GetStarted = lazy(() => import("./pages/GetStarted"));
 
 const UserProfile = lazy(() => import("./pages/Users/UserProfile"));
 
-const RoadmapPage = lazy(() => import("./features/roadmap/RoadmapPage"));
-const CodingLibs = lazy(() => import("./pages/CodingLibs/CodingLibs"));
-const Books = lazy(() => import("./pages/CodingLibs/Books"));
-const Docs = lazy(() => import("./pages/CodingLibs/Docs"));
+const RoadmapPage = lazy(() => import("./features/Roadmap/RoadmapPage"));
+const CodingLibs = lazy(() => import("./features/CodingLibs/CodingLibs"));
+const Books = lazy(() => import("./features/CodingLibs/Books"));
+const Docs = lazy(() => import("./features/CodingLibs/Docs"));
 const CodingChallenges = lazy(
-  () => import("./pages/CodingChallenges/CodingChallenges"),
+  () => import("./features/CodingChallenges/CodingChallenges"),
 );
 
 const Fundamentals = lazy(() => import("./pages/CategoryPages/Fundamentals"));
@@ -37,8 +37,8 @@ const QA = lazy(() => import("./pages/CategoryPages/QA"));
 const DevOps = lazy(() => import("./pages/CategoryPages/DevOps"));
 const GameDev = lazy(() => import("./pages/CategoryPages/GameDev"));
 
-const ReadMore = lazy(() => import("./components/ReadMore"));
-const NotFound = lazy(() => import("./components/NotFound"));
+const ReadMore = lazy(() => import("./components/blog/ReadMore"));
+const NotFound = lazy(() => import("./components/feedback/NotFound"));
 
 const router = createBrowserRouter([
   {

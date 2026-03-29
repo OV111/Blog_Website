@@ -2,16 +2,16 @@
 stack development content. Here's a breakdown of what the code is doing: */
 import React, { lazy, Suspense, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import BlogCard from "@/components/BlogCard";
-import { FloatingIcons } from "../../components/FloatingIcons";
+import BlogCard from "@/components/blog/BlogCard";
+import { FloatingIcons } from "../../components/effects/FloatingIcons";
 import { ScrollLine } from "../../animations/ScrollingLine";
 import useAuthStore from "../../stores/useAuthStore";
 
-const LoadingSuspense = lazy(() => import("../../components/LoadingSuspense"));
+const LoadingSuspense = lazy(() => import("../../components/feedback/LoadingSuspense"));
 
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const ReadMore = lazy(() => import("../../components/ReadMore"));
+const ReadMore = lazy(() => import("../../components/blog/ReadMore"));
 
 const FullStack = () => {
   const [categoryPage, setCategoryPage] = useState("fullstack");

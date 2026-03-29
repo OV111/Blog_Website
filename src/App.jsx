@@ -3,7 +3,7 @@ import { RouterProvider } from "react-router-dom";
 import "./index.css";
 
 import router from "./router";
-import LoadingSuspense from "./components/LoadingSuspense";
+import LoadingSuspense from "./components/feedback/LoadingSuspense";
 import useAuthStore from "./stores/useAuthStore";
 
 const App = () => {
