@@ -16,6 +16,8 @@ cloudinary.config({
 });
 
 import initWebSocketServer from "./websocket/index.js";
+import NotificationWorker from "./workers/notificationWorker.js";
+import notificationQueue from "./queues/notificationQueue.js";
 
 import { postHandling } from "./routes/postHandling.js";
 import { defaultPostsHandling } from "./routes/handleDefPosts.js";
@@ -707,6 +709,12 @@ const StartServer = async () => {
             followerId: currentUserId,
             followingId: targetUser._id,
             createdAt: new Date(),
+          });
+          // notification for being followed
+          notificationQueue.add("follow", {
+            type: "notification",
+            actorId: currentUserId.toString(),
+            targetUserId: targetUser._id.toString(),
           });
           await userStats.updateOne(
             { userId: targetUser._id },

@@ -1,8 +1,12 @@
 import { WebSocketServer } from "ws";
 import { joinRoom, loadLastMessages, sendMessage } from "./chatHandler.js";
 import { verifyToken } from "../utils/jwtToken.js";
+
+let wss;
+export const getWss = () => wss;
+
 export default function initWebSocketServer(server) {
-  const wss = new WebSocketServer({ server });
+  wss = new WebSocketServer({ server });
   wss.on("connection", (ws) => {
     console.log("Client Connected!");
 
