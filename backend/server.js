@@ -31,6 +31,7 @@ import {
   getFollowersData,
   getFollowingData,
 } from "./services/followService.js";
+import { type } from "os";
 
 const PORT = process.env.PORT || 5000;
 const escapeRegex = (value = "") =>
@@ -507,6 +508,22 @@ const StartServer = async () => {
         return res.end(JSON.stringify({ mutualFollowers }));
       }
 
+      if (req.method === "GET" && req.url === "/my-profile/notifications") {
+        const token = req.headers["authorization"]?.split(" ")[1];
+        const verified = verifyToken(token);
+        if (!verified) {
+          res.writeHead(401, { "content-type": "application/json" });
+          return res.end(JSON.stringify({ message: "Unauthorized" }));
+        }
+        const currentUserId = new ObjectId(verified.id);
+        const notifications = db.collection("notifications");
+
+        const results = await notifications.find({ targetUserId: currentUserId.toString(), type: "follow" }).sort({ createdAt: -1 }).toArray();
+
+        res.writeHead(200, { "content-type": "application/json" });
+        return res.end(JSON.stringify(results));
+      }
+
       if (req.method === "GET" && req.url.startsWith("/my-profile/following")) {
         const reqUrl = new URL(req.url, `http://${req.headers.host}`);
         const rawPage = Number(reqUrl.searchParams.get("page"));
@@ -712,7 +729,7 @@ const StartServer = async () => {
           });
           // notification for being followed
           notificationQueue.add("follow", {
-            type: "notification",
+            type: "follow",
             actorId: currentUserId.toString(),
             targetUserId: targetUser._id.toString(),
           });

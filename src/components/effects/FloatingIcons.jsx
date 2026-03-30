@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import * as TechIcons from "../icons/techIcon";
+import * as TechIcons from "../../icons/techIcon";
 
 const floatingIconsLayoutByCategory =
   TechIcons.floatingIconsLayoutByCategory ?? {};

@@ -162,7 +162,7 @@ const Footer = () => {
         </div>
 
         <div className="mx-auto mt-8 max-w-7xl py-8 text-center text-sm text-purple-300 sm:text-base">
-          © {new Date().getFullYear()} Devs Blog. All rights reserved!
+          © {new Date().getFullYear()} Devs Webs. All rights reserved!
         </div>
       </footer>
     </React.Fragment>

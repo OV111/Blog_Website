@@ -5,13 +5,23 @@ import "./index.css";
 import router from "./router";
 import LoadingSuspense from "./components/feedback/LoadingSuspense";
 import useAuthStore from "./stores/useAuthStore";
+import useNotificationStore from "./stores/useNotificationStore";
 
 const App = () => {
-  const { isLoading, init } = useAuthStore();
+  const { isLoading, init, auth } = useAuthStore();
+  const { connectWs, disconnectWs } = useNotificationStore();
+
   useEffect(() => {
     init();
   }, []);
 
+  useEffect(() => {
+    if (auth) {
+      connectWs();
+    } else {
+      disconnectWs();
+    }
+  }, [auth]);
   if (isLoading) return <LoadingSuspense />;
 
   return (

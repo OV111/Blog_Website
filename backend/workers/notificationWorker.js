@@ -1,4 +1,5 @@
 import { Worker } from "bullmq";
+import { ObjectId } from "mongodb";
 import connectDB from "../config/db.js";
 import { getWss } from "../websocket/index.js";
 import process from "process";
@@ -16,13 +17,18 @@ const NotificationWorker = new Worker(
     if (actorId === targetUserId) return;
     try {
       const db = await connectDB();
+      const users = db.collection("users");
       const notifications = db.collection("notifications");
+      const actor = await users.findOne({ _id: new ObjectId(actorId) }, { projection: { username: 1, firstName: 1, lastName: 1 } });
+
       const newNotification = {
         type,
         actorId,
         targetUserId,
         read: false,
         createdAt: new Date(),
+        senderUsername: actor?.username,
+        senderName: actor?.firstName + " " + actor?.lastName,
       };
       await notifications.insertOne(newNotification);
 

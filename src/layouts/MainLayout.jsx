@@ -11,7 +11,8 @@ const MainLayout = () => {
         <Outlet />
       </main>
       <Footer />
-      <Toaster position="bottom-right" reverseOrder={false} />
+      {/* Initial fix remove from individual pages the Toaster and leave it here */}
+      {/* <Toaster position="bottom-right" reverseOrder={false} /> */}
     </div>
   );
 };
