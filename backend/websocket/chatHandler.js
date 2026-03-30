@@ -1,3 +1,4 @@
+import notificationQueue from "../queues/notificationQueue.js";
 import connectDB from "../config/db.js";
 
 const rooms = new Map();
@@ -111,6 +112,14 @@ export const sendMessage = async (ws, data) => {
         );
       }
     });
+    const receiverInRoom = [...room].some((c) => c.userId === receiverId);
+    if (!receiverInRoom) {
+      notificationQueue.add("new_message", {
+        type: "new_message",
+        actorId: senderId,
+        targetUserId: receiverId,
+      })
+    }
   } catch (error) {
     console.log(error);
     ws.send(

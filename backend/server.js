@@ -518,7 +518,7 @@ const StartServer = async () => {
         const currentUserId = new ObjectId(verified.id);
         const notifications = db.collection("notifications");
 
-        const results = await notifications.find({ targetUserId: currentUserId.toString(), type: "follow" }).sort({ createdAt: -1 }).toArray();
+        const results = await notifications.find({ targetUserId: currentUserId.toString() }).sort({ createdAt: -1 }).toArray();
 
         res.writeHead(200, { "content-type": "application/json" });
         return res.end(JSON.stringify(results));
