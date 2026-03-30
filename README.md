@@ -5,7 +5,7 @@ A full-stack blog platform for developers, built with React and Node.js.
 ## Tech Stack
 
 **Frontend:** React 19, Vite, TailwindCSS, Zustand, Framer Motion, GSAP
-**Backend:** Node.js, Express 5, MongoDB/Mongoose, JWT, WebSockets
+**Backend:** Node.js, Express 5, MongoDB/Mongoose, JWT, WebSockets, Redis, BullMQ
 **UI:** Chakra UI, Material-UI, Lucide React
 
 ## Features
