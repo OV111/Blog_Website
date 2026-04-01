@@ -25,9 +25,9 @@ export default function Fundamentals() {
           Frameworks change. Languages evolve.
           <span className="text-neutral-700 dark:text-neutral-200 font-medium">
             {" "}
-            AI writes the surface. Fundamentals are what's underneath. 
-          </span>
-           Libraries get deprecated overnight. But the developer who understands
+            AI writes the surface. Fundamentals are what's underneath.
+          </span>{" "}
+          Libraries get deprecated overnight. But the developer who understands
           underneath{" "}
           <span className="text-neutral-700 dark:text-neutral-200 font-medium">
             how memory works
@@ -41,8 +41,11 @@ export default function Fundamentals() {
             how the internet actually moves data
           </span>{" "}
           — that developer adapts. Fundamentals are not a beginner topic. They
-          are the foundation every really extraordinary developer quietly built
-          before anyone was watching.
+          are the foundation every really{" "}
+          <span className="text-neutral-700 dark:text-neutral-200 font-medium">
+            extraordinary developer
+          </span>{" "}
+          quietly built before anyone was watching.
         </p>
       </div>
 
