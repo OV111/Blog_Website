@@ -14,7 +14,6 @@
     "dev:full": "concurrently \"npm run dev\" \"nodemon backend/server.js\""
   },
   "dependencies": {
-    "@chakra-ui/react": "^3.25.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@fortawesome/fontawesome-svg-core": "^7.1.0",

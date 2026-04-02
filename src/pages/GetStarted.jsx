@@ -4,7 +4,7 @@ import { Toaster, toast } from "react-hot-toast";
 import { Eye, EyeOff, BookOpen, Bookmark, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../stores/useAuthStore";
-import Lottie from "lottie-react";
+// import Lottie from "lottie-react";
 import codingAnimation from "../assets/animations/coding.json";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -116,7 +116,7 @@ const GetStarted = () => {
       <Toaster position="top-center" reverseOrder={false} />
       <div className="flex min-h-screen">
         {/* Left Panel */}
-        <div className="hidden lg:flex lg:w-1/2 flex-col items-center justify-center bg-zinc-100 dark:bg-gray-950 px-12 py-16">
+        {/* <div className="hidden lg:flex lg:w-1/2 flex-col items-center justify-center bg-zinc-100 dark:bg-gray-950 px-12 py-16">
           <Lottie
             animationData={codingAnimation}
             loop
@@ -137,7 +137,7 @@ const GetStarted = () => {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
         {/* Right Panel — Form */}
         <div className="flex min-h-screen w-full lg:w-1/2 items-center justify-center px-4 py-8 sm:px-6 sm:py-10 md:px-8">
           <div className="w-full max-w-xl rounded-2xl border border-violet-100 bg-white p-4  dark:border-zinc-800 dark:bg-gray-950  sm:p-6 md:p-8">
